@@ -4,14 +4,15 @@ from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class StringSplitter(BaseEstimator, TransformerMixin):
-    def __init__(self):
+    def __init__(self, max_width=''):
+        self.max_width = max_width
         self.tags = {}
 
     def fit(self, words, y=None):
         return self
 
     def transform(self, words):
-        x = np.array(words, dtype=np.unicode)
+        x = np.array(words, dtype=f'U{self.max_width}')
         y = x.view('U1').view(np.uint32).reshape((x.size, -1))
         return pd.DataFrame(y)
 
@@ -21,3 +22,4 @@ if __name__ == '__main__':
     print(data)
     res = StringSplitter().transform(data)
     print(res)
+    print(res.shape)
