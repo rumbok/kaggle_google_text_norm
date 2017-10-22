@@ -8,6 +8,7 @@ from transformers.dummies_encoder import DummiesEncoder
 from transformers.item_selector import ItemSelector
 from transformers.morphology_extractor import MorphologyExtractor
 from sklearn.pipeline import Pipeline, FeatureUnion
+from sklearn.datasets import dump_svmlight_file
 from transformers.pandas_union import PandasUnion
 from transformers.string_splitter import StringSplitter
 import matplotlib.pyplot as plt
@@ -22,7 +23,7 @@ df = pd.read_csv(os.path.join(INPUT_PATH, 'ru_train.csv'),
                  index_col=False,
                  usecols=['before', 'class'])
 
-df = df.sample(1000, random_state=2017)
+# df = df.sample(10000, random_state=2017)
 
 df['before_prev'] = df['before'].shift(1)
 df['before_next'] = df['before'].shift(-1)
@@ -39,7 +40,7 @@ pipeline = Pipeline([
     ('features', PandasUnion([
         ('chars', Pipeline([
             ('select', ItemSelector('before')),
-            ('split', StringSplitter(15))
+            ('split', StringSplitter(20))
         ])),
         ('context', Pipeline([
             ('select', ItemSelector('before')),
@@ -75,6 +76,8 @@ y_data = pd.factorize(df['class'])
 labels = y_data[1]
 y_data = y_data[0]
 
+dump_svmlight_file(x_data, y_data, 'class_data')
+
 x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.1, random_state=2017)
 
 dtrain = xgb.DMatrix(x_train, label=y_train)
@@ -98,6 +101,7 @@ print(f'pipeline test error {1.0-accuracy_score(y_test, predicted)}', flush=True
 
 plt.rcParams['font.size'] = 8
 feat_imp = pd.Series(model.get_fscore()).sort_values(ascending=False)
+print(feat_imp.index)
 print(x_data.columns[~x_data.columns.isin(feat_imp.index)])
 feat_imp.plot(kind='bar', title='Feature Importances')
 plt.ylabel('Feature Importance Score')

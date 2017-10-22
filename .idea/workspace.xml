@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="87d7b328-3b94-47c5-a820-63e601606f5b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/transformers/pandas_union.py" />
+    <list default="true" id="87d7b328-3b94-47c5-a820-63e601606f5b" name="Default" comment="calc feature importance, added cut to StringSplitter, added PandasUnion">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/class_model_trainer.py" afterPath="$PROJECT_DIR$/models/class_model_trainer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/transformers/reshape_2d.py" afterPath="$PROJECT_DIR$/transformers/reshape_2d.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/transformers/string_splitter.py" afterPath="$PROJECT_DIR$/transformers/string_splitter.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/class_model_tune.ipynb" afterPath="$PROJECT_DIR$/models/class_model_tune.ipynb" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,11 +15,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="class_model_trainer.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="class_model_trainer.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/class_model_trainer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="24" column="16" lean-forward="true" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+            <state relative-caret-position="431">
+              <caret line="91" column="34" lean-forward="true" selection-start-line="91" selection-start-column="34" selection-end-line="91" selection-end-column="34" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -29,11 +27,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="class_model_tune.ipynb" pinned="false" current-in-tab="false">
+      <file leaf-file-name="class_model_tune.ipynb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/class_model_tune.ipynb">
           <provider selected="true" editor-type-id="ipnb-editor">
             <state>
-              <selected id="3" />
+              <selected id="8" />
             </state>
           </provider>
         </entry>
@@ -108,12 +106,12 @@
         <option value="$PROJECT_DIR$/transformers/reshaper.py" />
         <option value="$PROJECT_DIR$/transformers/item_selector.py" />
         <option value="$PROJECT_DIR$/transformers/morphology_extractor.py" />
-        <option value="$PROJECT_DIR$/models/class_model_tune.ipynb" />
         <option value="$PROJECT_DIR$/transformers/string_splitter.py" />
         <option value="$PROJECT_DIR$/transformers/pandas_concat.py" />
         <option value="$PROJECT_DIR$/transformers/reshape_2d.py" />
         <option value="$PROJECT_DIR$/transformers/pandas_union.py" />
         <option value="$PROJECT_DIR$/models/class_model_trainer.py" />
+        <option value="$PROJECT_DIR$/models/class_model_tune.ipynb" />
       </list>
     </option>
   </component>
@@ -432,7 +430,21 @@
       <option name="project" value="LOCAL" />
       <updated>1508666392546</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="calc feature importance, added cut to StringSplitter, added PandasUnion">
+      <created>1508672852285</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1508672852285</updated>
+    </task>
+    <task id="LOCAL-00003" summary="print unused features">
+      <created>1508674424976</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1508674424976</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView">
@@ -447,14 +459,16 @@
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15751211" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.258597" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.258597" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15751211" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39889959" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960597" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -463,7 +477,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -472,7 +485,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="right user" />
-    <option name="LAST_COMMIT_MESSAGE" value="right user" />
+    <MESSAGE value="calc feature importance, added cut to StringSplitter, added PandasUnion" />
+    <MESSAGE value="print unused features" />
+    <option name="LAST_COMMIT_MESSAGE" value="print unused features" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -481,21 +496,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///usr/local/lib/python3.6/site-packages/sklearn/model_selection/_split.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="1903" column="4" lean-forward="false" selection-start-line="1903" selection-start-column="4" selection-end-line="1903" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../avito/text_tokenize.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="2" lean-forward="true" selection-start-line="15" selection-start-column="2" selection-end-line="15" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Caches/PyCharmCE2017.2/python_stubs/-1604679571/itertools.py" />
     <entry file="file:///usr/local/lib/python3.6/site-packages/sklearn/utils/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="215">
@@ -715,6 +715,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="477" column="8" lean-forward="false" selection-start-line="477" selection-start-column="8" selection-end-line="477" selection-end-column="8" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -801,20 +802,41 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/class_model_tune.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="3" />
+    <entry file="file:///usr/local/lib/python3.6/site-packages/sklearn/datasets/svmlight_format.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-322">
+          <caret line="375" column="4" lean-forward="false" selection-start-line="375" selection-start-column="4" selection-end-line="375" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python3.6/site-packages/sklearn/model_selection/_search.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7872">
+          <caret line="763" column="6" lean-forward="false" selection-start-line="763" selection-start-column="6" selection-end-line="763" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/models/class_model_trainer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="16" lean-forward="true" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+        <state relative-caret-position="431">
+          <caret line="91" column="34" lean-forward="true" selection-start-line="91" selection-start-column="34" selection-end-line="91" selection-end-column="34" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/n_estimators.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/class_model_tune.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="8" />
         </state>
       </provider>
     </entry>
