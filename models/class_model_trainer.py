@@ -25,7 +25,7 @@ df = pd.read_csv(os.path.join(INPUT_PATH, 'ru_train.csv'),
                  index_col=False,
                  usecols=['before', 'class'])
 
-df = df.head(10000)
+df = df.head(100000)
 
 # df['before'] = df['before'].str.lower()
 # df['after'] = df['after'].str.lower()
