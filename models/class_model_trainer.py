@@ -18,7 +18,7 @@ from transformers.string_splitter import StringSplitter
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-df = load_train(['before', 'class']).sample(10000, random_state=2017)
+df = load_train(['before', 'class']).head(10000)
 print(df.info())
 
 pipeline = Pipeline([
