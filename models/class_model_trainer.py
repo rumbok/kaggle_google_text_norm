@@ -22,7 +22,7 @@ df = pd.read_csv(os.path.join(INPUT_PATH, 'ru_train.csv'),
                  index_col=False,
                  usecols=['before', 'class'])
 
-df = df.sample(100000, random_state=2017)
+df = df.sample(1000, random_state=2017)
 
 df['before_prev'] = df['before'].shift(1)
 df['before_next'] = df['before'].shift(-1)
@@ -39,7 +39,7 @@ pipeline = Pipeline([
     ('features', PandasUnion([
         ('chars', Pipeline([
             ('select', ItemSelector('before')),
-            ('split', StringSplitter(10))
+            ('split', StringSplitter(15))
         ])),
         ('context', Pipeline([
             ('select', ItemSelector('before')),
@@ -48,7 +48,7 @@ pipeline = Pipeline([
         ])),
         ('chars_prev', Pipeline([
             ('select', ItemSelector('before_prev')),
-            ('split', StringSplitter(5))
+            ('split', StringSplitter(10))
         ])),
         ('context_prev', Pipeline([
             ('select', ItemSelector('before_prev')),
@@ -57,7 +57,7 @@ pipeline = Pipeline([
         ])),
         ('chars_next', Pipeline([
             ('select', ItemSelector('before_next')),
-            ('split', StringSplitter(5))
+            ('split', StringSplitter(10))
         ])),
         ('context_next', Pipeline([
             ('select', ItemSelector('before_next')),
@@ -98,9 +98,8 @@ print(f'pipeline test error {1.0-accuracy_score(y_test, predicted)}', flush=True
 
 plt.rcParams['font.size'] = 8
 feat_imp = pd.Series(model.get_fscore()).sort_values(ascending=False)
+print(x_data.columns[~x_data.columns.isin(feat_imp.index)])
 feat_imp.plot(kind='bar', title='Feature Importances')
 plt.ylabel('Feature Importance Score')
 plt.tight_layout()
 plt.show()
-# xgb.plot_importance(model, color='red')
-# plt.show()
