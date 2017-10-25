@@ -2,60 +2,88 @@ import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from tqdm import tqdm
+from scipy.sparse import coo_matrix
 import pymorphy2
+from typing import Union
 
 
 class MorphologyExtractor(BaseEstimator, TransformerMixin):
-    def __init__(self):
+    def __init__(self, to_coo=False):
+        self.to_coo = to_coo
         self.morph = pymorphy2.MorphAnalyzer()
-        self.tags = {}
+        self.word_rows = {}
+
+        tag_values = set()
+        for (_, tag, _, _, _) in tqdm(self.morph.dictionary.iter_known_words(),
+                                      f'{self.__class__.__name__} create index'):
+            tag_values.update(tag.grammemes)
+        self.tag_indexes = {x: i + 4 for i, x in enumerate(tag_values)}
 
     def fit(self, X, y=None):
         return self
 
-    def transform(self, words):
-        res = []
-        for word in tqdm(words, f'{self.__class__.__name__} transform'):
-            is_first_upper = len(word) > 0 and word[0].isupper()
-            is_upper = word.isupper()
-            length = len(word)
-            num_words = word.count(' ')
-
-            if word.lower() in self.tags:
-                p = self.tags[word.lower()]
+    def transform(self, words) -> Union[pd.SparseDataFrame, coo_matrix]:
+        rows = []
+        cols = []
+        datas = []
+        for i, word in tqdm(enumerate(words),
+                            f'{self.__class__.__name__} transform',
+                            total=len(words)):
+            if word in self.word_rows:
+                col_data = self.word_rows[word]
             else:
-                p = self.morph.parse(word)[0]
-                self.tags[word.lower()] = p
+                is_first_upper = len(word) > 0 and word[0].isupper()
+                is_upper = word.isupper()
+                length = len(word)
+                num_words = len(word.split())
 
-            pos = p.tag.POS  # Part of Speech, часть речи
-            animacy = p.tag.animacy  # одушевленность
-            aspect = p.tag.aspect  # вид: совершенный или несовершенный
-            case = p.tag.case  # падеж
-            gender = p.tag.gender  # род (мужской, женский, средний)
-            involvement = p.tag.involvement  # включенность говорящего в действие
-            mood = p.tag.mood  # наклонение (повелительное, изъявительное)
-            number = p.tag.number  # число (единственное, множественное)
-            person = p.tag.person  # лицо (1, 2, 3)
-            tense = p.tag.tense  # время (настоящее, прошедшее, будущее)
-            transitivity = p.tag.transitivity  # переходность (переходный, непереходный)
-            voice = p.tag.voice  # залог (действительный, страдательный)
+                indexes = [self.tag_indexes[k] for k in self.morph.parse(word)[0].tag.grammemes
+                           if k in self.tag_indexes]
 
-            res.append((is_first_upper, is_upper, length, num_words,
-                        pos, animacy, aspect, case, gender, involvement, mood,
-                        number, person, tense, transitivity, voice))
-        return pd.DataFrame(res, columns=['is_first_upper','is_upper', 'length', 'num_words',
-                                          'pos','animacy', 'aspect','case','gender','involvement', 'mood','number',
-                                          'person','tense','transitivity','voice'])
-        # dt = [('is_first_upper', '?'), ('is_upper', '?'), ('pos', 'U4'), ('animacy', 'U4'),
-        #       ('aspect', 'U4'), ('case', 'U4'), ('gender', 'U4'), ('mood', 'U4'), ('number', 'U4'),
-        #       ('person', 'U4'), ('tense', 'U4'), ('transitivity', 'U4'), ('voice', 'U4')]
-        # arr = np.array(res, dtype=dt)
-        # return arr
+                col = [0, 1, 2, 3] + indexes
+                data = [is_first_upper, is_upper, length, num_words] + [1] * len(indexes)
+                col_data = (col, data)
+                self.word_rows[word] = col_data
+
+            rows += [i] * len(col_data[0])
+            cols += col_data[0]
+            datas += col_data[1]
+
+            # p.tag.POS  # Part of Speech, часть речи
+            # p.tag.animacy  # одушевленность
+            # p.tag.aspect  # вид: совершенный или несовершенный
+            # p.tag.case  # падеж
+            # p.tag.gender  # род (мужской, женский, средний)
+            # p.tag.involvement  # включенность говорящего в действие
+            # p.tag.mood  # наклонение (повелительное, изъявительное)
+            # p.tag.number  # число (единственное, множественное)
+            # p.tag.person  # лицо (1, 2, 3)
+            # p.tag.tense  # время (настоящее, прошедшее, будущее)
+            # p.tag.transitivity  # переходность (переходный, непереходный)
+
+        coo_matr = coo_matrix((datas, (rows, cols)), shape=(len(words), 4 + len(self.tag_indexes)),
+                              dtype=np.uint8)
+        del datas, rows, cols
+
+        if self.to_coo:
+            return coo_matr
+        else:
+            return pd.SparseDataFrame(coo_matr,
+                                      columns=['is_first_upper', 'is_upper', 'length', 'num_words'] + list(self.tag_indexes.keys()),
+                                      default_fill_value=0)
 
 
 if __name__ == '__main__':
-    data = [u'в 1905 году'] + u'Определение частей речи работает не так как задумывалось'.split()
+    data = [u'В 1905 году'] + u'съешь ещё этих мягких французских булок , ДА выпей чаю брюки брючные'.split()
     print(data)
-    res = MorphologyExtractor().transform(data)
-    print(res)
+
+    morph = MorphologyExtractor()
+    res = morph.transform(data)
+    print(res.info())
     print(res.shape)
+    print(res.density)
+
+    morph.to_coo = True
+    res_coo = morph.transform(data)
+    print(res_coo)
+    print(res_coo.nnz / res_coo.shape[0] / res_coo.shape[1])

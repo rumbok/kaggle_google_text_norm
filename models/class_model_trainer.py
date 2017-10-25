@@ -1,94 +1,103 @@
-import os
-import numpy as np
+import matplotlib.pyplot as plt
 import pandas as pd
-from sklearn.model_selection import train_test_split, GridSearchCV
 import xgboost as xgb
-from sklearn.metrics import accuracy_score
-
-from loading import load_train
-from transformers.dummies_encoder import DummiesEncoder
+from sklearn.datasets import dump_svmlight_file
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from loaders.loading import load_train
+from transformers.pandas_dummies import PandasDummies
 from transformers.item_selector import ItemSelector
 from transformers.morphology_extractor import MorphologyExtractor
-from sklearn.pipeline import Pipeline, FeatureUnion
-from sklearn.datasets import dump_svmlight_file
-
-from transformers.pandas_shift import PandasShift
 from transformers.pandas_union import PandasUnion
-from transformers.string_splitter import StringSplitter
-import matplotlib.pyplot as plt
-import seaborn as sns
+from transformers.string_to_chars import StringToChar
 
-df = load_train(['before', 'class']).head(10000)
-print(df.info())
+# df = load_train(['before', 'after', 'class']).fillna('')
+# df['before_prev'] = df['before'].shift(1).fillna('')
+# df['before_next'] = df['before'].shift(-1).fillna('')
+# df = df[~(df['before'] == df['after'])]
+# del df['after']
+# print(df.info())
+#
+# morph_extractor = MorphologyExtractor()
+# morph_dummies = PandasDummies(['pos', 'animacy', 'aspect', 'case', 'gender', 'involvement', 'mood', 'number', 'person', 'tense', 'transitivity'])
+# pipeline = Pipeline([
+#     ('features', PandasUnion([
+#         ('char', Pipeline([
+#             ('select', ItemSelector('before')),
+#             ('split', StringSplitter(10))
+#         ])),
+#         ('ctx', Pipeline([
+#             ('select', ItemSelector('before')),
+#             ('extract', morph_extractor),
+#             ('one_hot', morph_dummies)
+#         ])),
+#         ('char_prev', Pipeline([
+#             ('select', ItemSelector('before_prev')),
+#             ('split', StringSplitter(5))
+#         ])),
+#         ('ctx_prev', Pipeline([
+#             ('select', ItemSelector('before_prev')),
+#             ('extract', morph_extractor),
+#             ('one_hot', morph_dummies)
+#         ])),
+#         ('char_next', Pipeline([
+#             ('select', ItemSelector('before_next')),
+#             ('split', StringSplitter(5))
+#         ])),
+#         ('ctx_next', Pipeline([
+#             ('select', ItemSelector('before_next')),
+#             ('extract', morph_extractor),
+#             ('one_hot', morph_dummies)
+#         ])),
+#     ])),
+# ])
+#
+# x_data = pipeline.fit_transform(df.drop(['class'], axis=1))
+# y_data = pd.factorize(df['class'])
+# labels = y_data[1]
+# y_data = y_data[0]
+# del morph_extractor
+# del morph_dummies
+# del df
+#
+# print(x_data.info())
+# print(x_data.density)
+#
+# x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.1, random_state=2017)
+# print('data splitted')
+# del x_data
+# del y_data
+#
+# dump_svmlight_file(x_test, y_test, 'class.txt.test')
+# dump_svmlight_file(x_train, y_train, 'class.txt.train')
+# del x_train, x_test, y_train, y_test
 
-pipeline = Pipeline([
-    # ('features', FeatureUnion([
-    ('select', ItemSelector('before')),
-    ('features', PandasUnion([
-        ('char', Pipeline([
-            ('split', StringSplitter(10))
-        ])),
-        ('ctx', Pipeline([
-            ('extract', MorphologyExtractor()),
-            ('one_hot', DummiesEncoder())
-        ])),
-        ('char_prev', Pipeline([
-            ('shift', PandasShift(1)),
-            ('split', StringSplitter(5))
-        ])),
-        ('ctx_prev', Pipeline([
-            ('shift', PandasShift(1)),
-            ('extract', MorphologyExtractor()),
-            ('one_hot', DummiesEncoder())
-        ])),
-        ('char_next', Pipeline([
-            ('shift', PandasShift(-1)),
-            ('split', StringSplitter(5))
-        ])),
-        ('ctx_next', Pipeline([
-            ('shift', PandasShift(-1)),
-            ('extract', MorphologyExtractor()),
-            ('one_hot', DummiesEncoder())
-        ])),
-    ])),
-])
+dtest = xgb.DMatrix('class.txt.test#class.dtest.cache')
+dtrain = xgb.DMatrix('class.txt.train#class.dtrain.cache')
 
-x_data = pipeline.fit_transform(df.drop(['class'], axis=1))
-print(x_data.info())
-
-y_data = pd.factorize(df['class'])
-labels = y_data[1]
-y_data = y_data[0]
-
-x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.1, random_state=2017)
-
-dump_svmlight_file(x_train, y_train, 'models/class.txt.train')
-dump_svmlight_file(x_test, y_test, 'models/class.txt.test')
-
-dtrain = xgb.DMatrix('models/class.txt.train#dtrain.cache')
-dtest = xgb.DMatrix('models/class.txt.test#dtest.cache')
+# dtrain = xgb.DMatrix(x_train, label=y_train)
+# dtest = xgb.DMatrix(x_test, label=y_test)
 watchlist = [(dtest, 'test'), (dtrain, 'train')]
 
 param = {'objective': 'multi:softmax',
-         'eta': '0.3',
-         'max_depth': 5,
+         'learning_rate': 0.3,
+         'num_boost_round': 90,
+         'max_depth': 4,
          'silent': 1,
-         'nthread': -1,
-         'num_class': len(labels),
-         'eval_metric': 'merror',
+         'nthread': 4,
+         'num_class': len(set(dtrain.get_label())),
+         'eval_metric': ['merror', 'mlogloss'],
          'seed': '2017'}
-model = xgb.train(param, dtrain, 200, watchlist, early_stopping_rounds=50, verbose_eval=10)
-
-predicted_val = model.predict(dtrain)
-print(f'pipeline val error {1.0-accuracy_score(y_train, predicted_val)}', flush=True)
-predicted = model.predict(dtest)
-print(f'pipeline test error {1.0-accuracy_score(y_test, predicted)}', flush=True)
+model = xgb.train(param, dtrain, num_boost_round=param['num_boost_round'], evals=watchlist,
+                  early_stopping_rounds=30, verbose_eval=1)
+model.save_model('class_model_train.bin')
 
 plt.rcParams['font.size'] = 8
 feat_imp = pd.Series(model.get_fscore()).sort_values(ascending=False)
 print(feat_imp.index)
-print(x_data.columns[~x_data.columns.isin(feat_imp.index)])
+# print(x_data.columns[~x_data.columns.isin(feat_imp.index)])
 feat_imp.plot(kind='bar', title='Feature Importances')
 plt.ylabel('Feature Importance Score')
 plt.tight_layout()
+# plt.savefig('class_features_imp.png')
 plt.show()

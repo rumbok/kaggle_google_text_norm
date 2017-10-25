@@ -9,12 +9,13 @@ class PandasShift(BaseEstimator, TransformerMixin):
     def fit(self, X, y=None):
         return self
 
-    def transform(self, X: pd.Series):
+    def transform(self, X):
         return X.shift(self.period).fillna('')
 
 
 if __name__ == '__main__':
-    data = pd.Series(['1', '2', '3'])
-    print(data)
+    data = pd.SparseDataFrame(['1', '2', '3'])
+    print(data.info())
     res = PandasShift(1).transform(data)
+    print(res.info())
     print(res)
