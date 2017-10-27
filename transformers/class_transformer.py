@@ -16,8 +16,9 @@ from sklearn.pipeline import Pipeline
 class ClassTransformer(TransformerMixin):
     def __init__(self, threshold=0.5, modelpath=''):
         self.threshold = threshold
+        self.modelpath = modelpath
         self.model = xgb.Booster()
-        if modelpath:
+        if self.modelpath:
             self.model.load_model(modelpath)
 
     def fit(self, X, y=None, *args, **kwargs):
@@ -31,6 +32,9 @@ class ClassTransformer(TransformerMixin):
             return X.assign(after=X['after'].combine_first(X[self_predicted > self.threshold]['before']))
         else:
             return X.assign(after=X[self_predicted > self.threshold]['before'])
+
+    def get_params(self):
+        return f'threshold={self.threshold}, model={self.modelpath}'
 
 
 if __name__ == '__main__':

@@ -1,0 +1,268 @@
+ 2017-10-26 12:48:20
+self: {'modelpath': 'models/self.model.train', 'threshold': 0.5}
+dash: {}
+digit: {}
+punсt: {'classname': 'PUNCT', 'threshold': 1.0, 'mean_confidence': 1.0}
+verbatim: {'classname': 'VERBATIM', 'threshold': 1.0, 'mean_confidence': 1.0}
+dict_nbhd: {'threshold': 1.0, 'mean_confidence': 0.9998997014300806}
+dict: {'threshold': 1.0, 'mean_confidence': 0.9964247700658703}
+flat: {}
+Chain:
+  self:	tp=0.847083	fp=0.0027292
+  dash:	tp=0.847641	fp=0.00276514
+  digit:	tp=0.847814	fp=0.00276609
+  punсt:	tp=0.860108	fp=0.00334767
+  verbatim:	tp=0.861354	fp=0.00334956
+  dict_nbhd:	tp=0.907521	fp=0.00360206
+  dict:	tp=0.960035	fp=0.00414109
+  flat:	tp=0.960572	fp=0.0394278
+
+2017-10-26 13:00:19
+dash: {}
+digit: {}
+self: {'modelpath': 'models/self.model.train', 'threshold': 0.5}
+punсt: {'classname': 'PUNCT', 'threshold': 1.0, 'mean_confidence': 1.0}
+verbatim: {'classname': 'VERBATIM', 'threshold': 1.0, 'mean_confidence': 1.0}
+dict_nbhd: {'threshold': 1.0, 'mean_confidence': 0.9998997014300806}
+dict: {'threshold': 1.0, 'mean_confidence': 0.9964247700658703}
+flat: {}
+Chain:
+  dash:	tp=0.000557945	fp=3.87725e-05
+  digit:	tp=0.000731003	fp=3.97182e-05
+  self:	tp=0.851372	fp=0.00278594
+  punсt:	tp=0.86331	fp=0.00336848
+  verbatim:	tp=0.86445	fp=0.00337037
+  dict_nbhd:	tp=0.910573	fp=0.00362286
+  dict:	tp=0.960544	fp=0.00415244
+  flat:	tp=0.96077	fp=0.0392302
+
+2017-10-26 13:07:37
+dash: {}
+digit: {}
+self: {'modelpath': 'models/self.model.train', 'threshold': 0.5}
+punсt: {'classname': 'PUNCT', 'threshold': 1.0, 'mean_confidence': 1.0}
+verbatim: {'classname': 'VERBATIM', 'threshold': 1.0, 'mean_confidence': 1.0}
+dict_nbhd: {'threshold': 0.5, 'mean_confidence': 0.9998997014300806}
+dict: {'threshold': 0.5, 'mean_confidence': 0.9964247700658703}
+Chain:
+  dash:	tp=0.000557945	fp=3.87725e-05
+  digit:	tp=0.000731003	fp=3.97182e-05
+  self:	tp=0.853866	fp=0.00220152
+  punсt:	tp=0.864488	fp=0.00278216
+  verbatim:	tp=0.865678	fp=0.00278405
+  dict_nbhd:	tp=0.912422	fp=0.00332214
+  dict:	tp=0.97441	fp=0.00794836
+
+2017-10-26 13:14:41
+dash: {}
+digit: {}
+punсt: {'classname': 'PUNCT', 'threshold': 1.0, 'mean_confidence': 1.0}
+verbatim: {'classname': 'VERBATIM', 'threshold': 1.0, 'mean_confidence': 1.0}
+self: {'modelpath': 'models/self.model.train', 'threshold': 0.5}
+dict_nbhd: {'threshold': 0.5, 'mean_confidence': 0.9998997014300806}
+dict: {'threshold': 0.5, 'mean_confidence': 0.9964247700658703}
+Chain:
+  dash:	tp=0.000557945	fp=3.87725e-05
+  digit:	tp=0.000731003	fp=3.97182e-05
+  punсt:	tp=0.217663	fp=0.000622251
+  verbatim:	tp=0.232337	fp=0.000624142
+  self:	tp=0.863605	fp=0.00124639
+  dict_nbhd:	tp=0.912121	fp=0.00178543
+  dict:	tp=0.975899	fp=0.00641826
+
+2017-10-26 13:37:55
+dash: {}
+digit: {}
+punсt: {'classname': 'PUNCT', 'threshold': 1.0, 'mean_confidence': 1.0}
+verbatim: {'classname': 'VERBATIM', 'threshold': 1.0, 'mean_confidence': 1.0}
+self: {'modelpath': 'models/self.model.train', 'threshold': 0.5}
+dict_nbhd: {'threshold': 0.5, 'mean_confidence': 0.9998662500745277}
+dict: {'threshold': 0.5, 'mean_confidence': 0.9964247700658703}
+Chain:
+  dash:	tp=0.000557945	fp=3.87725e-05
+  digit:	tp=0.000731003	fp=3.97182e-05
+  punсt:	tp=0.217663	fp=0.000622251
+  verbatim:	tp=0.232337	fp=0.000624142
+  self:	tp=0.862275	fp=0.000921083
+  dict_nbhd:	tp=0.900201	fp=0.0145681
+  dict:	tp=0.96314	fp=0.019129
+
+2017-10-26 13:45:52
+dash: {}
+digit: {}
+punсt: {'classname': 'PUNCT', 'threshold': 1.0, 'mean_confidence': 1.0}
+verbatim: {'classname': 'VERBATIM', 'threshold': 1.0, 'mean_confidence': 1.0}
+self: {'modelpath': 'models/self.model.train', 'threshold': 0.5}
+dict_nbhd: {'threshold': 0.5, 'mean_confidence': 0.9998997014300806}
+dict: {'threshold': 0.5, 'mean_confidence': 0.9964247700658703}
+Chain:
+  dash:	tp=0.000557945	fp=3.87725e-05
+  digit:	tp=0.000731003	fp=3.97182e-05
+  punсt:	tp=0.217663	fp=0.000622251
+  verbatim:	tp=0.232337	fp=0.000624142
+  self:	tp=0.867061	fp=0.00228001
+  dict_nbhd:	tp=0.913397	fp=0.00281621
+  dict:	tp=0.975004	fp=0.007415
+
+2017-10-26 13:53:08
+dash: {}
+digit: {}
+punсt: {'classname': 'PUNCT', 'threshold': 1.0, 'mean_confidence': 1.0}
+verbatim: {'classname': 'VERBATIM', 'threshold': 1.0, 'mean_confidence': 1.0}
+self: {'modelpath': 'models/self.model.train', 'threshold': 0.5}
+dict_nbhd: {'threshold': 0.5001, 'mean_confidence': 0.9998997014300806}
+dict: {'threshold': 0.5001, 'mean_confidence': 0.9964247700658703}
+Chain:
+  dash:	tp=0.000557945	fp=3.87725e-05
+  digit:	tp=0.000731003	fp=3.97182e-05
+  punсt:	tp=0.217663	fp=0.000622251
+  verbatim:	tp=0.232337	fp=0.000624142
+  self:	tp=0.867243	fp=0.00887512
+  dict_nbhd:	tp=0.91128	fp=0.00933377
+  dict:	tp=0.969021	fp=0.0135165
+
+2017-10-26 14:55:25
+translit: {'algo': 'translit'}
+Chain:
+  translit:	tp=0.0153218	fp=0.0478802
+
+2017-10-26 14:56:36
+translit: {'algo': 'cyrtranslit'}
+Chain:
+  translit:	tp=0.0155865	fp=0.0476154
+
+2017-10-26 14:57:30
+translit: {'algo': 'pytils'}
+Chain:
+  translit:	tp=0.0154144	fp=0.0477876
+
+2017-10-26 15:02:00
+test data 9517065
+translit: {'algo': 'pytils'}
+Chain:
+  translit:	tp=0.0141798	fp=0.0433453
+
+2017-10-26 15:04:36
+test data 9517065
+translit: {'algo': 'translit'}
+Chain:
+  translit:	tp=0.0141202	fp=0.0434049
+
+2017-10-26 15:05:51
+test data 9517065
+translit: {'algo': 'cyrtranslit'}
+Chain:
+  translit:	tp=0.0143209	fp=0.0432042
+
+2017-10-26 15:13:36
+test data 9517065
+dash: {}
+digit: {}
+punсt: {'classname': 'PUNCT', 'threshold': 1.0, 'mean_confidence': 1.0}
+verbatim: {'classname': 'VERBATIM', 'threshold': 1.0, 'mean_confidence': 1.0}
+self: {'modelpath': 'models/self.model.train', 'threshold': 0.5}
+dict_nbhd: {'threshold': 0.5, 'mean_confidence': 0.9998997014300806}
+translit: {'algo': 'cyrtranslit'}
+Chain:
+  dash:	tp=0.000557945	fp=3.87725e-05
+  digit:	tp=0.000731003	fp=3.97182e-05
+  punсt:	tp=0.217663	fp=0.000622251
+  verbatim:	tp=0.232337	fp=0.000624142
+  self:	tp=0.869474	fp=0.0015405
+  dict_nbhd:	tp=0.914982	fp=0.00207858
+  translit:	tp=0.927241	fp=0.0385011
+
+2017-10-26 15:21:51
+test data 1057451
+dash: {}
+digit: {}
+punсt: {'classname': 'PUNCT', 'threshold': 1.0, 'mean_confidence': 1.0}
+verbatim: {'classname': 'VERBATIM', 'threshold': 1.0, 'mean_confidence': 1.0}
+self: {'modelpath': 'models/self.model.train', 'threshold': 0.5}
+dict_nbhd: {'threshold': 0.5, 'mean_confidence': 0.9998997014300806}
+dict: {'threshold': 0.5, 'mean_confidence': 0.9964247700658703}
+translit: {'algo': 'cyrtranslit'}
+flat: {}
+Chain:
+  dash:	tp=0.000557945	fp=3.87725e-05
+  digit:	tp=0.000731003	fp=3.97182e-05
+  punсt:	tp=0.217663	fp=0.000622251
+  verbatim:	tp=0.232337	fp=0.000624142
+  self:	tp=0.862291	fp=0.00353113
+  dict_nbhd:	tp=0.910899	fp=0.00406922
+  dict:	tp=0.97379	fp=0.00869922
+  translit:	tp=0.976132	fp=0.0168083
+  flat:	tp=0.976281	fp=0.0237193
+
+2017-10-26 16:09:43
+test data 1057451
+letters: {}
+Chain:
+  letters:	tp=0.0155393	fp=0.0159951
+
+2017-10-26 16:15:00
+test data 1057451
+dash: {}
+digit: {}
+punсt: {'classname': 'PUNCT', 'threshold': 1.0, 'mean_confidence': 1.0}
+verbatim: {'classname': 'VERBATIM', 'threshold': 1.0, 'mean_confidence': 1.0}
+letters: {}
+self: {'modelpath': 'models/self.model.train', 'threshold': 0.5}
+dict_nbhd: {'threshold': 0.5, 'mean_confidence': 0.9998997014300806}
+Chain:
+  dash:	tp=0.000557945	fp=3.87725e-05
+  digit:	tp=0.000731003	fp=3.97182e-05
+  punсt:	tp=0.217663	fp=0.000622251
+  verbatim:	tp=0.232337	fp=0.000624142
+  letters:	tp=0.247876	fp=0.0164707
+  self:	tp=0.869308	fp=0.0173909
+  dict_nbhd:	tp=0.910811	fp=0.0179138
+
+2017-10-27 09:46:14
+test data 1057451
+dash: {}
+digit: {}
+punсt: {'classname': 'PUNCT', 'threshold': 1.0, 'mean_confidence': 1.0}
+verbatim: {'classname': 'VERBATIM', 'threshold': 1.0, 'mean_confidence': 1.0}
+self: {'modelpath': 'models/self.model.train', 'threshold': 0.5}
+dict_nbhd: {'threshold': 0.5, 'mean_confidence': 0.9998997014300806}
+letters: {}
+Chain:
+  dash:	tp=0.000557945	fp=3.87725e-05
+  digit:	tp=0.000731003	fp=3.97182e-05
+  punсt:	tp=0.217663	fp=0.000622251
+  verbatim:	tp=0.232337	fp=0.000624142
+  self:	tp=0.865301	fp=0.00332687
+  dict_nbhd:	tp=0.912487	fp=0.00385833
+  letters:	tp=0.922057	fp=0.00603054
+
+2017-10-27 09:52:27
+test data 1057451
+dash: {}
+digit: {}
+punсt: {'classname': 'PUNCT', 'threshold': 1.0, 'mean_confidence': 1.0}
+verbatim: {'classname': 'VERBATIM', 'threshold': 1.0, 'mean_confidence': 1.0}
+self: {'modelpath': 'models/self.model.train', 'threshold': 0.5}
+dict_nbhd: {'threshold': 0.5, 'mean_confidence': 0.9998997014300806}
+letters: {}
+dict: {'threshold': 0.5, 'mean_confidence': 0.9964247700658703}
+translit: {'algo': 'cyrtranslit'}
+flat: {}
+Chain:
+  dash:	tp=0.000557945	fp=3.87725e-05
+  digit:	tp=0.000731003	fp=3.97182e-05
+  punсt:	tp=0.217663	fp=0.000622251
+  verbatim:	tp=0.232337	fp=0.000624142
+  self:	tp=0.862496	fp=0.00164452
+  dict_nbhd:	tp=0.911856	fp=0.00218355
+  letters:	tp=0.921925	fp=0.00449193
+  dict:	tp=0.974959	fp=0.00884202
+  translit:	tp=0.977245	fp=0.0159837
+  flat:	tp=0.977376	fp=0.0226242
+
+2017-10-27 14:45:53
+test data 1057452
+self: {'modelpath': 'models/self.model.train', 'threshold': 0.5}
+Chain:
+  self:	tp=0.855662	fp=0.00136082
+

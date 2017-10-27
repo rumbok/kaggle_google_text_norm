@@ -1,11 +1,11 @@
 from collections import defaultdict, Counter
 import numpy as np
 import pandas as pd
-from sklearn.base import TransformerMixin
+from sklearn.base import TransformerMixin, BaseEstimator
 from tqdm import tqdm
 
 
-class DictTransformer(TransformerMixin):
+class DictTransformer(TransformerMixin, BaseEstimator):
     def __init__(self, threshold=0.0):
         self.threshold = threshold
         self.kv = {}
@@ -37,6 +37,11 @@ class DictTransformer(TransformerMixin):
             return X.assign(after=X['after'].combine_first(pd.Series(data, index=X.index)))
         else:
             return X.assign(after=data)
+
+    def get_params(self):
+        params = super(self.__class__, self).get_params()
+        params['mean_confidence'] = self.mean_confidence
+        return params
 
 
 if __name__ == '__main__':

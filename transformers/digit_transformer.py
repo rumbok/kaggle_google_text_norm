@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from sklearn.base import TransformerMixin
+from sklearn.base import TransformerMixin, BaseEstimator
 from tqdm import tqdm
 from num2words import num2words
 import re
@@ -10,7 +10,7 @@ DIGIT_REGEXP = '^0\d+$'
 regexp = re.compile(DIGIT_REGEXP)
 
 
-class DigitTransformer(TransformerMixin):
+class DigitTransformer(TransformerMixin, BaseEstimator):
     def fit(self, X, y=None, *args, **kwargs):
         return self
 

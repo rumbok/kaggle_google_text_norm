@@ -1,8 +1,6 @@
-import numpy as np
 import pandas as pd
-from sklearn.base import TransformerMixin
+from sklearn.base import TransformerMixin, BaseEstimator
 from tqdm import tqdm
-from num2words import num2words
 import re
 
 
@@ -12,7 +10,7 @@ re_prev = re.compile(PREV_DASH_REGEXP)
 re_next = re.compile(NEXT_DASH_REGEXP)
 
 
-class DashTransformer(TransformerMixin):
+class DashTransformer(TransformerMixin, BaseEstimator):
     def fit(self, X, y=None, *args, **kwargs):
         return self
 
@@ -21,8 +19,10 @@ class DashTransformer(TransformerMixin):
         for (w_prev, w, w_next) in tqdm(zip(X['before_prev'], X['before'], X['before_next']),
                                         f'{self.__class__.__name__} transform',
                                         total=len(X)):
-            if w == '-' and re_prev.match(w_prev) and re_next.match(w_next):
-                data.append('до')
+            if w == u'-' and re_prev.match(w_prev) and re_next.match(w_next):
+                data.append(u'до')
+            # elif w == u'\u2014' and re_prev.match(w_prev) and re_next.match(w_next):
+            #     data.append(u'до')
             else:
                 data.append(None)
         if 'after' in X.columns:

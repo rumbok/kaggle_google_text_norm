@@ -6,8 +6,8 @@ from typing import Union
 
 
 class StringToChar(BaseEstimator, TransformerMixin):
-    def __init__(self, max_width='', to_coo=False):
-        self.max_width = max_width
+    def __init__(self, width='', to_coo=False):
+        self.max_width = width
         self.to_coo = to_coo
         self.tags = {}
 
@@ -24,14 +24,20 @@ class StringToChar(BaseEstimator, TransformerMixin):
 
 
 if __name__ == '__main__':
-    data = [u'в 1905 году'] + u'Определение частей речи работает не так как задумывалось'.split()
-    print(data)
+    df = pd.SparseDataFrame(['в 1905 году', '123', 'dfhsd', '-', '&', '0546']
+                            + 'съешь ещё этих мягких французских булок, да выпей чаю'.split(),
+                            columns=['before'])
+    print(df)
 
-    res_df = StringToChar().transform(data)
+    res_df = StringToChar(10).transform(df['before'])
     print(res_df)
     print(res_df.info())
     print(res_df.density)
 
-    res_coo = StringToChar(to_coo=True).transform(data)
-    print(res_coo)
+    res_coo = StringToChar(10, to_coo=True).transform(df['before'])
+    print(res_coo.shape)
+    print(res_coo.nnz/res_coo.shape[0]/res_coo.shape[1])
+
+    res_coo = StringToChar(10, to_coo=True).transform(df['before'].shift(1).fillna('').to_dense())
+    print(res_coo.shape)
     print(res_coo.nnz/res_coo.shape[0]/res_coo.shape[1])

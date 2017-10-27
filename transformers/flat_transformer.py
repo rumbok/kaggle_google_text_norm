@@ -1,9 +1,9 @@
 import numpy as np
 from pandas import DataFrame
-from sklearn.base import TransformerMixin
+from sklearn.base import TransformerMixin, BaseEstimator
 
 
-class FlatTransformer(TransformerMixin):
+class FlatTransformer(TransformerMixin, BaseEstimator):
     def fit(self, X, y=None, *args, **kwargs):
         return self
 

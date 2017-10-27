@@ -1,11 +1,11 @@
 from collections import defaultdict, Counter
 import numpy as np
 import pandas as pd
-from sklearn.base import TransformerMixin
+from sklearn.base import TransformerMixin, BaseEstimator
 from tqdm import tqdm
 
 
-class DictClassTransformer(TransformerMixin):
+class DictClassTransformer(TransformerMixin, BaseEstimator):
     def __init__(self, classname, threshold=0.0):
         self.classname = classname
         self.threshold = threshold
@@ -14,12 +14,16 @@ class DictClassTransformer(TransformerMixin):
 
     def fit(self, X, y=None, *args, **kwargs):
         word_dict = defaultdict(Counter)
-        for (before, cls, after) in tqdm(zip(X['before'], X['class'], y), f'{self.__class__.__name__} fit stage 1', total=len(X)):
+        for (before, cls, after) in tqdm(zip(X['before'], X['class'], y),
+                                         f'{self.__class__.__name__}_{self.classname} fit stage 1',
+                                         total=len(X)):
             if cls == self.classname:
                 word_dict[before][after] += 1
 
         self.mean_confidence = 0.0
-        for before in tqdm(word_dict, f'{self.__class__.__name__} fit stage 2', total=len(word_dict.keys())):
+        for before in tqdm(word_dict,
+                           f'{self.__class__.__name__}_{self.classname} fit stage 2',
+                           total=len(word_dict.keys())):
             most = word_dict[before].most_common(1)
             confidence = most[0][1] / sum(word_dict[before].values())
             self.kv[before] = (most[0][0], confidence)
@@ -39,6 +43,11 @@ class DictClassTransformer(TransformerMixin):
             return X.assign(after=X['after'].combine_first(pd.Series(data, index=X.index)))
         else:
             return X.assign(after=data)
+
+    def get_params(self):
+        params = super(self.__class__, self).get_params()
+        params['mean_confidence'] = self.mean_confidence
+        return params
 
 
 if __name__ == '__main__':

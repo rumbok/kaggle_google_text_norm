@@ -10,7 +10,7 @@ class PandasShift(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X):
-        return X.shift(self.period).fillna('')
+        return X.shift(self.period).fillna('').to_dense()
 
 
 if __name__ == '__main__':
