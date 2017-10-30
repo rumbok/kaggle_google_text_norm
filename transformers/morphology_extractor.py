@@ -8,8 +8,9 @@ from typing import Union
 
 
 class MorphologyExtractor(BaseEstimator, TransformerMixin):
-    def __init__(self, to_coo=False):
+    def __init__(self, to_coo=False, multi_words=False):
         self.to_coo = to_coo
+        self.multi_words = multi_words
         self.morph = pymorphy2.MorphAnalyzer()
         self.word_rows = {}
 
@@ -37,8 +38,16 @@ class MorphologyExtractor(BaseEstimator, TransformerMixin):
                 length = len(word)
                 num_words = len(word.split())
 
-                indexes = [self.tag_indexes[k] for k in self.morph.parse(word)[0].tag.grammemes
-                           if k in self.tag_indexes]
+                if self.multi_words and ' ' in word:
+                    tags = set()
+                    for w in word.split():
+                        tags.update(self.morph.parse(w)[0].tag.grammemes)
+                        print(w, tags)
+                    indexes = [self.tag_indexes[k] for k in tags if k in self.tag_indexes]
+                else:
+                    indexes = [self.tag_indexes[k] for k in self.morph.parse(word)[0].tag.grammemes
+                               if k in self.tag_indexes]
+                print(indexes)
 
                 col = [0, 1, 2, 3] + indexes
                 data = [is_first_upper, is_upper, length, num_words] + [1] * len(indexes)
@@ -85,5 +94,5 @@ if __name__ == '__main__':
 
     morph.to_coo = True
     res_coo = morph.transform(data)
-    print(res_coo.to_dense())
+    print(res_coo.shape)
     print(res_coo.nnz / res_coo.shape[0] / res_coo.shape[1])
