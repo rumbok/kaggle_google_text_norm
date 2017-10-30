@@ -30,8 +30,8 @@ class MorphologyExtractor(BaseEstimator, TransformerMixin):
         for i, word in tqdm(enumerate(words),
                             f'{self.__class__.__name__} transform',
                             total=len(words)):
-            if word in self.word_rows:
-                col_data = self.word_rows[word]
+            if word.lower() in self.word_rows:
+                col_data = self.word_rows[word.lower()]
             else:
                 is_first_upper = len(word) > 0 and word[0].isupper()
                 is_upper = word.isupper()
@@ -42,17 +42,15 @@ class MorphologyExtractor(BaseEstimator, TransformerMixin):
                     tags = set()
                     for w in word.split():
                         tags.update(self.morph.parse(w)[0].tag.grammemes)
-                        print(w, tags)
                     indexes = [self.tag_indexes[k] for k in tags if k in self.tag_indexes]
                 else:
                     indexes = [self.tag_indexes[k] for k in self.morph.parse(word)[0].tag.grammemes
                                if k in self.tag_indexes]
-                print(indexes)
 
                 col = [0, 1, 2, 3] + indexes
                 data = [is_first_upper, is_upper, length, num_words] + [1] * len(indexes)
                 col_data = (col, data)
-                self.word_rows[word] = col_data
+                self.word_rows[word.lower()] = col_data
 
             rows += [i] * len(col_data[0])
             cols += col_data[0]
@@ -89,10 +87,12 @@ if __name__ == '__main__':
     morph = MorphologyExtractor()
     res = morph.transform(data)
     print(res.info())
-    print(res.shape)
+    print(res.head())
     print(res.density)
 
     morph.to_coo = True
+    morph.multi_words = True
+    morph.word_rows = {}
     res_coo = morph.transform(data)
     print(res_coo.shape)
     print(res_coo.nnz / res_coo.shape[0] / res_coo.shape[1])
