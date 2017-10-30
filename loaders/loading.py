@@ -3,8 +3,8 @@ import pandas as pd
 from tqdm import tqdm
 from glob import glob
 
-INPUT_PATH = r'../input/norm_challenge_ru'
-DATA_INPUT_PATH = r'../input/norm_challenge_ru/ru_with_types'
+INPUT_PATH = r'../../input/norm_challenge_ru'
+DATA_INPUT_PATH = r'../../input/norm_challenge_ru/ru_with_types'
 SUBM_PATH = INPUT_PATH
 
 
