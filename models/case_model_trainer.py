@@ -3,6 +3,8 @@ import pandas as pd
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+
 from loaders.loading import load_train
 from transformers.item_selector import ItemSelector
 from transformers.morphology_extractor import MorphologyExtractor
@@ -18,13 +20,17 @@ df['prev_prev'] = df['before'].shift(2).fillna('')
 df['prev'] = df['before'].shift(1).fillna('')
 df['next'] = df['before'].shift(-1).fillna('')
 df['next_next'] = df['before'].shift(-2).fillna('')
-df = df[~(df['before'] == df['after'])]
-del df['after']
+# df = df[~(df['before'] == df['after'])]
 print(df.info())
 
 
-morph_extractor = MorphologyExtractor(to_coo=True)
+morph_extractor = MorphologyExtractor(to_coo=True, multi_words=True)
 pipeline = SparseUnion([
+    ('class', Pipeline([
+        ('select', ItemSelector('class')),
+        ('label', LabelEncoder()),
+        ('onehot', OneHotEncoder())
+    ])),
     ('orig', Pipeline([
         ('select', ItemSelector('before')),
         ('features', SparseUnion([
@@ -33,7 +39,7 @@ pipeline = SparseUnion([
         ])),
     ])),
     ('prev_prev', Pipeline([
-        ('select', ItemSelector('prev')),
+        ('select', ItemSelector('prev_prev')),
         ('features', SparseUnion([
             ('char', StringToChar(-5, to_coo=True)),
             ('ctx', morph_extractor),
@@ -54,7 +60,7 @@ pipeline = SparseUnion([
         ])),
     ])),
     ('next_next', Pipeline([
-        ('select', ItemSelector('next')),
+        ('select', ItemSelector('next_next')),
         ('features', SparseUnion([
             ('char', StringToChar(-5, to_coo=True)),
             ('ctx', morph_extractor),

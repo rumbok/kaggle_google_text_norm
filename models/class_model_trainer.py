@@ -16,14 +16,14 @@ from sklearn.metrics import accuracy_score
 # df = load_train(['before', 'after', 'class']).fillna('')
 # df['before_prev'] = df['before'].shift(1).fillna('')
 # df['before_next'] = df['before'].shift(-1).fillna('')
-# # add class trans
-# # add class dash для after=до и before!=до
+# #TODO add class trans
+# #TODO add class dash for after=до and before!=до
 # df = df[~(df['before'] == df['after'])]
 # del df['after']
 # print(df.info())
 #
 #
-# morph_extractor = MorphologyExtractor(to_coo=True)
+# morph_extractor = MorphologyExtractor(to_coo=True, multi_words=True)
 # pipeline = SparseUnion([
 #     ('orig', Pipeline([
 #         ('select', ItemSelector('before')),
@@ -121,4 +121,6 @@ model.save_model(f'class.model.train_{len(dtrain.get_label())}_{accuracy:0.5f}_{
 # plt.savefig('class_features_imp.png')
 # plt.show()
 
-#0.3-416
+#0.3/5-416
+#0.3/6 - 248
+#0.3/6 multi - 315

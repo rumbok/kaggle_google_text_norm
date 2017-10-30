@@ -3,21 +3,21 @@ import pandas as pd
 from tqdm import tqdm
 from glob import glob
 
-INPUT_PATH = r'../../input/norm_challenge_ru'
-DATA_INPUT_PATH = r'../../input/norm_challenge_ru/ru_with_types'
+INPUT_PATH = r'../input/norm_challenge_ru'
+DATA_INPUT_PATH = r'../input/norm_challenge_ru/ru_with_types'
 SUBM_PATH = INPUT_PATH
 
 
-def load_train(columns: list) -> pd.DataFrame:
-    return pd.read_csv(os.path.join(INPUT_PATH, 'ru_train.csv'),
+def load_train(columns: list, input_path=INPUT_PATH) -> pd.DataFrame:
+    return pd.read_csv(os.path.join(input_path, 'ru_train.csv'),
                        encoding='utf-8',
                        index_col=False,
                        usecols=columns)
 
 
-def load_external(columns: list) -> pd.DataFrame:
+def load_external(columns: list, input_path=DATA_INPUT_PATH) -> pd.DataFrame:
     res = []
-    files = glob(os.path.join(DATA_INPUT_PATH, "*"))
+    files = glob(os.path.join(input_path, "*"))
     for file in tqdm(files[:10], 'load files'):
         chunk = open(file, encoding='UTF8')
         while 1:
@@ -47,4 +47,4 @@ def load_test() -> pd.DataFrame:
 
 
 if __name__ == '__main__':
-    load_train(['class', 'before']).info()
+    load_train(['class', 'before'], INPUT_PATH).info()
