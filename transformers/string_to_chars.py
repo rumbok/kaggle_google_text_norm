@@ -6,8 +6,8 @@ from typing import Union
 
 
 class StringToChar(BaseEstimator, TransformerMixin):
-    def __init__(self, width='', to_coo=False):
-        self.max_width = width
+    def __init__(self, max_width=0, to_coo=False):
+        self.max_width = max_width
         self.to_coo = to_coo
         self.tags = {}
 
@@ -15,7 +15,14 @@ class StringToChar(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, words) -> Union[pd.SparseDataFrame, coo_matrix]:
-        x = np.array(words, dtype=f'U{self.max_width}')
+        if self.max_width == 0:
+            x = np.array(words, dtype=f'U')
+        elif self.max_width > 0:
+            x = np.array(words, dtype=f'U{self.max_width}')
+        else:
+            #TODO alignment to right, maybe flip
+            x = np.char.lstrip(np.char.rjust(np.array(words, dtype=f'U'), width=-self.max_width))
+
         y = x.view('U1').view(np.uint32).reshape((x.size, -1))
         if self.to_coo:
             return coo_matrix(y, dtype=np.uint16)
@@ -29,15 +36,15 @@ if __name__ == '__main__':
                             columns=['before'])
     print(df)
 
-    res_df = StringToChar(10).transform(df['before'])
+    res_df = StringToChar(-4).transform(df['before'])
     print(res_df)
     print(res_df.info())
     print(res_df.density)
 
-    res_coo = StringToChar(10, to_coo=True).transform(df['before'])
-    print(res_coo.shape)
-    print(res_coo.nnz/res_coo.shape[0]/res_coo.shape[1])
-
-    res_coo = StringToChar(10, to_coo=True).transform(df['before'].shift(1).fillna('').to_dense())
-    print(res_coo.shape)
-    print(res_coo.nnz/res_coo.shape[0]/res_coo.shape[1])
+    # res_coo = StringToChar(10, to_coo=True).transform(df['before'])
+    # print(res_coo.shape)
+    # print(res_coo.nnz/res_coo.shape[0]/res_coo.shape[1])
+    #
+    # res_coo = StringToChar(10, to_coo=True).transform(df['before'].shift(1).fillna('').to_dense())
+    # print(res_coo.shape)
+    # print(res_coo.nnz/res_coo.shape[0]/res_coo.shape[1])
