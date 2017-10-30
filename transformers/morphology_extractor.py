@@ -85,5 +85,5 @@ if __name__ == '__main__':
 
     morph.to_coo = True
     res_coo = morph.transform(data)
-    print(res_coo)
+    print(res_coo.to_dense())
     print(res_coo.nnz / res_coo.shape[0] / res_coo.shape[1])
