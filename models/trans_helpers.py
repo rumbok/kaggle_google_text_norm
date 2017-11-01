@@ -1,33 +1,33 @@
-from keras.models import Sequential
-from keras.layers import Activation, TimeDistributed, Dense, RepeatVector, recurrent, Embedding
+from keras.models import Sequential, load_model
+from keras.layers import TimeDistributed, Dense, RepeatVector, Embedding
 from keras.layers.recurrent import LSTM
+from scipy.sparse import csr_matrix
 import os
 import numpy as np
 import sys
 
 
-BATCH_SIZE = 100
-LAYER_NUM = 3
-HIDDEN_DIM = 256
-NB_EPOCH = 20
+LAYER_NUM = 2
+HIDDEN_DIM = 32
+EMBEDDING_DIM = 64
+BATCH_SIZE = 32
+MEM_SIZE = 10000
+NB_EPOCH = 1
 
 
-def create_model(X_vocab_len, X_max_len, y_vocab_len, y_max_len, hidden_size, num_layers):
+def create_model(X_vocab_len, X_max_len, y_vocab_len, y_max_len, embedding_dim, hidden_dim, layer_num):
     model = Sequential()
 
     # Creating encoder network
-    model.add(Embedding(X_vocab_len, 128, input_length=X_max_len, mask_zero=True))
-    model.add(LSTM(hidden_size))
+    # model.add(Embedding(X_vocab_len, embedding_dim, input_length=X_max_len, mask_zero=True))
+    model.add(LSTM(hidden_dim, input_shape=(X_max_len, X_vocab_len)))
     model.add(RepeatVector(y_max_len))
 
     # Creating decoder network
-    for _ in range(num_layers):
-        model.add(LSTM(hidden_size, return_sequences=True))
-    model.add(TimeDistributed(Dense(y_vocab_len)))
-    model.add(Activation('softmax'))
-    model.compile(loss='categorical_crossentropy',
-            optimizer='rmsprop',
-            metrics=['accuracy'])
+    for _ in range(layer_num):
+        model.add(LSTM(hidden_dim, return_sequences=True))
+    model.add(TimeDistributed(Dense(y_vocab_len, activation='softmax')))
+    model.compile(loss='categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
     return model
 
 
@@ -39,17 +39,17 @@ def find_checkpoint_file(folder):
     return checkpoint_file[np.argmax(modified_time)]
 
 
-def vectorize_data(words, char_to_ix):
+def vectorize_data(words: csr_matrix, char_to_ix):
     sequences = np.zeros((words.shape[0], words.shape[1], len(char_to_ix)))
-    chars = words.tocoo()
-    for r, c, d in zip(chars.row, chars.col, chars.data):
-        sequences[r, c, char_to_ix[d]]
+    for i, word in enumerate(words.toarray()):
+        for j, c in enumerate(word):
+            sequences[i, j, char_to_ix[c]] = 1.
     return sequences
 
 
-def train_model(X_train, X_char_to_index, x_max_len, y_train, y_char_to_index, y_max_len):
+def train_model(X_train, X_char_to_ix, y_train, y_char_to_ix, X_test, y_test):
     print('[INFO] Compiling model...')
-    model = create_model(len(X_char_to_index), x_max_len, len(y_char_to_index), y_max_len, HIDDEN_DIM, LAYER_NUM)
+    model = create_model(len(X_char_to_ix), X_train.shape[1], len(y_char_to_ix), y_train.shape[1], EMBEDDING_DIM, HIDDEN_DIM, LAYER_NUM)
 
     saved_weights = find_checkpoint_file('.')
 
@@ -60,6 +60,8 @@ def train_model(X_train, X_char_to_index, x_max_len, y_train, y_char_to_index, y
         model.load_weights(saved_weights)
         k_start = int(epoch) + 1
 
+    valid_data = (vectorize_data(X_test, X_char_to_ix), vectorize_data(y_test, y_char_to_ix))
+
     for k in range(k_start, NB_EPOCH + 1):
         # Shuffling the training data every epoch to avoid local minima
         indices = np.arange(X_train.shape[0])
@@ -67,19 +69,20 @@ def train_model(X_train, X_char_to_index, x_max_len, y_train, y_char_to_index, y
         X_train = X_train[indices, :]
         y_train = y_train[indices, :]
 
-        # Training 1000 sequences at a time
-        for i in range(0, X_train.shape[0], 1000):
-            i_end = min(i+1000, X_train.shape[0])
-            y_sequences = vectorize_data(y_train[i:i_end, :], y_char_to_index)
+        # Training MEM_SIZE sequences at a time
+        for i in range(0, X_train.shape[0], MEM_SIZE):
+            i_end = min(i+MEM_SIZE, X_train.shape[0])
+            X_sequences = vectorize_data(X_train[i:i_end, :], X_char_to_ix)
+            y_sequences = vectorize_data(y_train[i:i_end, :], y_char_to_ix)
 
             print(f'[INFO] Training model: epoch {k}th {i}/{X_train.shape[0]} samples')
-            model.fit(X_train[i:i_end, :].toarray(), y_sequences, batch_size=BATCH_SIZE, epochs=1, verbose=2)
+            model.fit(X_sequences, y_sequences, batch_size=BATCH_SIZE, validation_data=valid_data, epochs=1, verbose=1)
         model.save_weights('checkpoint_epoch_{}.hdf5'.format(k))
 
 
-def test_model(X_test, X_index_to_char, x_max_len, y, y_index_to_char, y_char_to_index, y_max_len):
+def test_model(X_test, X_char_to_ix, y_char_to_ix, y_ix_to_char, y_max_len):
     print('[INFO] Compiling model...')
-    model = create_model(len(X_index_to_char), x_max_len, len(y_index_to_char), y_max_len, HIDDEN_DIM, LAYER_NUM)
+    model = create_model(len(X_char_to_ix), X_test.shape[1], len(y_char_to_ix), y_max_len, EMBEDDING_DIM, HIDDEN_DIM, LAYER_NUM)
 
     saved_weights = find_checkpoint_file('.')
 
@@ -89,10 +92,10 @@ def test_model(X_test, X_index_to_char, x_max_len, y, y_index_to_char, y_char_to
     else:
         model.load_weights(saved_weights)
 
-        predictions = np.argmax(model.predict(X_test), axis=2)
+        predictions = np.argmax(model.predict(vectorize_data(X_test, X_char_to_ix)), axis=2)
         sequences = []
-        # for prediction in predictions:
-        #     sequence = ' '.join([y_ix_to_word(index) for index in prediction if index > 0])
-        #     print(sequence)
-        #     sequences.append(sequence)
-        # np.savetxt('test_result', sequences, fmt='%s')
+        for prediction in predictions:
+            sequence = [y_ix_to_char[ix] for ix in prediction if ix > 0]
+            print(sequence)
+            sequences.append(sequence)
+        return sequences
