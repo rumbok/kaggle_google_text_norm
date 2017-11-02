@@ -123,4 +123,4 @@ model.save_model(f'class.model.train_{len(dtrain.get_label())}_{accuracy:0.5f}_{
 
 #0.3/5-416
 #0.3/6 - 248
-#0.3/6 multi - 315
+#0.3/6 multi morph - 315

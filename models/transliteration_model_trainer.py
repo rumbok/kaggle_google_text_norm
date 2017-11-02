@@ -12,22 +12,15 @@ df = load_train(['before', 'after'], r'../../input/norm_challenge_ru').fillna(''
 df = df[~(df['before'] == df['after']) & (df['after'].str.contains('_trans'))]
 df['after'] = df['after'].str.replace('_trans', '').str.replace(' ', '')
 df['before'] = df['before'].str.lower()
-df = df.sample(100000)
-print(df.head())
+print('drop {0} urls from strings'.format(len(df[df['before'].str.contains('\.')].index)))
+df = df[~df['before'].str.contains('\.')]
+# df = df.sample(30000)
 print(df.info())
 
-max_len = 32#max(df['after'].str.len().max(), df['before'].str.len().max())
+max_len = min(32, max(df['after'].str.len().max(), df['before'].str.len().max()))
 
 X_data = StringToChar(max_len, to_coo=True).fit_transform(df['before']).tocsr()
 y_data = StringToChar(max_len, to_coo=True).fit_transform(df['after']).tocsr()
-print(f'x data type={X_data.dtype}, '
-      f'size={X_data.shape}, '
-      f'density={X_data.nnz / X_data.shape[0] / X_data.shape[1]},'
-      f'{sparse_memory_usage(X_data):9.3} Mb')
-print(f'y data type={y_data.dtype}, '
-      f'size={y_data.shape}, '
-      f'density={y_data.nnz / y_data.shape[0] / y_data.shape[1]},'
-      f'{sparse_memory_usage(y_data):9.3} Mb')
 del df
 gc.collect()
 
@@ -58,15 +51,45 @@ del y_data
 gc.collect()
 
 
-train_model(X_train, X_char_to_ix, y_train, y_char_to_ix, X_test, y_test)
+# train_model(X_train, X_char_to_ix, y_train, y_char_to_ix, X_test, y_test)
 
 X_str = X_test.toarray().astype(np.uint32).view('U1').view(f'U{max_len}').ravel()
 y_str = y_test.toarray().astype(np.uint32).view('U1').view(f'U{max_len}').ravel()
 pred = np.array(test_model(X_test, X_char_to_ix, y_char_to_ix, y_ix_to_char, max_len))
-print(pred)
 y_predict = pred.astype(np.uint32).view('U1').view(f'U{max_len}').ravel()
 
 result_df = pd.DataFrame(data={'before': X_str, 'actual': y_str, 'predict': y_predict})
 
-print(result_df)
 print(result_df[~(result_df['actual'] == result_df['predict'])])
+
+# original
+# max_len = 32
+# LAYER_NUM = 2
+# HIDDEN_DIM = 64
+# EMBEDDING_DIM = 0
+# BATCH_SIZE = 32
+# MEM_SIZE = 10000
+# 1 - 45696/51754=0.8829 err
+# 5 - 29717/51754=0.5742
+# 8 - 23277/51754=0.4498
+
+
+# without url
+# max_len = 32
+# LAYER_NUM = 2
+# HIDDEN_DIM = 64
+# EMBEDDING_DIM = 0
+# BATCH_SIZE = 32
+# MEM_SIZE = 10000
+# 1 - 43927/51221=0.8576 err
+# 2 - 41312/51221=0.8065
+
+
+# attention without url
+# max_len = 32
+# LAYER_NUM = 2
+# HIDDEN_DIM = 64
+# EMBEDDING_DIM = 0
+# BATCH_SIZE = 32
+# MEM_SIZE = 10000
+# 1 - /51221=
