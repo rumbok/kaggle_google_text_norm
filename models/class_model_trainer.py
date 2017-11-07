@@ -11,15 +11,25 @@ from transformers.string_to_chars import StringToChar
 from sparse_helpers import sparse_memory_usage
 import gc
 from sklearn.metrics import accuracy_score
+from pandas.api.types import CategoricalDtype
 
+INPUT_PATH = r'../../input/norm_challenge_ru'
 
-# df = load_train(['before', 'after', 'class']).fillna('')
+# df = load_train(['before', 'after', 'class'], INPUT_PATH).fillna('')
 # df['before_prev'] = df['before'].shift(1).fillna('')
 # df['before_next'] = df['before'].shift(-1).fillna('')
-# #TODO add class trans
-# #TODO add class dash for after=до and before!=до
+# # TODO add class dash for after=до and before!=до
 # df = df[~(df['before'] == df['after'])]
+# df.loc[df['after'].str.contains('_trans'), 'class'] = 'TRANS'
+# df.loc[df['after'] == 'до', 'class'] = 'DASH'
 # del df['after']
+# class_type = CategoricalDtype(categories=['PLAIN', 'DATE', 'PUNCT', 'ORDINAL', 'VERBATIM', 'LETTERS', 'CARDINAL',
+#                                           'MEASURE', 'TELEPHONE', 'ELECTRONIC', 'DECIMAL', 'DIGIT', 'FRACTION',
+#                                           'MONEY', 'TIME',
+#                                           'TRANS', 'DASH'])
+# df['class'] = df['class'].astype(class_type).cat.codes
+# # pd.Series(pd.Categorical.from_codes(df['class'], categories=class_type.categories))
+# print(df.sample(10))
 # print(df.info())
 #
 #
@@ -54,9 +64,8 @@ from sklearn.metrics import accuracy_score
 #       f'size={x_data.shape}, '
 #       f'density={x_data.nnz / x_data.shape[0] / x_data.shape[1]},'
 #       f'{sparse_memory_usage(x_data):9.3} Mb')
-# y_data = pd.factorize(df['class'])
-# labels = y_data[1]
-# y_data = y_data[0]
+# y_data = df['class']
+# labels = class_type.categories
 # del morph_extractor
 # del df
 # gc.collect()
@@ -100,7 +109,7 @@ param = {'objective': 'multi:softmax',
          'silent': 1,
          'nthread': 4,
          'njobs': 4,
-         'num_class': len(set(dtrain.get_label())),
+         'num_class': len(set(dtrain.get_label())) + 1,
          'eval_metric': ['merror', 'mlogloss'],
          'seed': '2017'}
 model = xgb.train(param, dtrain, num_boost_round=param['num_boost_round'], evals=watchlist,
@@ -111,7 +120,8 @@ predictions = [round(value) for value in y_pred]
 accuracy = accuracy_score(dtest.get_label(), predictions)
 print("Accuracy: %.5f%%" % accuracy)
 
-model.save_model(f'class.model.train_{len(dtrain.get_label())}_{accuracy:0.5f}_{param["learning_rate"]}_{param["num_boost_round"]}_{param["max_depth"]}')
+model.save_model(
+    f'class.model.train_{len(dtrain.get_label())}_{1.0-accuracy:0.5f}_{param["learning_rate"]}_{param["num_boost_round"]}_{param["max_depth"]}')
 
 # plt.rcParams['font.size'] = 8
 # feat_imp = pd.Series(model.get_fscore()).sort_values(ascending=False)
@@ -121,6 +131,6 @@ model.save_model(f'class.model.train_{len(dtrain.get_label())}_{accuracy:0.5f}_{
 # plt.savefig('class_features_imp.png')
 # plt.show()
 
-#0.3/5-416
-#0.3/6 - 248
-#0.3/6 multi morph - 315
+# 0.3/5-416
+# 0.3/6 - 248
+# 0.3/6 multi morph - 315

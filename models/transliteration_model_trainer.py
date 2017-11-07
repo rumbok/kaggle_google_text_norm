@@ -14,7 +14,7 @@ df['after'] = df['after'].str.replace('_trans', '').str.replace(' ', '')
 df['before'] = df['before'].str.lower()
 print('drop {0} urls from strings'.format(len(df[df['before'].str.contains('\.')].index)))
 df = df[~df['before'].str.contains('\.')]
-# df = df.sample(30000)
+df = df.sample(100000)
 print(df.info())
 
 max_len = min(32, max(df['after'].str.len().max(), df['before'].str.len().max()))
@@ -51,7 +51,7 @@ del y_data
 gc.collect()
 
 
-# train_model(X_train, X_char_to_ix, y_train, y_char_to_ix, X_test, y_test)
+train_model(X_train, X_char_to_ix, y_train, y_char_to_ix, X_test, y_test)
 
 X_str = X_test.toarray().astype(np.uint32).view('U1').view(f'U{max_len}').ravel()
 y_str = y_test.toarray().astype(np.uint32).view('U1').view(f'U{max_len}').ravel()
@@ -87,9 +87,22 @@ print(result_df[~(result_df['actual'] == result_df['predict'])])
 
 # attention without url
 # max_len = 32
-# LAYER_NUM = 2
+# LAYER_NUM = 4
 # HIDDEN_DIM = 64
 # EMBEDDING_DIM = 0
 # BATCH_SIZE = 32
 # MEM_SIZE = 10000
-# 1 - /51221=
+# NB_EPOCH = 3
+# 3 - 9998 err
+
+
+# without url
+# max_len = 32
+# LAYER_NUM = 2
+# HIDDEN_DIM = 64
+# EMBEDDING_DIM = 32
+# BATCH_SIZE = 32
+# LEARNING_RATE = 0.01
+# MEM_SIZE = 10000
+# NB_EPOCH = 3
+# 3 - 9881

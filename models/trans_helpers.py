@@ -10,27 +10,29 @@ import seq2seq
 from seq2seq.models import AttentionSeq2Seq
 
 
-LAYER_NUM = 2
-HIDDEN_DIM = 64
+LAYER_NUM = 3
+HIDDEN_DIM = 128
 EMBEDDING_DIM = 32
 BATCH_SIZE = 32
+LEARNING_RATE = 0.001
 MEM_SIZE = 10000
-NB_EPOCH = 25
+NB_EPOCH = 3
 
 
-def create_attention_model(X_vocab_len, X_max_len, y_vocab_len, y_max_len, embedding_dim, hidden_dim, layer_num):
-    model = Sequential()
-
-    model.add(AttentionSeq2Seq(output_dim=y_vocab_len, hidden_dim=hidden_dim,
-                               output_length=y_max_len,
-                               input_shape=(X_max_len, X_vocab_len),
-                               bidirectional=False, depth=layer_num))
-
-    # model.add(Dense(y_vocab_len, activation='softmax'))
-    model.add(TimeDistributed(Dense(y_vocab_len, activation='softmax')))
-    model.compile(loss='categorical_crossentropy', optimizer=RMSprop(lr=0.03), metrics=['accuracy'])
-
-    return model
+# def create_attention_model(X_vocab_len, X_max_len, y_vocab_len, y_max_len, embedding_dim, hidden_dim, layer_num):
+#     model = Sequential()
+#
+#     model.add(AttentionSeq2Seq(output_dim=y_vocab_len,
+#                                hidden_dim=hidden_dim,
+#                                output_length=y_max_len,
+#                                input_shape=(X_max_len, X_vocab_len),
+#                                bidirectional=False,
+#                                depth=layer_num))
+#
+#     model.add(TimeDistributed(Dense(y_vocab_len, activation='softmax')))
+#     model.compile(loss='categorical_crossentropy', optimizer=RMSprop(lr=LEARNING_RATE), metrics=['accuracy'])
+#
+#     return model
 
 
 def create_model(X_vocab_len, X_max_len, y_vocab_len, y_max_len, embedding_dim, hidden_dim, layer_num):
@@ -45,7 +47,7 @@ def create_model(X_vocab_len, X_max_len, y_vocab_len, y_max_len, embedding_dim, 
     for _ in range(layer_num):
         model.add(LSTM(hidden_dim, return_sequences=True))
     model.add(TimeDistributed(Dense(y_vocab_len, activation='softmax')))
-    model.compile(loss='categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy', optimizer=RMSprop(lr=LEARNING_RATE), metrics=['accuracy'])
     return model
 
 
@@ -67,7 +69,7 @@ def vectorize_data(words: csr_matrix, char_to_ix):
 
 def train_model(X_train, X_char_to_ix, y_train, y_char_to_ix, X_test, y_test):
     print('[INFO] Compiling model...')
-    model = create_attention_model(len(X_char_to_ix), X_train.shape[1], len(y_char_to_ix), y_train.shape[1], EMBEDDING_DIM, HIDDEN_DIM, LAYER_NUM)
+    model = create_model(len(X_char_to_ix), X_train.shape[1], len(y_char_to_ix), y_train.shape[1], EMBEDDING_DIM, HIDDEN_DIM, LAYER_NUM)
 
     saved_weights = find_checkpoint_file('.')
 
@@ -94,14 +96,14 @@ def train_model(X_train, X_char_to_ix, y_train, y_char_to_ix, X_test, y_test):
             y_sequences = vectorize_data(y_train[i:i_end, :], y_char_to_ix)
 
             print(f'[INFO] Training model: epoch {k}th {i}/{X_train.shape[0]} samples')
-            model.fit(X_sequences, y_sequences, batch_size=BATCH_SIZE, validation_data=valid_data, epochs=1, verbose=2)
+            model.fit(X_sequences, y_sequences, batch_size=BATCH_SIZE, validation_data=valid_data, epochs=1, verbose=1)
         model.save_weights('checkpoint_epoch_{}.hdf5'.format(k))
-        model.save('model_epoch_{}.hdf5'.format(k))
+        # model.save('model_epoch_{}.hdf5'.format(k))
 
 
 def test_model(X_test, X_char_to_ix, y_char_to_ix, y_ix_to_char, y_max_len):
     print('[INFO] Compiling model...')
-    model = create_attention_model(len(X_char_to_ix), X_test.shape[1], len(y_char_to_ix), y_max_len, EMBEDDING_DIM, HIDDEN_DIM, LAYER_NUM)
+    model = create_model(len(X_char_to_ix), X_test.shape[1], len(y_char_to_ix), y_max_len, EMBEDDING_DIM, HIDDEN_DIM, LAYER_NUM)
 
     saved_weights = find_checkpoint_file('.')
 
