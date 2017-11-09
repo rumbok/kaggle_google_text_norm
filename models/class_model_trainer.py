@@ -18,7 +18,6 @@ INPUT_PATH = r'../../input/norm_challenge_ru'
 # df = load_train(['before', 'after', 'class'], INPUT_PATH).fillna('')
 # df['before_prev'] = df['before'].shift(1).fillna('')
 # df['before_next'] = df['before'].shift(-1).fillna('')
-# # TODO add class dash for after=до and before!=до
 # df = df[~(df['before'] == df['after'])]
 # df.loc[df['after'].str.contains('_trans'), 'class'] = 'TRANS'
 # df.loc[df['after'] == 'до', 'class'] = 'DASH'

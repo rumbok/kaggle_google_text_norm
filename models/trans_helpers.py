@@ -1,53 +1,55 @@
 from keras.models import Sequential, load_model
-from keras.layers import TimeDistributed, Dense, RepeatVector, Embedding
+from keras.layers import TimeDistributed, Dense, RepeatVector, Embedding, ConvLSTM2D
 from keras.optimizers import RMSprop
 from keras.layers.recurrent import LSTM
 from scipy.sparse import csr_matrix
 import os
 import numpy as np
 import sys
-import seq2seq
 from seq2seq.models import AttentionSeq2Seq
+import math
 
 
-LAYER_NUM = 3
-HIDDEN_DIM = 128
-EMBEDDING_DIM = 32
+LAYER_NUM = 2
+HIDDEN_DIM = 64
 BATCH_SIZE = 32
-LEARNING_RATE = 0.001
-MEM_SIZE = 10000
-NB_EPOCH = 3
+LEARNING_RATE = 0.01
+MEM_SIZE = 50000
+NB_EPOCH = 10
+DROPOUT = 0.0
 
 
-# def create_attention_model(X_vocab_len, X_max_len, y_vocab_len, y_max_len, embedding_dim, hidden_dim, layer_num):
-#     model = Sequential()
-#
-#     model.add(AttentionSeq2Seq(output_dim=y_vocab_len,
-#                                hidden_dim=hidden_dim,
-#                                output_length=y_max_len,
-#                                input_shape=(X_max_len, X_vocab_len),
-#                                bidirectional=False,
-#                                depth=layer_num))
-#
-#     model.add(TimeDistributed(Dense(y_vocab_len, activation='softmax')))
-#     model.compile(loss='categorical_crossentropy', optimizer=RMSprop(lr=LEARNING_RATE), metrics=['accuracy'])
-#
-#     return model
+def calc_lr(epoch, learning_rate, decay=0.5, per_epochs=3):
+    return learning_rate * math.pow(decay, epoch//per_epochs)
 
 
-def create_model(X_vocab_len, X_max_len, y_vocab_len, y_max_len, embedding_dim, hidden_dim, layer_num):
+def create_attention_model(X_vocab_len, X_max_len, y_vocab_len, y_max_len, hidden_dim, layer_num, learning_rate, dropout):
+    model = Sequential()
+
+    model.add(AttentionSeq2Seq(output_dim=y_vocab_len,
+                               hidden_dim=hidden_dim,
+                               output_length=y_max_len,
+                               input_shape=(X_max_len, X_vocab_len),
+                               bidirectional=False,
+                               depth=layer_num,
+                               dropout=dropout))
+    model.add(TimeDistributed(Dense(y_vocab_len, activation='softmax')))
+    model.compile(loss='categorical_crossentropy', optimizer=RMSprop(lr=learning_rate), metrics=['accuracy'])
+    return model
+
+
+def create_model(X_vocab_len, X_max_len, y_vocab_len, y_max_len, hidden_dim, layer_num, learning_rate, dropout):
     model = Sequential()
 
     # Creating encoder network
-    # model.add(Embedding(X_vocab_len, embedding_dim, input_length=X_max_len, mask_zero=True))
-    model.add(LSTM(hidden_dim, input_shape=(X_max_len, X_vocab_len)))
+    model.add(LSTM(hidden_dim, input_shape=(X_max_len, X_vocab_len), dropout=dropout, recurrent_dropout=dropout))
     model.add(RepeatVector(y_max_len))
 
     # Creating decoder network
     for _ in range(layer_num):
-        model.add(LSTM(hidden_dim, return_sequences=True))
+        model.add(LSTM(hidden_dim, return_sequences=True, dropout=dropout, recurrent_dropout=dropout))
     model.add(TimeDistributed(Dense(y_vocab_len, activation='softmax')))
-    model.compile(loss='categorical_crossentropy', optimizer=RMSprop(lr=LEARNING_RATE), metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy', optimizer=RMSprop(lr=learning_rate), metrics=['accuracy'])
     return model
 
 
@@ -67,27 +69,37 @@ def vectorize_data(words: csr_matrix, char_to_ix):
     return sequences
 
 
-def train_model(X_train, X_char_to_ix, y_train, y_char_to_ix, X_test, y_test):
+def int_to_str(np_arr: np.array):
+    return np_arr.astype(np.uint32).view('U1').view(f'U{np_arr.shape[1]}').ravel()
+
+
+def train_model(X_train, X_char_to_ix, y_train, y_char_to_ix, y_ix_to_char, X_test, y_test):
     print('[INFO] Compiling model...')
-    model = create_model(len(X_char_to_ix), X_train.shape[1], len(y_char_to_ix), y_train.shape[1], EMBEDDING_DIM, HIDDEN_DIM, LAYER_NUM)
+    model = create_attention_model(len(X_char_to_ix), X_train.shape[1], len(y_char_to_ix), y_train.shape[1],
+                                   HIDDEN_DIM, LAYER_NUM, LEARNING_RATE, DROPOUT)
 
     saved_weights = find_checkpoint_file('.')
 
     k_start = 1
     if len(saved_weights) != 0:
         print('[INFO] Saved weights found, loading...')
-        epoch = saved_weights[saved_weights.rfind('_') + 1:saved_weights.rfind('.')]
+        epoch = saved_weights[saved_weights.find('epoch_') + 6:saved_weights.find('_', saved_weights.find('epoch_') + 6)]
         model.load_weights(saved_weights)
         k_start = int(epoch) + 1
 
-    valid_data = (vectorize_data(X_test, X_char_to_ix), vectorize_data(y_test, y_char_to_ix))
+    test_data = (vectorize_data(X_test, X_char_to_ix), vectorize_data(y_test, y_char_to_ix))
+    y_test_words = int_to_str(y_test.toarray())
 
-    for k in range(k_start, NB_EPOCH + 1):
+    max_acc = 0.0
+    for epoch in range(k_start, NB_EPOCH + 1):
         # Shuffling the training data every epoch to avoid local minima
         indices = np.arange(X_train.shape[0])
         np.random.shuffle(indices)
         X_train = X_train[indices, :]
         y_train = y_train[indices, :]
+
+        #set learning rate
+        model.optimizer.lr.assign(calc_lr(epoch, LEARNING_RATE))
 
         # Training MEM_SIZE sequences at a time
         for i in range(0, X_train.shape[0], MEM_SIZE):
@@ -95,15 +107,31 @@ def train_model(X_train, X_char_to_ix, y_train, y_char_to_ix, X_test, y_test):
             X_sequences = vectorize_data(X_train[i:i_end, :], X_char_to_ix)
             y_sequences = vectorize_data(y_train[i:i_end, :], y_char_to_ix)
 
-            print(f'[INFO] Training model: epoch {k}th {i}/{X_train.shape[0]} samples')
-            model.fit(X_sequences, y_sequences, batch_size=BATCH_SIZE, validation_data=valid_data, epochs=1, verbose=1)
-        model.save_weights('checkpoint_epoch_{}.hdf5'.format(k))
-        # model.save('model_epoch_{}.hdf5'.format(k))
+            print(f'[INFO] Training model: epoch {epoch}th {i}/{X_train.shape[0]} samples')
+            model.fit(X_sequences, y_sequences, batch_size=BATCH_SIZE, validation_data=test_data, epochs=1, verbose=2)
+            # model.fit(X_sequences, y_sequences, batch_size=BATCH_SIZE, epochs=1, verbose=2)
+        # evals = model.evaluate(test_data[0], test_data[1], batch_size=BATCH_SIZE, verbose=2)
+        # print(model.metrics_names, evals)
+
+        predictions = np.argmax(model.predict(test_data[0]), axis=2)
+        sequences = []
+        for prediction in predictions:
+            sequences.append([y_ix_to_char[ix] for ix in prediction])
+        pred_words = int_to_str(np.array(sequences))
+        acc = np.mean(pred_words == y_test_words)
+        print('Accuracy', acc)
+
+        # if acc <= max_acc:
+        #     break
+        max_acc = acc
+        model.save_weights(f'checkpoint_epoch_{epoch}_{acc}_{HIDDEN_DIM}_{LAYER_NUM}_{DROPOUT}.hdf5')
+        # model.save(f'model_epoch_{epoch}_{acc}.hdf5')
 
 
 def test_model(X_test, X_char_to_ix, y_char_to_ix, y_ix_to_char, y_max_len):
     print('[INFO] Compiling model...')
-    model = create_model(len(X_char_to_ix), X_test.shape[1], len(y_char_to_ix), y_max_len, EMBEDDING_DIM, HIDDEN_DIM, LAYER_NUM)
+    model = create_attention_model(len(X_char_to_ix), X_test.shape[1], len(y_char_to_ix), y_max_len,
+                                   HIDDEN_DIM, LAYER_NUM, LEARNING_RATE, 0.0)
 
     saved_weights = find_checkpoint_file('.')
 

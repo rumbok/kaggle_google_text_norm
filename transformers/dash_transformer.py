@@ -3,7 +3,6 @@ from sklearn.base import TransformerMixin, BaseEstimator
 from tqdm import tqdm
 import re
 
-
 PREV_DASH_REGEXP = '\d+$'
 NEXT_DASH_REGEXP = '^\d'
 re_prev = re.compile(PREV_DASH_REGEXP)
@@ -19,10 +18,10 @@ class DashTransformer(TransformerMixin, BaseEstimator):
         for (w_prev, w, w_next) in tqdm(zip(X['before_prev'], X['before'], X['before_next']),
                                         f'{self.__class__.__name__} transform',
                                         total=len(X)):
-            if w == u'-' and re_prev.match(w_prev) and re_next.match(w_next):
+            if w.strip() == u'-' and re_prev.match(w_prev) and re_next.match(w_next):
                 data.append(u'до')
-            # elif w == u'\u2014' and re_prev.match(w_prev) and re_next.match(w_next):
-            #     data.append(u'до')
+            elif w.strip() == u'\u2014' and re_prev.match(w_prev) and re_next.match(w_next):
+                data.append(u'до')
             else:
                 data.append(None)
         if 'after' in X.columns:
@@ -36,4 +35,3 @@ if __name__ == '__main__':
     dt = DashTransformer()
 
     print(dt.fit_transform(df.drop(['after'], axis=1), df['after']).head())
-

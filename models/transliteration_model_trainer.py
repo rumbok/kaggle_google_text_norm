@@ -1,6 +1,6 @@
 from sklearn.model_selection import train_test_split
 from loaders.loading import load_train
-from models.trans_helpers import train_model, test_model
+from models.trans_helpers import train_model, test_model, int_to_str
 from transformers.string_to_chars import StringToChar
 from sparse_helpers import sparse_memory_usage
 import numpy as np
@@ -14,13 +14,14 @@ df['after'] = df['after'].str.replace('_trans', '').str.replace(' ', '')
 df['before'] = df['before'].str.lower()
 print('drop {0} urls from strings'.format(len(df[df['before'].str.contains('\.')].index)))
 df = df[~df['before'].str.contains('\.')]
-df = df.sample(100000)
+df = df.sample(100000, random_state=2017)
 print(df.info())
 
-max_len = min(32, max(df['after'].str.len().max(), df['before'].str.len().max()))
+X_max_len = 32#min(32, df['before'].str.len().max())
+y_max_len = 32#min(32, df['after'].str.len().max())
 
-X_data = StringToChar(max_len, to_coo=True).fit_transform(df['before']).tocsr()
-y_data = StringToChar(max_len, to_coo=True).fit_transform(df['after']).tocsr()
+X_data = StringToChar(X_max_len, to_coo=True).fit_transform(df['before']).tocsr()
+y_data = StringToChar(y_max_len, to_coo=True).fit_transform(df['after']).tocsr()
 del df
 gc.collect()
 
@@ -28,6 +29,9 @@ X_ix_to_char = [0] + sorted(set(X_data.data))
 X_char_to_ix = {chr: ix for ix, chr in enumerate(X_ix_to_char)}
 y_ix_to_char = [0] + sorted(set(y_data.data))
 y_char_to_ix = {chr: ix for ix, chr in enumerate(y_ix_to_char)}
+print(X_ix_to_char)
+print(y_ix_to_char)
+
 
 X_train, X_test, y_train, y_test = train_test_split(X_data, y_data, test_size=0.1, random_state=2017)
 print(f'x train type={X_train.dtype}, '
@@ -51,12 +55,12 @@ del y_data
 gc.collect()
 
 
-train_model(X_train, X_char_to_ix, y_train, y_char_to_ix, X_test, y_test)
+train_model(X_train, X_char_to_ix, y_train, y_char_to_ix, y_ix_to_char, X_test, y_test)
 
-X_str = X_test.toarray().astype(np.uint32).view('U1').view(f'U{max_len}').ravel()
-y_str = y_test.toarray().astype(np.uint32).view('U1').view(f'U{max_len}').ravel()
-pred = np.array(test_model(X_test, X_char_to_ix, y_char_to_ix, y_ix_to_char, max_len))
-y_predict = pred.astype(np.uint32).view('U1').view(f'U{max_len}').ravel()
+X_str = int_to_str(X_test.toarray())
+y_str = int_to_str(y_test.toarray())
+pred = np.array(test_model(X_test, X_char_to_ix, y_char_to_ix, y_ix_to_char, y_max_len))
+y_predict = int_to_str(pred)
 
 result_df = pd.DataFrame(data={'before': X_str, 'actual': y_str, 'predict': y_predict})
 
