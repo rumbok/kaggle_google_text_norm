@@ -15,10 +15,12 @@ def load_train(columns: list, input_path=INPUT_PATH) -> pd.DataFrame:
                        usecols=columns)
 
 
-def load_external(columns: list, input_path=DATA_INPUT_PATH) -> pd.DataFrame:
+def load_external(columns: list, head=0, only_diff=True, input_path=DATA_INPUT_PATH) -> pd.DataFrame:
     res = []
     files = glob(os.path.join(input_path, "*"))
-    for file in tqdm(files[:10], 'load files'):
+    if head > 0:
+        files = files[:head]
+    for file in tqdm(files, 'load files'):
         chunk = open(file, encoding='UTF8')
         while 1:
             line = chunk.readline().strip()
@@ -33,6 +35,8 @@ def load_external(columns: list, input_path=DATA_INPUT_PATH) -> pd.DataFrame:
                 after = arr[1]
             else:
                 after = arr[2]
+            if only_diff and before == after:
+                continue
             res.append((cls, before, after))
         chunk.close()
     big_frame = pd.DataFrame(res, columns=['class', 'before', 'after'])

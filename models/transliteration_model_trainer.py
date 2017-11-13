@@ -1,5 +1,5 @@
 from sklearn.model_selection import train_test_split
-from loaders.loading import load_train
+from loaders.loading import load_train, load_external
 from models.trans_helpers import train_model, test_model, int_to_str
 from transformers.string_to_chars import StringToChar
 from sparse_helpers import sparse_memory_usage
@@ -8,13 +8,16 @@ import pandas as pd
 import gc
 
 
-df = load_train(['before', 'after'], r'../../input/norm_challenge_ru').fillna('')
+df = load_train(['before', 'after'], input_path=r'../input/norm_challenge_ru').fillna('')
+#df = load_external(['before', 'after'],
+#                   only_diff=True,
+#                   input_path=r'../input/norm_challenge_ru/ru_with_types')\
+#      .fillna('')
 df = df[~(df['before'] == df['after']) & (df['after'].str.contains('_trans'))]
 df['after'] = df['after'].str.replace('_trans', '').str.replace(' ', '')
 df['before'] = df['before'].str.lower()
 print('drop {0} urls from strings'.format(len(df[df['before'].str.contains('\.')].index)))
 df = df[~df['before'].str.contains('\.')]
-df = df.sample(100000, random_state=2017)
 print(df.info())
 
 X_max_len = 32#min(32, df['before'].str.len().max())
