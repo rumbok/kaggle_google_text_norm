@@ -11,7 +11,7 @@ import math
 
 
 LAYER_NUM = 2
-HIDDEN_DIM = 48
+HIDDEN_DIM = 64
 BATCH_SIZE = 32
 LEARNING_RATE = 0.001
 MEM_SIZE = 100000
@@ -133,23 +133,23 @@ def train_model(X_train, X_char_to_ix, y_train, y_char_to_ix, y_ix_to_char, X_te
         max_acc = acc
         model.save_weights(f'checkpoint_epoch_{epoch}_{acc}_{HIDDEN_DIM}_{LAYER_NUM}_{DROPOUT}.hdf5')
         # model.save(f'model_epoch_{epoch}_{acc}.hdf5')
+    return model
 
 
-def test_model(X_test, X_char_to_ix, y_char_to_ix, y_ix_to_char, y_max_len):
+def test_model(X_test, X_char_to_ix, y_char_to_ix, y_ix_to_char, y_max_len, model=None):
     print('[INFO] Compiling model...')
-    model = create_attention_model(len(X_char_to_ix), X_test.shape[1], len(y_char_to_ix), y_max_len,
-                                   HIDDEN_DIM, LAYER_NUM, LEARNING_RATE, 0.0)
+    if model is None:
+        model = create_attention_model(len(X_char_to_ix), X_test.shape[1], len(y_char_to_ix), y_max_len,
+                                       HIDDEN_DIM, LAYER_NUM, LEARNING_RATE, 0.0)
+        saved_weights = find_checkpoint_file('.')
 
-    saved_weights = find_checkpoint_file('.')
-
-    if len(saved_weights) == 0:
-        print("The network hasn't been trained! Program will exit...")
-        sys.exit()
-    else:
+        if len(saved_weights) == 0:
+            print("The network hasn't been trained! Program will exit...")
+            sys.exit()
         model.load_weights(saved_weights)
 
-        predictions = np.argmax(model.predict(vectorize_data(X_test, X_char_to_ix)), axis=2)
-        sequences = []
-        for prediction in predictions:
-            sequences.append([y_ix_to_char[ix] for ix in prediction])
-        return sequences
+    predictions = np.argmax(model.predict(vectorize_data(X_test, X_char_to_ix)), axis=2)
+    sequences = []
+    for prediction in predictions:
+        sequences.append([y_ix_to_char[ix] for ix in prediction])
+    return sequences

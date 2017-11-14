@@ -33,21 +33,3 @@ def dump_svmlight_file_sparse(X, y, filename, zero_based=True):
             print(X.data)
             print(X.row)
             print(X.col)
-
-
-        # if not zero_based:
-        #     X.col += 1
-        #
-        # y = y.astype(int).astype(str)
-        # col = X.col.astype(str)
-        # dat = X.data.astype(str)
-        #
-        # last_row = 0
-        # f.write(y[0])
-        #
-        # for i in tqdm(range(len(X.data)), f'dump {filename}'):
-        #     while last_row < X.row[i]:
-        #         last_row += 1
-        #         f.write('\n'+y[last_row])
-        #     f.write(' '+col[i]+':'+dat[i])
-        # f.write('\n')

@@ -44,8 +44,8 @@ def load_external(columns: list, head=0, only_diff=True, input_path=DATA_INPUT_P
     return big_frame[columns]
 
 
-def load_test() -> pd.DataFrame:
-    return pd.read_csv(os.path.join(INPUT_PATH, 'ru_test.csv'),
+def load_test(input_path=INPUT_PATH) -> pd.DataFrame:
+    return pd.read_csv(os.path.join(input_path, 'ru_test.csv'),
                        encoding='utf-8',
                        index_col=False)
 

@@ -424,3 +424,47 @@ Chain:
   translit:	tp=0.978324	fp=0.0150853
   flat:	tp=0.978403	fp=0.0215972
 
+2017-11-13 14:40:51
+test data 1057452
+class: {'modelpath': 'models/class.model.train_1190428_0.00101_0.3_500_6'}
+translit: {'algo': 'cyrtranslit'}
+Chain:
+  class:	tp=0.0	fp=0.0
+  translit:	tp=0.0142172	fp=0.0436029
+
+2017-11-13 16:20:58
+test data 1057452
+class: {'modelpath': 'models/class.model.train_1190428_0.00101_0.3_500_6'}
+translit: {'batch_size': 32, 'dropout': 0.0, 'hidden_dim': 64, 'layer_num': 2, 'learning_rate': 0.001, 'mem_size': 10000, 'modelpath': 'checkpoint_epoch_30_0.8001_64_2_0.0.hdf5', 'num_epochs': 3}
+Chain:
+  class:	tp=0.0	fp=0.0
+  translit:	tp=0.0391044	fp=0.00900656
+
+2017-11-13 20:17:19
+test data 1057452
+class: {'modelpath': 'models/class.model.train_1190428_0.00101_0.3_500_6'}
+digit: {}
+dash: {}
+punсt: {'classname': 'PUNCT', 'threshold': 1.0, 'mean_confidence': 1.0}
+verbatim: {'classname': 'VERBATIM', 'threshold': 1.0, 'mean_confidence': 1.0}
+self: {'modelpath': 'models/self.model.train_9517064_0.00117_0.3_500_6', 'threshold': 0.5}
+dict_nbhd: {'threshold': 0.5, 'mean_confidence': 0.9999006044953818}
+letters: {}
+date: {'classname': 'DATE', 'threshold': 1.0, 'mean_confidence': 0.9719451297026039}
+cardinal: {'classname': 'CARDINAL', 'threshold': 1.0, 'mean_confidence': 0.9323755984794151}
+dict: {'threshold': 0.5, 'mean_confidence': 0.9964298995461367}
+translit: {'batch_size': 32, 'dropout': 0.0, 'hidden_dim': 64, 'layer_num': 2, 'learning_rate': 0.001, 'mem_size': 10000, 'modelpath': 'checkpoint_epoch_30_0.8001_64_2_0.0.hdf5', 'num_epochs': 3}
+Chain:
+  class:	tp=0.0	fp=0.0
+  digit:	tp=0.00020521	fp=0.0
+  dash:	tp=0.00138919	fp=0.00106199
+  punсt:	tp=0.217099	fp=0.00106388
+  verbatim:	tp=0.231861	fp=0.00106388
+  self:	tp=0.867422	fp=0.00150834
+  dict_nbhd:	tp=0.917029	fp=0.00201617
+  letters:	tp=0.926946	fp=0.00414865
+  date:	tp=0.929523	fp=0.00438507
+  cardinal:	tp=0.929724	fp=0.00447207
+  dict:	tp=0.976397	fp=0.00835877
+  translit:	tp=0.979986	fp=0.0130966
+

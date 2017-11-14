@@ -2,30 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="87d7b328-3b94-47c5-a820-63e601606f5b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/transformers/lstm_transliterator.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/models/transliteration/DataLoader.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/models/transliteration/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/models/transliteration/preprocess.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/models/transliteration/train.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/models/transliteration/transformer/Beam.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/models/transliteration/transformer/Constants.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/models/transliteration/transformer/Layers.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/models/transliteration/transformer/Models.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/models/transliteration/transformer/Modules.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/models/transliteration/transformer/Optim.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/models/transliteration/transformer/SubLayers.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/models/transliteration/transformer/Translator.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/models/transliteration/transformer/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/models/transliteration/transliterate.py" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/validate.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kernels/xgboost.ipynb" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/checkpoint_epoch_30_0.8001015208605845_64_2_0.0.hdf5" afterPath="$PROJECT_DIR$/checkpoint_epoch_30_0.8001_64_2_0.0.hdf5" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/pipeline.ipynb" afterPath="$PROJECT_DIR$/validate.ipynb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/class_model_trainer.py" afterPath="$PROJECT_DIR$/models/class_model_trainer.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/loaders/loading.py" afterPath="$PROJECT_DIR$/loaders/loading.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/trans_helpers.py" afterPath="$PROJECT_DIR$/models/trans_helpers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/transliteration_model_trainer.py" afterPath="$PROJECT_DIR$/models/transliteration_model_trainer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pipeline.ipynb" afterPath="$PROJECT_DIR$/pipeline.ipynb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pipeline.py" afterPath="$PROJECT_DIR$/pipeline.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pipeline_results" afterPath="$PROJECT_DIR$/pipeline_results" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/transformers/dash_transformer.py" afterPath="$PROJECT_DIR$/transformers/dash_transformer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/transformers/self_transformer.py" afterPath="$PROJECT_DIR$/transformers/self_transformer.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparse_helpers.py" afterPath="$PROJECT_DIR$/sparse_helpers.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/transformers/lstm_transliterator.py" afterPath="$PROJECT_DIR$/transformers/lstm_transliterator.py" />
     </list>
     <ignored path="__pycache__/" />
     <manually-removed-from-ignored>
@@ -40,25 +28,37 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="transliteration_model_trainer.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/transliteration_model_trainer.py">
+      <file leaf-file-name="validate.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/validate.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="110">
-              <caret line="16" column="40" lean-forward="false" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
+            <state relative-caret-position="75">
+              <caret line="7" column="8" lean-forward="false" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
               <folding>
-                <element signature="e#0#52#0" expanded="true" />
+                <element signature="e#0#53#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="trans_helpers.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/models/trans_helpers.py">
+      <file leaf-file-name="test.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="20" lean-forward="false" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+            <state relative-caret-position="255">
+              <caret line="17" column="41" lean-forward="false" selection-start-line="17" selection-start-column="41" selection-end-line="17" selection-end-column="41" />
               <folding>
-                <element signature="e#0#47#0" expanded="true" />
+                <element signature="e#0#64#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pipeline.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pipeline.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="22" column="22" lean-forward="false" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -108,8 +108,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/models/changes_model_trainer.py" />
-        <option value="$PROJECT_DIR$/transformers/sparse_union.py" />
         <option value="$PROJECT_DIR$/transformers/pandas_shift.py" />
         <option value="$PROJECT_DIR$/transformers/digit_transformer.py" />
         <option value="$PROJECT_DIR$/transformers/flat_transformer.py" />
@@ -139,26 +137,28 @@
         <option value="$PROJECT_DIR$/models/transliteration/transliterate.py" />
         <option value="$PROJECT_DIR$/models/case_model_trainer.py" />
         <option value="$PROJECT_DIR$/transformers/morphology_extractor.py" />
-        <option value="$PROJECT_DIR$/loaders/loading.py" />
         <option value="$PROJECT_DIR$/kernels/keras.py" />
         <option value="$PROJECT_DIR$/transformers/string_to_chars.py" />
         <option value="$PROJECT_DIR$/kernels/seq2seq.py" />
         <option value="$PROJECT_DIR$/kernels/seq2seq_utils.py" />
-        <option value="$PROJECT_DIR$/sparse_helpers.py" />
         <option value="$PROJECT_DIR$/pymorphy.ipynb" />
         <option value="$PROJECT_DIR$/transformers/morphology_adder.py" />
         <option value="$PROJECT_DIR$/transformers/class_transformer.py" />
         <option value="$PROJECT_DIR$/transformers/add_class_transformer.py" />
         <option value="$PROJECT_DIR$/transformers/dash_transformer.py" />
-        <option value="$PROJECT_DIR$/pipeline_results" />
         <option value="$PROJECT_DIR$/transformers/self_transformer.py" />
         <option value="$PROJECT_DIR$/transformers/letters_transformer.py" />
-        <option value="$PROJECT_DIR$/pipeline.ipynb" />
         <option value="$PROJECT_DIR$/models/class_model_trainer.py" />
-        <option value="$PROJECT_DIR$/transformers/lstm_transliterator.py" />
-        <option value="$PROJECT_DIR$/pipeline.py" />
         <option value="$PROJECT_DIR$/models/transliteration_model_trainer.py" />
         <option value="$PROJECT_DIR$/models/trans_helpers.py" />
+        <option value="$PROJECT_DIR$/transformers/lstm_transliterator.py" />
+        <option value="$PROJECT_DIR$/loaders/loading.py" />
+        <option value="$PROJECT_DIR$/pipeline.ipynb" />
+        <option value="$PROJECT_DIR$/sparse_helpers.py" />
+        <option value="$PROJECT_DIR$/pipeline_results" />
+        <option value="$PROJECT_DIR$/pipeline.py" />
+        <option value="$PROJECT_DIR$/validate.py" />
+        <option value="$PROJECT_DIR$/test.py" />
       </list>
     </option>
   </component>
@@ -201,8 +201,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -210,32 +208,29 @@
               <item name="Text Normalization Challenge - Russian Language" type="b2602c69:ProjectViewProjectNode" />
               <item name="Text Normalization Challenge - Russian Language" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="Text Normalization Challenge - Russian Language" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Text Normalization Challenge - Russian Language" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="IpnbConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/transformers" />
-      <recent name="$PROJECT_DIR$/models" />
-      <recent name="$PROJECT_DIR$" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/models/transliteration/transformer" />
       <recent name="$PROJECT_DIR$/models/transliteration" />
       <recent name="$PROJECT_DIR$/loaders" />
       <recent name="$PROJECT_DIR$/models" />
       <recent name="$PROJECT_DIR$/kernels" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/transformers" />
+      <recent name="$PROJECT_DIR$/models" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -250,7 +245,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.transliteration_model_trainer">
+  <component name="RunManager" selected="Python.test">
     <configuration name="Text Normalization Challenge - Russian Language" type="Python.Ipnb" factoryName="Jupyter Notebook">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -378,24 +373,7 @@
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method />
     </configuration>
-    <configuration name="class_model_trainer" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="/usr/local/Cellar/python3/3.6.3/Frameworks/Python.framework/Versions/3.6/bin/python3.6" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/models" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Text Normalization Challenge - Russian Language" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/models/class_model_trainer.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
-    <configuration name="class_transformer" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="lstm_transliterator" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -407,24 +385,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="Text Normalization Challenge - Russian Language" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/transformers/add_class_transformer.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
-    <configuration name="letters_transformer" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="/usr/local/Cellar/python3/3.6.3/Frameworks/Python.framework/Versions/3.6/bin/python3.6" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/transformers" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Text Normalization Challenge - Russian Language" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/transformers/letters_transformer.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/transformers/lstm_transliterator.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -446,6 +407,23 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/local/Cellar/python3/3.6.3/Frameworks/Python.framework/Versions/3.6/bin/python3.6" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Text Normalization Challenge - Russian Language" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
     <configuration name="transliteration_model_trainer" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -463,21 +441,38 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
+    <configuration name="validate" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/local/Cellar/python3/3.6.3/Frameworks/Python.framework/Versions/3.6/bin/python3.6" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Text Normalization Challenge - Russian Language" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/validate.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Jupyter Notebook.Text Normalization Challenge - Russian Language" />
       <item index="1" class="java.lang.String" itemvalue="Python.transliteration_model_trainer" />
-      <item index="2" class="java.lang.String" itemvalue="Python.class_transformer" />
-      <item index="3" class="java.lang.String" itemvalue="Python.class_model_trainer" />
-      <item index="4" class="java.lang.String" itemvalue="Python.pipeline" />
-      <item index="5" class="java.lang.String" itemvalue="Python.letters_transformer" />
+      <item index="2" class="java.lang.String" itemvalue="Python.pipeline" />
+      <item index="3" class="java.lang.String" itemvalue="Python.lstm_transliterator" />
+      <item index="4" class="java.lang.String" itemvalue="Python.validate" />
+      <item index="5" class="java.lang.String" itemvalue="Python.test" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.transliteration_model_trainer" />
-        <item index="1" class="java.lang.String" itemvalue="Python.pipeline" />
-        <item index="2" class="java.lang.String" itemvalue="Python.letters_transformer" />
-        <item index="3" class="java.lang.String" itemvalue="Python.class_transformer" />
-        <item index="4" class="java.lang.String" itemvalue="Python.class_model_trainer" />
+        <item index="0" class="java.lang.String" itemvalue="Python.test" />
+        <item index="1" class="java.lang.String" itemvalue="Python.validate" />
+        <item index="2" class="java.lang.String" itemvalue="Python.pipeline" />
+        <item index="3" class="java.lang.String" itemvalue="Python.lstm_transliterator" />
+        <item index="4" class="java.lang.String" itemvalue="Python.transliteration_model_trainer" />
       </list>
     </recent_temporary>
   </component>
@@ -642,7 +637,14 @@
       <option name="project" value="LOCAL" />
       <updated>1510065107723</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="+ attention transliteration model, changes in pipeline">
+      <created>1510262757871</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1510262757871</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -662,10 +664,10 @@
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37156704" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15751211" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3122421" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2517194" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286991" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286991" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -707,7 +709,8 @@
     <MESSAGE value="fixed keras transliterator ~83% accuracy" />
     <MESSAGE value="added attention RNN for transliteration" />
     <MESSAGE value="+class transformer, +DASH class, +TRANS class" />
-    <option name="LAST_COMMIT_MESSAGE" value="+class transformer, +DASH class, +TRANS class" />
+    <MESSAGE value="+ attention transliteration model, changes in pipeline" />
+    <option name="LAST_COMMIT_MESSAGE" value="+ attention transliteration model, changes in pipeline" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -722,58 +725,7 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///usr/local/lib/python3.6/site-packages/scipy/sparse/base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="646" column="0" lean-forward="false" selection-start-line="646" selection-start-column="0" selection-end-line="646" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/lib/python3.6/site-packages/scipy/sparse/compressed.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="942" column="0" lean-forward="false" selection-start-line="942" selection-start-column="0" selection-end-line="942" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/checkpoint_epoch_1.hdf5">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kernels/seq2seq_utils.py" />
-    <entry file="file://$PROJECT_DIR$/kernels/seq2seq.py" />
-    <entry file="file://$PROJECT_DIR$/kernels/xgboost_enchanced.py" />
-    <entry file="file://$PROJECT_DIR$/classifiers/class_classifier.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/classifiers/dict_classifier.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/transliteration/transformer/Models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-588">
-          <caret line="6" column="28" lean-forward="false" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/transformers/morphology_extractor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/models/transliteration/transformer/Models.py" />
     <entry file="file://$PROJECT_DIR$/transformers/pandas_union.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -795,19 +747,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/loaders/loading.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="5" column="42" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/class_model_cv.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -822,7 +765,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-217">
           <caret line="152" column="8" lean-forward="false" selection-start-line="152" selection-start-column="8" selection-end-line="152" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -830,7 +772,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="219">
           <caret line="2515" column="0" lean-forward="false" selection-start-line="2515" selection-start-column="0" selection-end-line="2515" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -838,9 +779,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#44#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -848,37 +786,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="520">
           <caret line="103" column="59" lean-forward="true" selection-start-line="91" selection-start-column="0" selection-end-line="103" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/transformers/self_transformer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/transformers/simple_transliterator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/transformers/add_class_transformer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="13" column="8" lean-forward="false" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -886,30 +793,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="99">
           <caret line="996" column="8" lean-forward="false" selection-start-line="996" selection-start-column="8" selection-end-line="996" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pipeline.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/transformers/scored_chain.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="8" lean-forward="false" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/transformers/dash_transformer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="11" column="6" lean-forward="false" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -924,83 +807,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="26" column="27" lean-forward="false" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pymorphy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/transliteration/transliterate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="760">
-          <caret line="65" column="0" lean-forward="true" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/transliteration/train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1975">
-          <caret line="15" column="27" lean-forward="false" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/transliteration/preprocess.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1805">
-          <caret line="3" column="30" lean-forward="false" selection-start-line="3" selection-start-column="30" selection-end-line="3" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/transliteration/DataLoader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1117">
-          <caret line="5" column="30" lean-forward="false" selection-start-line="5" selection-start-column="30" selection-end-line="5" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/transformers/letters_transformer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="8" column="8" lean-forward="false" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pipeline.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="38" column="43" lean-forward="true" selection-start-line="38" selection-start-column="43" selection-end-line="38" selection-end-column="43" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pipeline_results">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-686">
-          <caret line="335" column="27" lean-forward="true" selection-start-line="335" selection-start-column="27" selection-end-line="335" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/models/transliteration/transliterate.py" />
+    <entry file="file://$PROJECT_DIR$/models/transliteration/train.py" />
+    <entry file="file://$PROJECT_DIR$/models/transliteration/preprocess.py" />
+    <entry file="file://$PROJECT_DIR$/models/transliteration/DataLoader.py" />
     <entry file="file:///usr/local/lib/python3.6/site-packages/sklearn/base.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1274">
           <caret line="175" column="6" lean-forward="false" selection-start-line="175" selection-start-column="6" selection-end-line="175" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1016,17 +833,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="7" column="25" lean-forward="true" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/transformers/lstm_transliterator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="17" lean-forward="false" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1034,9 +840,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
           <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1044,7 +847,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="284">
           <caret line="92" column="27" lean-forward="false" selection-start-line="92" selection-start-column="23" selection-end-line="92" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1052,7 +854,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="615">
           <caret line="289" column="14" lean-forward="true" selection-start-line="289" selection-start-column="14" selection-end-line="289" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1060,7 +861,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-202">
           <caret line="1714" column="8" lean-forward="false" selection-start-line="1714" selection-start-column="8" selection-end-line="1714" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1068,7 +868,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
           <caret line="215" column="17" lean-forward="false" selection-start-line="215" selection-start-column="17" selection-end-line="215" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1076,7 +875,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
           <caret line="765" column="6" lean-forward="false" selection-start-line="765" selection-start-column="6" selection-end-line="765" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1084,7 +882,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
           <caret line="114" column="4" lean-forward="false" selection-start-line="114" selection-start-column="4" selection-end-line="114" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1092,26 +889,163 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="490">
           <caret line="884" column="40" lean-forward="true" selection-start-line="884" selection-start-column="40" selection-end-line="884" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/transliteration_model_trainer.py">
+    <entry file="file:///usr/local/lib/python3.6/site-packages/keras/losses.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="16" column="40" lean-forward="false" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#52#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="567">
+          <caret line="51" column="35" lean-forward="false" selection-start-line="51" selection-start-column="4" selection-end-line="51" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2735" column="4" lean-forward="false" selection-start-line="2735" selection-start-column="4" selection-end-line="2735" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/kernels/xgboost.ipynb" />
+    <entry file="file://$PROJECT_DIR$/transformers/letters_transformer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="8" column="8" lean-forward="false" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/transformers/dash_transformer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="11" column="6" lean-forward="false" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/transformers/digit_transformer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/transformers/self_transformer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/transformers/simple_transliterator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="30" column="68" lean-forward="false" selection-start-line="30" selection-start-column="28" selection-end-line="30" selection-end-column="68" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/models/trans_helpers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="20" lean-forward="false" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+        <state relative-caret-position="256">
+          <caret line="81" column="46" lean-forward="true" selection-start-line="81" selection-start-column="46" selection-end-line="81" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/transliteration_model_trainer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="31" column="54" lean-forward="false" selection-start-line="31" selection-start-column="54" selection-end-line="31" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/transformers/lstm_transliterator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="406">
+          <caret line="62" column="133" lean-forward="false" selection-start-line="62" selection-start-column="133" selection-end-line="62" selection-end-column="133" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pymorphy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pipeline.ipynb" />
+    <entry file="file://$PROJECT_DIR$/validate.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparse_helpers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/transformers/scored_chain.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/transformers/add_class_transformer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="69" column="0" lean-forward="false" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pipeline_results">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="441">
+          <caret line="470" column="0" lean-forward="true" selection-start-line="470" selection-start-column="0" selection-end-line="470" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/transformers/morphology_extractor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/validate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="7" column="8" lean-forward="false" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
           <folding>
-            <element signature="e#0#47#0" expanded="true" />
+            <element signature="e#0#53#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pipeline.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="22" column="22" lean-forward="false" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/loaders/loading.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="41" lean-forward="false" selection-start-line="17" selection-start-column="41" selection-end-line="17" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#64#0" expanded="true" />
           </folding>
         </state>
       </provider>
