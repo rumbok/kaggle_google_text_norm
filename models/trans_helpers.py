@@ -1,6 +1,6 @@
 from keras.models import Sequential, load_model
 from keras.layers import TimeDistributed, Dense, RepeatVector, Embedding, ConvLSTM2D, Activation
-from keras.optimizers import RMSprop
+from keras.optimizers import RMSprop, SGD
 from keras.layers.recurrent import LSTM
 from scipy.sparse import csr_matrix
 import os
@@ -13,13 +13,13 @@ import math
 LAYER_NUM = 2
 HIDDEN_DIM = 64
 BATCH_SIZE = 32
-LEARNING_RATE = 0.001
-MEM_SIZE = 100000
-NB_EPOCH = 10
-DROPOUT = 0.0
+LEARNING_RATE = 0.0000001
+MEM_SIZE = 500000
+NB_EPOCH = 100
+DROPOUT = 0.01
 
 
-def calc_lr(epoch, learning_rate, decay=0.1, per_epochs=2):
+def calc_lr(epoch, learning_rate, decay=0.1, per_epochs=5):
     return learning_rate * math.pow(decay, (epoch-1.0)/per_epochs)
 
 
@@ -34,7 +34,8 @@ def create_attention_model(X_vocab_len, X_max_len, y_vocab_len, y_max_len, hidde
                                depth=layer_num,
                                dropout=dropout))
     model.add(TimeDistributed(Dense(y_vocab_len, activation='softmax')))
-    model.compile(loss='categorical_crossentropy', optimizer=RMSprop(lr=learning_rate), metrics=['accuracy'])
+    opt = RMSprop(lr=learning_rate)
+    model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
     return model
 
 
@@ -108,8 +109,8 @@ def train_model(X_train, X_char_to_ix, y_train, y_char_to_ix, y_ix_to_char, X_te
         y_train = y_train[indices, :]
 
         #set learning rate
-        model.optimizer.lr.assign(calc_lr(epoch, LEARNING_RATE))
-        print('learning rate', calc_lr(epoch, LEARNING_RATE))
+        #model.optimizer.lr.assign(calc_lr(epoch, LEARNING_RATE))
+        #print('learning rate', calc_lr(epoch, LEARNING_RATE))
 
         # Training MEM_SIZE sequences at a time
         for i in range(0, X_train.shape[0], MEM_SIZE):

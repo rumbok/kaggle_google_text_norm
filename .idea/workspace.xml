@@ -2,18 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="87d7b328-3b94-47c5-a820-63e601606f5b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/validate.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/kernels/xgboost.ipynb" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/checkpoint_epoch_30_0.8001015208605845_64_2_0.0.hdf5" afterPath="$PROJECT_DIR$/checkpoint_epoch_30_0.8001_64_2_0.0.hdf5" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/pipeline.ipynb" afterPath="$PROJECT_DIR$/validate.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/loaders/loading.py" afterPath="$PROJECT_DIR$/loaders/loading.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/checkpoint_epoch_36_0.8127_64_2_0.0.hdf5" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/check point_epoch_27_0.7995_64_2_0.0_att_train.hdf5" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/checkpoint_epoch_30_0.8001_64_2_0.0.hdf5" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/trans_helpers.py" afterPath="$PROJECT_DIR$/models/trans_helpers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pipeline.py" afterPath="$PROJECT_DIR$/pipeline.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pipeline_results" afterPath="$PROJECT_DIR$/pipeline_results" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparse_helpers.py" afterPath="$PROJECT_DIR$/sparse_helpers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/transformers/lstm_transliterator.py" afterPath="$PROJECT_DIR$/transformers/lstm_transliterator.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/transliteration_model_trainer.py" afterPath="$PROJECT_DIR$/models/transliteration_model_trainer.py" />
     </list>
     <ignored path="__pycache__/" />
     <manually-removed-from-ignored>
@@ -644,7 +637,14 @@
       <option name="project" value="LOCAL" />
       <updated>1510262757871</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="+ lstm transliterator without fit, + class and self models by train">
+      <created>1510647451521</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1510647451521</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -664,11 +664,11 @@
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15751211" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2746365" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2517194" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286991" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32737276" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286991" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -710,7 +710,8 @@
     <MESSAGE value="added attention RNN for transliteration" />
     <MESSAGE value="+class transformer, +DASH class, +TRANS class" />
     <MESSAGE value="+ attention transliteration model, changes in pipeline" />
-    <option name="LAST_COMMIT_MESSAGE" value="+ attention transliteration model, changes in pipeline" />
+    <MESSAGE value="+ lstm transliterator without fit, + class and self models by train" />
+    <option name="LAST_COMMIT_MESSAGE" value="+ lstm transliterator without fit, + class and self models by train" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -946,6 +947,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
           <caret line="81" column="46" lean-forward="true" selection-start-line="81" selection-start-column="46" selection-end-line="81" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -960,6 +964,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="406">
           <caret line="62" column="133" lean-forward="false" selection-start-line="62" selection-start-column="133" selection-end-line="62" selection-end-column="133" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -982,6 +989,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
           <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1003,6 +1013,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="441">
           <caret line="470" column="0" lean-forward="true" selection-start-line="470" selection-start-column="0" selection-end-line="470" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1037,6 +1048,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="7" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
