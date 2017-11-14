@@ -18,6 +18,7 @@ df['after'] = df['after'].str.replace('_trans', '').str.replace(' ', '')
 df['before'] = df['before'].str.lower()
 print('drop {0} urls from strings'.format(len(df[df['before'].str.contains('\.')].index)))
 df = df[~df['before'].str.contains('\.')]
+#df = df.sample(3000000)
 print(df.info())
 
 X_max_len = 32#min(32, df['before'].str.len().max())
@@ -36,7 +37,7 @@ print(X_ix_to_char)
 print(y_ix_to_char)
 
 
-X_train, X_test, y_train, y_test = train_test_split(X_data, y_data, test_size=0.1, random_state=2017)
+X_train, X_test, y_train, y_test = train_test_split(X_data, y_data, test_size=0.1)
 print(f'x train type={X_train.dtype}, '
       f'size={X_train.shape}, '
       f'density={X_train.nnz / X_train.shape[0] / X_train.shape[1]},'
