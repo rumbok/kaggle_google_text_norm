@@ -5,8 +5,8 @@ from pipeline import transform
 SUBM_PATH = r'../input/norm_challenge_ru'
 INPUT_PATH = r'../input/norm_challenge_ru'
 
-# df = load_train(columns=['class', 'before', 'after'], input_path=INPUT_PATH)
-df = load_external(columns=['class', 'before', 'after'], input_path=INPUT_PATH)
+df = load_train(columns=['class', 'before', 'after'], input_path=INPUT_PATH)
+#df = load_external(columns=['class', 'before', 'after'], input_path=INPUT_PATH)
 df['before_prev'] = df['before'].shift(1)
 df['before_next'] = df['before'].shift(-1)
 df = df.fillna('')

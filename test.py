@@ -8,8 +8,8 @@ SUBM_PATH = r'../input/norm_challenge_ru'
 INPUT_PATH = r'../input/norm_challenge_ru'
 DATA_INPUT_PATH = r'../input/norm_challenge_ru/ru_with_types'
 
-# x_train = load_train(columns=['class', 'before', 'after'], input_path=INPUT_PATH)
-x_train = load_external(columns=['class', 'before', 'after'], only_diff=False, input_path=DATA_INPUT_PATH)
+x_train = load_train(columns=['class', 'before', 'after'], input_path=INPUT_PATH)
+#x_train = load_external(columns=['class', 'before', 'after'], only_diff=False, input_path=DATA_INPUT_PATH)
 x_train['before_prev'] = x_train['before'].shift(1)
 x_train['before_next'] = x_train['before'].shift(-1)
 x_train = x_train.fillna('')

@@ -68,7 +68,7 @@ class AddClassTransformer(TransformerMixin, BaseEstimator):
 
     def transform(self, X: pd.DataFrame, y=None, *args, **kwargs):
         x_predict = self.pipeline.fit_transform(X)
-        dpredict = xgb.DMatrix(x_predict, nthread=4)
+        dpredict = xgb.DMatrix(x_predict)
         del x_predict
         predicted = pd.Series(pd.Categorical.from_codes(self.model.predict(dpredict),
                                                         categories=self.class_type.categories),
@@ -88,6 +88,6 @@ if __name__ == '__main__':
     df['before_next'] = df['before'].shift(-1).fillna('').to_dense()
     print(df)
 
-    ct = AddClassTransformer(modelpath='../models/class.model.train_1190428_0.00101_0.3_500_6')
+    ct = AddClassTransformer(modelpath='models/class.model.train_1190428_0.00101_0.3_500_6')
 
     print(ct.fit_transform(df))

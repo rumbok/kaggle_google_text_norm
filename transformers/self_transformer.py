@@ -63,7 +63,7 @@ class SelfTransformer(TransformerMixin, BaseEstimator):
 
     def transform(self, X: pd.DataFrame, y=None, *args, **kwargs):
         x_predict = self.pipeline.fit_transform(X)
-        dpredict = xgb.DMatrix(x_predict, nthread=4)
+        dpredict = xgb.DMatrix(x_predict)
         del x_predict
         predicted = pd.Series(self.model.predict(dpredict), index=X.index)
         del dpredict

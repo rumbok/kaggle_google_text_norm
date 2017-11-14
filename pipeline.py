@@ -27,7 +27,7 @@ def transform(x_train, x_test, y_train, y_test=None):
         ('date', DictClassTransformer(u'DATE', 1.0)),
         ('cardinal', DictClassTransformer(u'CARDINAL', 1.0)),
         ('dict', DictTransformer(0.5)),
-        ('translit', LSTMTransliterator('checkpoint_epoch_30_0.8001_64_2_0.0.hdf5')),
+        ('translit', LSTMTransliterator('checkpoint_epoch_36_0.8127_64_2_0.0.hdf5')),
         ('translit', SimpleTransliterator('cyrtranslit')),
         ('flat', FlatTransformer())
     ], metrics=[
