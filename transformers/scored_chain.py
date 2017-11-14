@@ -1,8 +1,9 @@
 from sklearn.base import BaseEstimator, TransformerMixin
+import gc
 
 
 class ScoredChain(BaseEstimator, TransformerMixin):
-    def __init__(self, steps, metrics):
+    def __init__(self, steps, metrics=[]):
         self.steps = steps
         self.metrics = metrics
         self.results = []
@@ -17,6 +18,7 @@ class ScoredChain(BaseEstimator, TransformerMixin):
         self.results = []
         for step in self.steps:
             transformed_X = step[1].transform(transformed_X)
+            gc.collect()
 
             step_result = f'{step[0]}:'
             for metric in self.metrics:

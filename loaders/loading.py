@@ -15,11 +15,15 @@ def load_train(columns: list, input_path=INPUT_PATH) -> pd.DataFrame:
                        usecols=columns)
 
 
-def load_external(columns: list, head=0, only_diff=True, input_path=DATA_INPUT_PATH) -> pd.DataFrame:
+def batch(iterable, n=1):
+    l = len(iterable)
+    for ndx in range(0, l, n):
+        yield iterable[ndx:min(ndx + n, l)]
+
+
+def load_external(columns: list, only_diff=True, input_path=DATA_INPUT_PATH) -> pd.DataFrame:
     res = []
     files = glob(os.path.join(input_path, "*"))
-    if head > 0:
-        files = files[:head]
     for file in tqdm(files, 'load files'):
         chunk = open(file, encoding='UTF8')
         while 1:
@@ -42,6 +46,32 @@ def load_external(columns: list, head=0, only_diff=True, input_path=DATA_INPUT_P
     big_frame = pd.DataFrame(res, columns=['class', 'before', 'after'])
     del res
     return big_frame[columns]
+
+
+def load_batch(columns: list, batch_size=100, input_path=DATA_INPUT_PATH) -> pd.DataFrame:
+    files = glob(os.path.join(input_path, "*"))
+    for bth in batch(files, batch_size):
+        res = []
+        for file in tqdm(bth, 'load files'):
+            chunk = open(file, encoding='UTF8')
+            while 1:
+                line = chunk.readline().strip()
+                if line == '':
+                    break
+                arr = line.split('\t')
+                if len(arr) < 3 or arr[0] == '<eos>':
+                    continue
+                cls = arr[0]
+                before = arr[1]
+                if arr[2] == '<self>' or arr[2] == 'sil':
+                    after = arr[1]
+                else:
+                    after = arr[2]
+                res.append((cls, before, after))
+            chunk.close()
+        big_frame = pd.DataFrame(res, columns=['class', 'before', 'after'])
+        del res
+        yield big_frame[columns]
 
 
 def load_test(input_path=INPUT_PATH) -> pd.DataFrame:

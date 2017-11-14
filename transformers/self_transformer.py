@@ -81,6 +81,6 @@ if __name__ == '__main__':
     df['before_next'] = df['before'].shift(-1).fillna('').to_dense()
     print(df)
 
-    st = SelfTransformer(threshold=0.5, modelpath='../models/self.model.train')
+    st = SelfTransformer(threshold=0.5, modelpath='models/self.model.train_9517064_0.00117_0.3_500_6')
 
     print(st.fit_transform(df))

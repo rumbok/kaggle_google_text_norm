@@ -9,36 +9,42 @@ class DictClassTransformer(TransformerMixin, BaseEstimator):
     def __init__(self, classname, threshold=0.0):
         self.classname = classname
         self.threshold = threshold
-        self.kv = {}
+        self.word_dict = defaultdict(Counter)
         self.mean_confidence = 0.0
 
     def fit(self, X, y=None, *args, **kwargs):
-        word_dict = defaultdict(Counter)
         for (before, cls, after) in tqdm(zip(X['before'], X['class'], y),
-                                         f'{self.__class__.__name__}_{self.classname} fit stage 1',
+                                         f'{self.__class__.__name__}_{self.classname} fit',
                                          total=len(X)):
             if cls == self.classname:
-                word_dict[before][after] += 1
-
-        self.mean_confidence = 0.0
-        for before in tqdm(word_dict,
-                           f'{self.__class__.__name__}_{self.classname} fit stage 2',
-                           total=len(word_dict.keys())):
-            most = word_dict[before].most_common(1)
-            confidence = most[0][1] / sum(word_dict[before].values())
-            self.kv[before] = (most[0][0], confidence)
-            self.mean_confidence += confidence
-
-        self.mean_confidence /= len(self.kv.keys()) if len(self.kv.keys()) > 0 else 1.0
+                self.word_dict[before][after] += 1
+        print(len(self.word_dict.keys()))
         return self
+
+    def _most_common(self):
+        self.mean_confidence = 0.0
+        kv = {}
+        for key in tqdm(self.word_dict,
+                        f'{self.__class__.__name__}_{self.classname} pre transform',
+                        total=len(self.word_dict.keys())):
+            most = self.word_dict[key].most_common(1)
+            confidence = most[0][1] / sum(self.word_dict[key].values())
+            kv[key] = (most[0][0], confidence)
+            self.mean_confidence += confidence
+        self.mean_confidence /= len(kv.keys()) if len(kv.keys()) > 0 else 1.0
+        del self.word_dict
+        return kv
 
     def transform(self, X: pd.DataFrame, y=None, *args, **kwargs):
         data = []
-        for before in tqdm(X['before'], f'{self.__class__.__name__} transform', total=len(X)):
-            if before in self.kv and self.kv[before][1] >= self.threshold:
-                data.append(self.kv[before][0])
+        kv = self._most_common()
+        for before in tqdm(X['before'], f'{self.__class__.__name__}_{self.classname} transform', total=len(X)):
+            if before in kv and kv[before][1] >= self.threshold:
+                data.append(kv[before][0])
             else:
                 data.append(None)
+        del kv
+
         if 'after' in X.columns:
             return X.assign(after=X['after'].combine_first(pd.Series(data, index=X.index)))
         else:

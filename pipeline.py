@@ -14,8 +14,7 @@ from transformers.add_class_transformer import AddClassTransformer
 from transformers.simple_transliterator import SimpleTransliterator
 
 
-def transform(x_train, x_test, y_train, y_test=None):
-    transform_chain = ScoredChain([
+transform_chain = ScoredChain([
         ('class', AddClassTransformer('models/class.model.train_1190428_0.00101_0.3_500_6')),
         ('digit', DigitTransformer()),
         ('dash', DashTransformer()),
@@ -30,10 +29,14 @@ def transform(x_train, x_test, y_train, y_test=None):
         ('translit', LSTMTransliterator('checkpoint_epoch_36_0.8127_64_2_0.0.hdf5')),
         ('translit', SimpleTransliterator('cyrtranslit')),
         ('flat', FlatTransformer())
-    ], metrics=[
+    ])
+
+
+def transform(x_train, x_test, y_train, y_test=None):
+    transform_chain.metrics=[
         ('tp', lambda X: np.mean((X["after"] == y_test)) if 'after' in X.columns and y_test is not None else 0.0),
         ('fp', lambda X: np.mean((X["after"].notnull()) & ~(X["after"] == y_test)) if 'after' in X.columns and y_test is not None else 0.0)
-    ])
+    ]
 
     transform_chain.fit(x_train, y_train)
     predicted = transform_chain.transform(x_test)
