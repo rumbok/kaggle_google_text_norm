@@ -34,8 +34,16 @@ class ItemSelector(BaseEstimator, TransformerMixin):
     def __init__(self, key):
         self.key = key
 
-    def fit(self, x, y=None):
+    def fit(self, x, y=None, **fit_params):
         return self
 
-    def transform(self, data_dict):
-        return data_dict[self.key]
+    def transform(self, x, y=None, **fit_params):
+        return x[self.key]
+
+
+class Reshape2d(BaseEstimator, TransformerMixin):
+    def fit(self, x, y=None, **fit_params):
+        return self
+
+    def transform(self, x, y=None, **fit_params):
+        return x.reshape(len(x), -1)

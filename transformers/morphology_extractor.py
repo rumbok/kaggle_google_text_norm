@@ -8,8 +8,8 @@ from typing import Union
 
 
 class MorphologyExtractor(BaseEstimator, TransformerMixin):
-    def __init__(self, to_coo=False, multi_words=False):
-        self.to_coo = to_coo
+    def __init__(self, sparse=False, multi_words=False):
+        self.to_coo = sparse
         self.multi_words = multi_words
         self.morph = pymorphy2.MorphAnalyzer()
         self.word_rows = {}
@@ -20,10 +20,10 @@ class MorphologyExtractor(BaseEstimator, TransformerMixin):
             tag_values.update(tag.grammemes)
         self.tag_indexes = {x: i + 4 for i, x in enumerate(tag_values)}
 
-    def fit(self, X, y=None):
+    def fit(self, X, y=None, **fit_params):
         return self
 
-    def transform(self, words) -> Union[pd.SparseDataFrame, coo_matrix]:
+    def transform(self, words, y=None, **fit_params) -> Union[pd.SparseDataFrame, coo_matrix]:
         rows = []
         cols = []
         datas = []

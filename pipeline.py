@@ -32,7 +32,7 @@ transform_chain = ScoredChain([
         ('cardinal', CardinalTransformer()),
         ('letters', LettersTransformer()),
         ('dict', DictTransformer(0.5)),
-        ('translit', LSTMTransliterator('checkpoint_epoch_36_0.8127_64_2_0.0.hdf5')),
+        ('translit', LSTMTransliterator('check point_epoch_36_0.8127_64_2_0.0.hdf5')),
         ('flat', FlatTransformer())
     ])
 

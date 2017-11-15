@@ -21,7 +21,7 @@ del df['after']
 print(df.info())
 
 
-morph_extractor = MorphologyExtractor(to_coo=True)
+morph_extractor = MorphologyExtractor(sparse=True)
 pipeline = SparseUnion([
     ('orig', Pipeline([
         ('select', ItemSelector('before')),

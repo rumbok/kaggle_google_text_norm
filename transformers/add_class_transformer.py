@@ -22,7 +22,7 @@ class AddClassTransformer(TransformerMixin, BaseEstimator):
                         'TELEPHONE', 'ELECTRONIC', 'DECIMAL', 'DIGIT', 'FRACTION', 'MONEY', 'TIME',
                         'TRANS', 'DASH'])
 
-        morph_extractor = MorphologyExtractor(to_coo=True)
+        morph_extractor = MorphologyExtractor(sparse=True)
         self.pipeline = SparseUnion([
             ('orig', Pipeline([
                 ('select', ItemSelector('before')),

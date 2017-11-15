@@ -11,10 +11,10 @@ class StringToChar(BaseEstimator, TransformerMixin):
         self.to_coo = to_coo
         self.tags = {}
 
-    def fit(self, words, y=None):
+    def fit(self, words, y=None, **fit_params):
         return self
 
-    def transform(self, words) -> Union[pd.SparseDataFrame, coo_matrix]:
+    def transform(self, words, y=None, **fit_params) -> Union[pd.SparseDataFrame, coo_matrix]:
         if self.max_width == 0:
             x = np.array(words, dtype=f'U')
         elif self.max_width > 0:

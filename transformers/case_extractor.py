@@ -13,13 +13,13 @@ class CaseExtractor(BaseEstimator, TransformerMixin):
         self.morph = pymorphy2.MorphAnalyzer()
         self.word_rows = {}
 
-        self.case_type = CategoricalDtype(categories=['nomn', 'gent', 'datv', 'accs', 'ablt', 'loct', 'voct', 'gen2', 'acc2', 'loc2'])
-        self.number_type = CategoricalDtype(categories=['sing', 'plur'])
+        self.case_type = CategoricalDtype(categories=['none', 'nomn', 'gent', 'datv', 'accs', 'ablt', 'loct', 'voct', 'gen2', 'acc2', 'loc2'])
+        self.number_type = CategoricalDtype(categories=['none', 'sing', 'plur'])
 
-    def fit(self, X, y=None):
+    def fit(self, X, y=None, **fit_params):
         return self
 
-    def transform(self, words) -> pd.DataFrame:
+    def transform(self, words, y=None, **fit_params) -> pd.DataFrame:
         data = []
         for word in tqdm(words,
                          f'{self.__class__.__name__} transform',
@@ -52,7 +52,7 @@ class CaseExtractor(BaseEstimator, TransformerMixin):
 
             # p.tag.case  # падеж
             # p.tag.number  # число (единственное, множественное)
-        res = pd.DataFrame(data, columns=['case', 'number'])
+        res = pd.DataFrame(data, columns=['case', 'number']).fillna('none')
         del data
         res['case'] = res['case'].astype(self.case_type)
         res['number'] = res['number'].astype(self.number_type)

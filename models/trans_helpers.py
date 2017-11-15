@@ -10,10 +10,10 @@ from seq2seq.models import AttentionSeq2Seq, Seq2Seq, SimpleSeq2Seq
 import math
 
 
-LAYER_NUM = 2
+LAYER_NUM = 3
 HIDDEN_DIM = 64
 BATCH_SIZE = 32
-LEARNING_RATE = 0.0000001
+LEARNING_RATE = 0.0001
 MEM_SIZE = 500000
 NB_EPOCH = 100
 DROPOUT = 0.01

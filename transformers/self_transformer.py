@@ -18,7 +18,7 @@ class SelfTransformer(TransformerMixin, BaseEstimator):
             self.model = xgb.Booster()
             self.model.load_model(modelpath)
 
-        morph_extractor = MorphologyExtractor(to_coo=True)
+        morph_extractor = MorphologyExtractor(sparse=True)
         self.pipeline = SparseUnion([
             ('orig', Pipeline([
                 ('select', ItemSelector('before')),
