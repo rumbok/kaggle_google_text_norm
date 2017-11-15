@@ -25,7 +25,7 @@ class DictNBHDTransformer(TransformerMixin, BaseEstimator):
             else:
                 self.word_dict[hsh] = after
         del threegramms
-        print(len(self.word_dict.keys()))
+        #print(len(self.word_dict.keys()))
         return self
 
     def _most_common(self):

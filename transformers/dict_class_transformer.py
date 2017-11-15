@@ -18,7 +18,7 @@ class DictClassTransformer(TransformerMixin, BaseEstimator):
                                          total=len(X)):
             if cls == self.classname:
                 self.word_dict[before][after] += 1
-        print(len(self.word_dict.keys()))
+        #print(len(self.word_dict.keys()))
         return self
 
     def _most_common(self):

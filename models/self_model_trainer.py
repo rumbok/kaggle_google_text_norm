@@ -12,77 +12,77 @@ from sparse_helpers import sparse_memory_usage
 import gc
 from sklearn.metrics import accuracy_score
 
-# df = load_train(['before', 'after']).fillna('')
-# df['self'] = (df['before'] == df['after'])
-# df['before_prev'] = df['before'].shift(1)
-# df['before_next'] = df['before'].shift(-1)
-# df = df.fillna('')
-# del df['after']
-# print(df.info())
-#
-#
-# morph_extractor = MorphologyExtractor(to_coo=True)
-# pipeline = SparseUnion([
-#     ('orig', Pipeline([
-#         ('select', ItemSelector('before')),
-#         ('features', SparseUnion([
-#             ('char', StringToChar(10, to_coo=True)),
-#             ('ctx', morph_extractor),
-#         ])),
-#     ])),
-#     ('prev', Pipeline([
-#         ('select', ItemSelector('before_prev')),
-#         ('features', SparseUnion([
-#             ('char', StringToChar(5, to_coo=True)),
-#             ('ctx', morph_extractor),
-#         ])),
-#     ])),
-#     ('next', Pipeline([
-#         ('select', ItemSelector('before_next')),
-#         ('features', SparseUnion([
-#             ('char', StringToChar(5, to_coo=True)),
-#             ('ctx', morph_extractor),
-#         ])),
-#     ])),
-# ])
-#
-#
-# x_data = pipeline.fit_transform(df.drop(['self'], axis=1))
-# print(f'data type={x_data.dtype}, '
-#       f'size={x_data.shape}, '
-#       f'density={x_data.nnz / x_data.shape[0] / x_data.shape[1]},'
-#       f'{sparse_memory_usage(x_data):9.3} Mb')
-# y_data = df['self'].values
-# del morph_extractor
-# del df
-# gc.collect()
-#
-#
-# x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.1, random_state=2017)
-# print(f'train type={x_train.dtype}, '
-#       f'size={x_train.shape}, '
-#       f'density={x_train.nnz / x_train.shape[0] / x_train.shape[1]},'
-#       f'{sparse_memory_usage(x_train):9.3} Mb')
-# print(f'test type={x_test.dtype}, '
-#       f'size={x_test.shape}, '
-#       f'density={x_test.nnz / x_test.shape[0] / x_test.shape[1]},'
-#       f'{sparse_memory_usage(x_test):9.3} Mb')
-# del x_data
-# del y_data
-# gc.collect()
-#
-#
-# dtrain = xgb.DMatrix(x_train, label=y_train)
-# dtest = xgb.DMatrix(x_test, label=y_test)
-# del x_train, x_test, y_train, y_test
-# gc.collect()
-#
-#
-# dtrain.save_binary('self.matrix.train.train')
-# dtest.save_binary('self.matrix.train.test')
-# del dtrain
-# del dtest
-# gc.collect()
+df = load_train(['before', 'after']).fillna('')
+df['self'] = (df['before'] == df['after'])
+df['before_prev'] = df['before'].shift(1)
+df['before_next'] = df['before'].shift(-1)
+df = df.fillna('')
+del df['after']
+print(df.info())
+
+
+morph_extractor = MorphologyExtractor(to_coo=True)
+pipeline = SparseUnion([
+    ('orig', Pipeline([
+        ('select', ItemSelector('before')),
+        ('features', SparseUnion([
+            ('char', StringToChar(10, to_coo=True)),
+            ('ctx', morph_extractor),
+        ])),
+    ])),
+    ('prev', Pipeline([
+        ('select', ItemSelector('before_prev')),
+        ('features', SparseUnion([
+            ('char', StringToChar(5, to_coo=True)),
+            ('ctx', morph_extractor),
+        ])),
+    ])),
+    ('next', Pipeline([
+        ('select', ItemSelector('before_next')),
+        ('features', SparseUnion([
+            ('char', StringToChar(5, to_coo=True)),
+            ('ctx', morph_extractor),
+        ])),
+    ])),
+])
+
+
+x_data = pipeline.fit_transform(df.drop(['self'], axis=1))
+print(f'data type={x_data.dtype}, '
+      f'size={x_data.shape}, '
+      f'density={x_data.nnz / x_data.shape[0] / x_data.shape[1]},'
+      f'{sparse_memory_usage(x_data):9.3} Mb')
+y_data = df['self'].values
+del morph_extractor
+del df
+gc.collect()
+
+
+x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.1, random_state=2017)
+print(f'train type={x_train.dtype}, '
+      f'size={x_train.shape}, '
+      f'density={x_train.nnz / x_train.shape[0] / x_train.shape[1]},'
+      f'{sparse_memory_usage(x_train):9.3} Mb')
+print(f'test type={x_test.dtype}, '
+      f'size={x_test.shape}, '
+      f'density={x_test.nnz / x_test.shape[0] / x_test.shape[1]},'
+      f'{sparse_memory_usage(x_test):9.3} Mb')
+del x_data
+del y_data
+gc.collect()
+
+
+dtrain = xgb.DMatrix(x_train, label=y_train)
+dtest = xgb.DMatrix(x_test, label=y_test)
+del x_train, x_test, y_train, y_test
+gc.collect()
+
+
+dtrain.save_binary('self.matrix.train.train')
+dtest.save_binary('self.matrix.train.test')
+del dtrain
+del dtest
+gc.collect()
 
 
 dtrain = xgb.DMatrix('self.matrix.train.train#self.dtrain.cache')

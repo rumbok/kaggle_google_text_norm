@@ -14,7 +14,7 @@ class DictTransformer(TransformerMixin, BaseEstimator):
     def fit(self, X, y=None, *args, **kwargs):
         for (before, after) in tqdm(zip(X['before'], y), f'{self.__class__.__name__} fit', total=len(X)):
             self.word_dict[before][after] += 1
-        print(len(self.word_dict.keys()))
+        #print(len(self.word_dict.keys()))
         return self
 
     def _most_common(self):
