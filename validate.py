@@ -7,7 +7,6 @@ INPUT_PATH = r'../input/norm_challenge_ru'
 DATA_INPUT_PATH = r'../input/norm_challenge_ru/ru_with_types'
 
 df = load_train(columns=['class', 'before', 'after'], input_path=INPUT_PATH)
-#df = load_external(columns=['class', 'before', 'after'], only_diff=True, input_path=DATA_INPUT_PATH)
 df['before_prev'] = df['before'].shift(1)
 df['before_next'] = df['before'].shift(-1)
 df = df.fillna('')

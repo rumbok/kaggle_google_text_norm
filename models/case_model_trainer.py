@@ -1,11 +1,10 @@
-import matplotlib.pyplot as plt
-import pandas as pd
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 
 from loaders.loading import load_train
+from transformers.case_extractor import CaseExtractor
 from transformers.item_selector import ItemSelector
 from transformers.morphology_extractor import MorphologyExtractor
 from transformers.sparse_union import SparseUnion
@@ -14,18 +13,19 @@ from sparse_helpers import sparse_memory_usage
 import gc
 from sklearn.metrics import accuracy_score
 
+INPUT_PATH = r'../../input/norm_challenge_ru'
 
-df = load_train(['before', 'after', 'class']).fillna('')
+df = load_train(['before', 'after', 'class'], INPUT_PATH).fillna('')
 df['prev_prev'] = df['before'].shift(2).fillna('')
 df['prev'] = df['before'].shift(1).fillna('')
 df['next'] = df['before'].shift(-1).fillna('')
 df['next_next'] = df['before'].shift(-2).fillna('')
-# df = df[~(df['before'] == df['after'])]
+df = df[~(df['before'] == df['after'])]
 print(df.info())
 
 
 morph_extractor = MorphologyExtractor(to_coo=True, multi_words=True)
-pipeline = SparseUnion([
+before_pipeline = SparseUnion([
     ('class', Pipeline([
         ('select', ItemSelector('class')),
         ('label', LabelEncoder()),
@@ -68,16 +68,16 @@ pipeline = SparseUnion([
     ])),
 ])
 
+case_pipeline = CaseExtractor(multi_words=True)
 
-x_data = pipeline.fit_transform(df.drop(['class'], axis=1))
+x_data = before_pipeline.fit_transform(df.drop(['class'], axis=1))
 print(f'data type={x_data.dtype}, '
       f'size={x_data.shape}, '
       f'density={x_data.nnz / x_data.shape[0] / x_data.shape[1]},'
       f'{sparse_memory_usage(x_data):9.3} Mb')
-y_data = pd.factorize(df['class'])
-labels = y_data[1]
-y_data = y_data[0]
-del morph_extractor
+y_data = case_pipeline.fit_transform(df['after'])['case'].cat.codes
+labels = case_pipeline.case_type.categories
+del morph_extractor, before_pipeline, case_pipeline
 del df
 gc.collect()
 
@@ -101,26 +101,26 @@ del x_train, x_test, y_train, y_test
 gc.collect()
 
 
-dtrain.save_binary('class.matrix.train.train')
-dtest.save_binary('class.matrix.train.test')
+dtrain.save_binary('case.matrix.train.train')
+dtest.save_binary('case.matrix.train.test')
 del dtrain
 del dtest
 gc.collect()
 
 
-dtrain = xgb.DMatrix('class.matrix.train.train#class.dtrain.cache')
-dtest = xgb.DMatrix('class.matrix.train.test#class.dtest.cache')
+dtrain = xgb.DMatrix('case.matrix.train.train#case.dtrain.cache')
+dtest = xgb.DMatrix('case.matrix.train.test#case.dtest.cache')
 watchlist = [(dtrain, 'train'), (dtest, 'test')]
 
 param = {'objective': 'multi:softmax',
          'tree_method': 'hist',
          'learning_rate': 0.3,
          'num_boost_round': 1000,
-         'max_depth': 5,
+         'max_depth': 6,
          'silent': 1,
          'nthread': 4,
          'njobs': 4,
-         'num_class': len(set(dtrain.get_label())),
+         'num_class': len(set(dtrain.get_label())) + 1,
          'eval_metric': ['merror', 'mlogloss'],
          'seed': '2017'}
 model = xgb.train(param, dtrain, num_boost_round=param['num_boost_round'], evals=watchlist,
@@ -131,12 +131,5 @@ predictions = [round(value) for value in y_pred]
 accuracy = accuracy_score(dtest.get_label(), predictions)
 print("Accuracy: %.5f%%" % accuracy)
 
-model.save_model(f'class.model.train_{len(dtrain.get_label())}_{accuracy:0.5f}_{param["learning_rate"]}_{param["num_boost_round"]}_{param["max_depth"]}')
-
-# plt.rcParams['font.size'] = 8
-# feat_imp = pd.Series(model.get_fscore()).sort_values(ascending=False)
-# feat_imp.plot(kind='bar', title='Feature Importances')
-# plt.ylabel('Feature Importance Score')
-# plt.tight_layout()
-# plt.savefig('class_features_imp.png')
-# plt.show()
+model.save_model(
+    f'case.model.train_{len(dtrain.get_label())}_{1.0-accuracy:0.5f}_{param["learning_rate"]}_{param["num_boost_round"]}_{param["max_depth"]}')

@@ -44,6 +44,8 @@ class DictNBHDTransformer(TransformerMixin, BaseEstimator):
             self.mean_confidence += confidence
         self.mean_confidence /= len(kv.keys()) if len(kv.keys()) > 0 else 1.0
         del self.word_dict
+        self.word_dict = {}
+
         return kv
 
     def transform(self, X: pd.DataFrame, y=None, *args, **kwargs):

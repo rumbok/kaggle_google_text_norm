@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 from sklearn.base import TransformerMixin, BaseEstimator
 from tqdm import tqdm
-import re
 
 
 class LettersTransformer(TransformerMixin, BaseEstimator):
@@ -14,12 +13,14 @@ class LettersTransformer(TransformerMixin, BaseEstimator):
 
     def transform(self, X: pd.DataFrame, y=None, *args, **kwargs):
         data = []
-        for word in tqdm(X['before'], f'{self.__class__.__name__} transform', total=len(X)):
+        for (word, cls) in tqdm(zip(X['before'], X['class']), f'{self.__class__.__name__} transform', total=len(X)):
             w = word.replace(" ", "").replace(".", "")
             if w.isupper():
+            # if cls == 'LETTERS':
                 data.append(' '.join(list(w.lower())))
             else:
                 data.append(None)
+
         if 'after' in X.columns:
             return X.assign(after=X['after'].combine_first(pd.Series(data, index=X.index)))
         else:
