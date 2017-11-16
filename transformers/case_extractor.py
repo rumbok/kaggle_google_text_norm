@@ -74,7 +74,7 @@ if __name__ == '__main__':
     print(res.info())
     print(res)
 
-    df = load_train(columns=['after'], input_path=r'../../input/norm_challenge_ru')
+    df = load_train(columns=['after'], input_path=r'../input/norm_challenge_ru')
     morph.word_rows = {}
     res = morph.transform(df.sample(100000)['after'])
     print(res.info())

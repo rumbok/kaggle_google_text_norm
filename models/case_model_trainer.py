@@ -6,7 +6,7 @@ from sklearn.preprocessing import LabelEncoder, OneHotEncoder, FunctionTransform
 
 from loaders.loading import load_train
 from transformers.case_extractor import CaseExtractor
-from transformers.item_selector import ItemSelector, Reshape2d
+from transformers.item_selector import ItemSelector, Reshape2d, ToCategoryCodes
 from transformers.morphology_extractor import MorphologyExtractor
 from transformers.sparse_union import SparseUnion
 from transformers.string_to_chars import StringToChar
@@ -25,8 +25,8 @@ from pandas.api.types import CategoricalDtype
 # #      .fillna('')
 #
 # df['prev_prev'] = df['before'].shift(2).fillna('')
-# df['prev'] = df['before'].shift(1).fillna('')
-# df['next'] = df['before'].shift(-1).fillna('')
+# df['before_prev'] = df['before'].shift(1).fillna('')
+# df['before_next'] = df['before'].shift(-1).fillna('')
 # df['next_next'] = df['before'].shift(-2).fillna('')
 # classes = frozenset(['CARDINAL', 'DATE', 'MEASURE', 'DECIMAL', 'MONEY', 'ORDINAL', 'FRACTION', 'TIME'])
 # df = df[~(df['before'] == df['after']) & (df['class'].isin(classes))]
@@ -34,7 +34,6 @@ from pandas.api.types import CategoricalDtype
 #                                           'MEASURE', 'TELEPHONE', 'ELECTRONIC', 'DECIMAL', 'DIGIT', 'FRACTION',
 #                                           'MONEY', 'TIME',
 #                                           'TRANS', 'DASH'])
-# df['class'] = df['class'].astype(class_type).cat.codes
 # print(df.info())
 #
 #
@@ -42,8 +41,9 @@ from pandas.api.types import CategoricalDtype
 # before_pipeline = SparseUnion([
 #     ('class', Pipeline([
 #         ('select', ItemSelector('class')),
+#         ('codes', ToCategoryCodes(class_type)),
 #         ('reshape', Reshape2d()),
-#         ('onehot', OneHotEncoder(sparse=True, dtype=np.uint8))
+#         ('onehot', OneHotEncoder(n_values=len(class_type.categories), sparse=True, dtype=np.uint8))
 #     ])),
 #     ('orig', Pipeline([
 #         ('select', ItemSelector('before')),
@@ -60,14 +60,14 @@ from pandas.api.types import CategoricalDtype
 #         ])),
 #     ])),
 #     ('prev', Pipeline([
-#         ('select', ItemSelector('prev')),
+#         ('select', ItemSelector('before_prev')),
 #         ('features', SparseUnion([
 #             ('char', StringToChar(-5, to_coo=True)),
 #             ('ctx', morph_extractor),
 #         ])),
 #     ])),
 #     ('next', Pipeline([
-#         ('select', ItemSelector('next')),
+#         ('select', ItemSelector('before_next')),
 #         ('features', SparseUnion([
 #             ('char', StringToChar(-5, to_coo=True)),
 #             ('ctx', morph_extractor),
@@ -91,11 +91,9 @@ from pandas.api.types import CategoricalDtype
 #       f'{sparse_memory_usage(x_data):9.3} Mb')
 # case_number_df = case_pipeline.fit_transform(df['after'])
 # y_data = case_pipeline.fit_transform(df['after'])['case'].cat.codes
-# labels = case_pipeline.case_type.categories
 # del morph_extractor, before_pipeline, case_pipeline
 # del df
 # gc.collect()
-# print(y_data)
 #
 # x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.1, random_state=2017)
 # print(f'train type={x_train.dtype}, '
@@ -129,10 +127,9 @@ dtest = xgb.DMatrix('case.matrix.train.test#case.dtest.cache')
 watchlist = [(dtrain, 'train'), (dtest, 'test')]
 
 param = {'objective': 'multi:softmax',
-         #'tree_method': 'hist',
          'learning_rate': 0.2,
-         'num_boost_round': 200,
-         'max_depth': 6,
+         'num_boost_round': 400,
+         'max_depth': 7,
          'silent': 1,
          'nthread': 4,
          'njobs': 4,
