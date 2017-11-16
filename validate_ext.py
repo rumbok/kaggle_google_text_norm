@@ -13,8 +13,8 @@ for x_train in load_batch(columns=['class', 'before', 'after'],
                           batch_size=10,
                           input_path=DATA_INPUT_PATH):
     if first:
-        x_train['before_prev'] = x_train['before'].shift(1)
-        x_train['before_next'] = x_train['before'].shift(-1)
+        x_train['prev'] = x_train['before'].shift(1)
+        x_train['next'] = x_train['before'].shift(-1)
         x_train = x_train.fillna('')
 
         x_test = x_train
@@ -23,8 +23,8 @@ for x_train in load_batch(columns=['class', 'before', 'after'],
         gc.collect()
         first = False
     else:
-        x_train['before_prev'] = x_train['before'].shift(1)
-        x_train['before_next'] = x_train['before'].shift(-1)
+        x_train['prev'] = x_train['before'].shift(1)
+        x_train['next'] = x_train['before'].shift(-1)
         x_train = x_train.fillna('')
 
         y_train = x_train['after']

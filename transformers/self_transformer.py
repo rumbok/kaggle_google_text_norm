@@ -28,14 +28,14 @@ class SelfTransformer(TransformerMixin, BaseEstimator):
                 ])),
             ])),
             ('prev', Pipeline([
-                ('select', ItemSelector('before_prev')),
+                ('select', ItemSelector('prev')),
                 ('features', SparseUnion([
                     ('char', StringToChar(5, to_coo=True)),
                     ('ctx', morph_extractor),
                 ])),
             ])),
             ('next', Pipeline([
-                ('select', ItemSelector('before_next')),
+                ('select', ItemSelector('next')),
                 ('features', SparseUnion([
                     ('char', StringToChar(5, to_coo=True)),
                     ('ctx', morph_extractor),
@@ -77,8 +77,8 @@ if __name__ == '__main__':
     df = pd.SparseDataFrame(['в 1905 году', '123', '123', '-', '321', '&', '0546']
                             + 'съешь ещё этих мягких французских булок, да выпей чаю по - фиг'.split(),
                             columns=['before'])
-    df['before_prev'] = df['before'].shift(1).fillna('').to_dense()
-    df['before_next'] = df['before'].shift(-1).fillna('').to_dense()
+    df['prev'] = df['before'].shift(1).fillna('').to_dense()
+    df['next'] = df['before'].shift(-1).fillna('').to_dense()
     print(df)
 
     st = SelfTransformer(threshold=0.5, modelpath='models/self.model.train_9517064_0.00117_0.3_500_6')

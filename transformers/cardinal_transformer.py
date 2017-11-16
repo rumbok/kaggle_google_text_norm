@@ -26,7 +26,11 @@ class CardinalTransformer(TransformerMixin, BaseEstimator):
                     words = num2words(before, lang='ru')
                     inflected_words = []
                     for w in words.split():
-                        inflected_words.append(self.morph(w)[0].inflect({case}))
+                        inflected = self.morph.parse(w)[0].inflect({case})
+                        if inflected:
+                            inflected_words.append(inflected.word)
+                        else:
+                            inflected_words.append(w)
                     data.append(' '.join(inflected_words))
                 else:
                     data.append(None)
@@ -44,8 +48,8 @@ class CardinalTransformer(TransformerMixin, BaseEstimator):
 
 
 if __name__ == '__main__':
-    df = pd.DataFrame([[u'0', 'CARDINAL'], [u'56', 'CARDINAL'], [u'-05665', 'CARDINAL'], [u'0.5', 'CARDINAL']], columns=['before', 'class'])
-    dt = CardinalTransformer()
+    df = pd.DataFrame([[u'0', 'CARDINAL', 'gent'], [u'56', 'CARDINAL', 'gent'], [u'-05665', 'CARDINAL', 'datv'], [u'0.5', 'CARDINAL', 'accs']], columns=['before', 'class', 'case'])
+    dt = CardinalTransformer(use_case=True)
 
     print(dt.fit_transform(df).head())
 

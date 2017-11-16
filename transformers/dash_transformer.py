@@ -15,7 +15,7 @@ class DashTransformer(TransformerMixin, BaseEstimator):
 
     def transform(self, X: pd.DataFrame, y=None, *args, **kwargs):
         data = []
-        for (w_prev, w, w_next) in tqdm(zip(X['before_prev'], X['before'], X['before_next']),
+        for (w_prev, w, w_next) in tqdm(zip(X['prev'], X['before'], X['next']),
                                         f'{self.__class__.__name__} transform',
                                         total=len(X)):
             if w.strip() == u'-' and re_prev.match(w_prev) and re_next.match(w_next):
