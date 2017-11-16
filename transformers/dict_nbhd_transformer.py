@@ -12,7 +12,7 @@ class DictNBHDTransformer(TransformerMixin, BaseEstimator):
         self.mean_confidence = 0.0
 
     def fit(self, X, y=None, *args, **kwargs):
-        threegramms = X['before_prev'].map(str) + X['before'].map(str) + X['before_next'].map(str)
+        threegramms = X['prev'].map(str) + X['before'].map(str) + X['next'].map(str)
         for (tgr, after) in tqdm(zip(threegramms, y),
                                  f'{self.__class__.__name__} fit',
                                  total=len(X)):
@@ -51,7 +51,7 @@ class DictNBHDTransformer(TransformerMixin, BaseEstimator):
     def transform(self, X: pd.DataFrame, y=None, *args, **kwargs):
         data = []
         kv = self._most_common()
-        threegramms = X['before_prev'].map(str) + X['before'].map(str) + X['before_next'].map(str)
+        threegramms = X['prev'].map(str) + X['before'].map(str) + X['next'].map(str)
         for tgr in tqdm(threegramms,
                         f'{self.__class__.__name__} transform',
                         total=len(X)):
@@ -75,7 +75,7 @@ class DictNBHDTransformer(TransformerMixin, BaseEstimator):
 
 
 if __name__ == '__main__':
-    df = pd.DataFrame(np.random.randn(10, 4), columns=['before_prev', 'before', 'before_next', 'after'])
+    df = pd.DataFrame(np.random.randn(10, 4), columns=['prev', 'before', 'next', 'after'])
     dt = DictNBHDTransformer()
 
     print(dt.fit_transform(df.drop(['after'], axis=1), df['after']).head())

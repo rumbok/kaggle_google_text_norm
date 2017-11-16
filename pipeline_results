@@ -836,3 +836,11 @@ Chain:
   translit:	tp=0.979112	fp=0.0147836
   flat:	tp=0.979204	fp=0.0207962
 
+2017-11-16 11:49:51
+test data 1057452
+class: {'modelpath': 'models/class.model.train_1190428_0.00101_0.3_500_6'}
+cardinal: {'use_case': False}
+Chain:
+  class:	tp=0.0	fp=0.0
+  cardinal:	tp=0.013699	fp=0.0116658
+

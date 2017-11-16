@@ -16,8 +16,8 @@ from pandas.api.types import CategoricalDtype
 INPUT_PATH = r'../../input/norm_challenge_ru'
 
 # df = load_train(['before', 'after', 'class'], INPUT_PATH).fillna('')
-# df['before_prev'] = df['before'].shift(1).fillna('')
-# df['before_next'] = df['before'].shift(-1).fillna('')
+# df['prev'] = df['before'].shift(1).fillna('')
+# df['next'] = df['before'].shift(-1).fillna('')
 # df = df[~(df['before'] == df['after'])]
 # df.loc[df['after'].str.contains('_trans'), 'class'] = 'TRANS'
 # df.loc[df['after'] == 'до', 'class'] = 'DASH'
@@ -42,14 +42,14 @@ INPUT_PATH = r'../../input/norm_challenge_ru'
 #         ])),
 #     ])),
 #     ('prev', Pipeline([
-#         ('select', ItemSelector('before_prev')),
+#         ('select', ItemSelector('prev')),
 #         ('features', SparseUnion([
 #             ('char', StringToChar(5, to_coo=True)),
 #             ('ctx', morph_extractor),
 #         ])),
 #     ])),
 #     ('next', Pipeline([
-#         ('select', ItemSelector('before_next')),
+#         ('select', ItemSelector('next')),
 #         ('features', SparseUnion([
 #             ('char', StringToChar(5, to_coo=True)),
 #             ('ctx', morph_extractor),

@@ -11,15 +11,15 @@ INPUT_PATH = r'../input/norm_challenge_ru'
 DATA_INPUT_PATH = r'../input/norm_challenge_ru/ru_with_types'
 
 x_test = load_test(INPUT_PATH)
-x_test['before_prev'] = x_test['before'].shift(1)
-x_test['before_next'] = x_test['before'].shift(-1)
+x_test['prev'] = x_test['before'].shift(1)
+x_test['next'] = x_test['before'].shift(-1)
 x_test = x_test.fillna('')
 
 for x_train in load_batch(columns=['class', 'before', 'after'],
                      batch_size=10,
                      input_path=DATA_INPUT_PATH):
-    x_train['before_prev'] = x_train['before'].shift(1)
-    x_train['before_next'] = x_train['before'].shift(-1)
+    x_train['prev'] = x_train['before'].shift(1)
+    x_train['next'] = x_train['before'].shift(-1)
     x_train = x_train.fillna('')
 
     y_train = x_train['after']

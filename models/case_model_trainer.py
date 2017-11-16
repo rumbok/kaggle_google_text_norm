@@ -25,8 +25,8 @@ from pandas.api.types import CategoricalDtype
 # #      .fillna('')
 #
 # df['prev_prev'] = df['before'].shift(2).fillna('')
-# df['before_prev'] = df['before'].shift(1).fillna('')
-# df['before_next'] = df['before'].shift(-1).fillna('')
+# df['prev'] = df['before'].shift(1).fillna('')
+# df['next'] = df['before'].shift(-1).fillna('')
 # df['next_next'] = df['before'].shift(-2).fillna('')
 # classes = frozenset(['CARDINAL', 'DATE', 'MEASURE', 'DECIMAL', 'MONEY', 'ORDINAL', 'FRACTION', 'TIME'])
 # df = df[~(df['before'] == df['after']) & (df['class'].isin(classes))]
@@ -60,14 +60,14 @@ from pandas.api.types import CategoricalDtype
 #         ])),
 #     ])),
 #     ('prev', Pipeline([
-#         ('select', ItemSelector('before_prev')),
+#         ('select', ItemSelector('prev')),
 #         ('features', SparseUnion([
 #             ('char', StringToChar(-5, to_coo=True)),
 #             ('ctx', morph_extractor),
 #         ])),
 #     ])),
 #     ('next', Pipeline([
-#         ('select', ItemSelector('before_next')),
+#         ('select', ItemSelector('next')),
 #         ('features', SparseUnion([
 #             ('char', StringToChar(-5, to_coo=True)),
 #             ('ctx', morph_extractor),

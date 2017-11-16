@@ -14,7 +14,7 @@ from sklearn.pipeline import Pipeline
 from pandas.api.types import CategoricalDtype
 
 
-class AddCaseTransformer(TransformerMixin, BaseEstimator):
+class AddNumberTransformer(TransformerMixin, BaseEstimator):
     def __init__(self, modelpath=''):
         self.modelpath = modelpath
         self.model = None
@@ -76,7 +76,7 @@ class AddCaseTransformer(TransformerMixin, BaseEstimator):
     def fit(self, X: pd.DataFrame, y=None, *args, **kwargs):
         if self.model is None:
             dtrain = xgb.DMatrix(data=self.pipeline.fit_transform(X),
-                                 label=self.case_extractor.fit_transform(y)['case'].cat.codes)
+                                 label=self.case_extractor.fit_transform(y)['number'].cat.codes)
             param = {'objective': 'multi:softmax',
                      'learning_rate': 0.2,
                      'num_boost_round': 400,
@@ -95,13 +95,13 @@ class AddCaseTransformer(TransformerMixin, BaseEstimator):
         dpredict = xgb.DMatrix(x_predict)
         del x_predict
         predicted = pd.Series(pd.Categorical.from_codes(self.model.predict(dpredict),
-                                                        categories=self.case_extractor.case_type.categories),
+                                                        categories=self.case_extractor.number_type.categories),
                               index=X.index)
         del dpredict
         if 'case' in X.columns:
-            return X.assign(**{'case': X['case'].combine_first(predicted)})
+            return X.assign(**{'number': X['number'].combine_first(predicted)})
         else:
-            return X.assign(**{'case': predicted})
+            return X.assign(**{'number': predicted})
 
 
 if __name__ == '__main__':
@@ -117,6 +117,6 @@ if __name__ == '__main__':
     print(df)
 
     class_trns = AddClassTransformer(modelpath='models/class.model.train_1190428_0.00101_0.3_500_6')
-    case_trns = AddCaseTransformer(modelpath='case.model.train_502554_0.03258_0.2_400_6')
+    case_trns = AddNumberTransformer(modelpath='number.model.train_502554_0.03258_0.2_400_6')
 
     print(case_trns.fit_transform(class_trns.fit_transform(df)))

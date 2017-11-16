@@ -14,8 +14,8 @@ from sklearn.metrics import accuracy_score
 
 df = load_train(['before', 'after']).fillna('')
 df['self'] = (df['before'] == df['after'])
-df['before_prev'] = df['before'].shift(1)
-df['before_next'] = df['before'].shift(-1)
+df['prev'] = df['before'].shift(1)
+df['next'] = df['before'].shift(-1)
 df = df.fillna('')
 del df['after']
 print(df.info())
@@ -31,14 +31,14 @@ pipeline = SparseUnion([
         ])),
     ])),
     ('prev', Pipeline([
-        ('select', ItemSelector('before_prev')),
+        ('select', ItemSelector('prev')),
         ('features', SparseUnion([
             ('char', StringToChar(5, to_coo=True)),
             ('ctx', morph_extractor),
         ])),
     ])),
     ('next', Pipeline([
-        ('select', ItemSelector('before_next')),
+        ('select', ItemSelector('next')),
         ('features', SparseUnion([
             ('char', StringToChar(5, to_coo=True)),
             ('ctx', morph_extractor),
