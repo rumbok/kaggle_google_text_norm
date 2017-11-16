@@ -127,8 +127,8 @@ dtest = xgb.DMatrix('case.matrix.train.test#case.dtest.cache')
 watchlist = [(dtrain, 'train'), (dtest, 'test')]
 
 param = {'objective': 'multi:softmax',
-         'learning_rate': 0.2,
-         'num_boost_round': 400,
+         'learning_rate': 0.3,
+         'num_boost_round': 500,
          'max_depth': 7,
          'silent': 1,
          'nthread': 4,
@@ -137,7 +137,7 @@ param = {'objective': 'multi:softmax',
          'eval_metric': ['merror', 'mlogloss'],
          'seed': '2017'}
 model = xgb.train(param, dtrain, num_boost_round=param['num_boost_round'], evals=watchlist,
-                  early_stopping_rounds=20, verbose_eval=1)
+                  early_stopping_rounds=25, verbose_eval=1)
 
 y_pred = model.predict(dtest)
 predictions = [round(value) for value in y_pred]
