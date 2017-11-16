@@ -127,9 +127,9 @@ dtest = xgb.DMatrix('number.matrix.train.test#number.dtest.cache')
 watchlist = [(dtrain, 'train'), (dtest, 'test')]
 
 param = {'objective': 'multi:softmax',
-         'learning_rate': 0.2,
-         'num_boost_round': 400,
-         'max_depth': 7,
+         'learning_rate': 0.3,
+         'num_boost_round': 500,
+         'max_depth': 6,
          'silent': 1,
          'nthread': 4,
          'njobs': 4,
