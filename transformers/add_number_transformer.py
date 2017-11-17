@@ -98,7 +98,7 @@ class AddNumberTransformer(TransformerMixin, BaseEstimator):
                                                         categories=self.case_extractor.number_type.categories),
                               index=X.index)
         del dpredict
-        if 'case' in X.columns:
+        if 'number' in X.columns:
             return X.assign(**{'number': X['number'].combine_first(predicted)})
         else:
             return X.assign(**{'number': predicted})
