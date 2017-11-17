@@ -12,21 +12,19 @@ first = True
 for x_train in load_batch(columns=['class', 'before', 'after'],
                           batch_size=10,
                           input_path=DATA_INPUT_PATH):
-    if first:
-        x_train['prev'] = x_train['before'].shift(1)
-        x_train['next'] = x_train['before'].shift(-1)
-        x_train = x_train.fillna('')
+    x_train['prev_prev'] = x_train['before'].shift(2)
+    x_train['prev'] = x_train['before'].shift(1)
+    x_train['next'] = x_train['before'].shift(-1)
+    x_train['next_next'] = x_train['before'].shift(-2)
+    x_train = x_train.fillna('')
 
+    if first:
         x_test = x_train
         y_test = x_test['after']
         del x_test['after'], x_test['class'], x_train
         gc.collect()
         first = False
     else:
-        x_train['prev'] = x_train['before'].shift(1)
-        x_train['next'] = x_train['before'].shift(-1)
-        x_train = x_train.fillna('')
-
         y_train = x_train['after']
         del x_train['after']
 

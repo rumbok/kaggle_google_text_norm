@@ -13,16 +13,20 @@ df = load_train(columns=['class', 'before', 'after'], input_path=INPUT_PATH)
 x_train = df
 del df
 
+x_train['prev_prev'] = x_train['before'].shift(2)
 x_train['prev'] = x_train['before'].shift(1)
 x_train['next'] = x_train['before'].shift(-1)
+x_train['next_next'] = x_train['before'].shift(-2)
 x_train = x_train.fillna('')
 print(x_train.info())
 y_train = x_train['after']
 del x_train['after']
 
 x_test = load_test(INPUT_PATH)
+x_test['prev_prev'] = x_test['before'].shift(2)
 x_test['prev'] = x_test['before'].shift(1)
 x_test['next'] = x_test['before'].shift(-1)
+x_test['next_next'] = x_test['before'].shift(-2)
 x_test = x_test.fillna('')
 
 predict = transform(x_train, x_test, y_train)

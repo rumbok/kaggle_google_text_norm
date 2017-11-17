@@ -117,6 +117,6 @@ if __name__ == '__main__':
     print(df)
 
     class_trns = AddClassTransformer(modelpath='models/class.model.train_1190428_0.00101_0.3_500_6')
-    case_trns = AddCaseTransformer(modelpath='case.model.train_502554_0.03258_0.2_400_6')
+    case_trns = AddCaseTransformer(modelpath='case.model.train_502554_0.02781_0.3_500_7')
 
     print(case_trns.fit_transform(class_trns.fit_transform(df)))

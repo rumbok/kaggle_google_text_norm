@@ -15,85 +15,85 @@ from pandas.api.types import CategoricalDtype
 
 INPUT_PATH = r'../../input/norm_challenge_ru'
 
-# df = load_train(['before', 'after', 'class'], INPUT_PATH).fillna('')
-# df['prev'] = df['before'].shift(1).fillna('')
-# df['next'] = df['before'].shift(-1).fillna('')
-# df = df[~(df['before'] == df['after'])]
-# df.loc[df['after'].str.contains('_trans'), 'class'] = 'TRANS'
-# df.loc[df['after'] == 'до', 'class'] = 'DASH'
-# del df['after']
-# class_type = CategoricalDtype(categories=['PLAIN', 'DATE', 'PUNCT', 'ORDINAL', 'VERBATIM', 'LETTERS', 'CARDINAL',
-#                                           'MEASURE', 'TELEPHONE', 'ELECTRONIC', 'DECIMAL', 'DIGIT', 'FRACTION',
-#                                           'MONEY', 'TIME',
-#                                           'TRANS', 'DASH'])
-# df['class'] = df['class'].astype(class_type).cat.codes
-# # pd.Series(pd.Categorical.from_codes(df['class'], categories=class_type.categories))
-# print(df.sample(10))
-# print(df.info())
-#
-#
-# morph_extractor = MorphologyExtractor(to_coo=True, multi_words=True)
-# pipeline = SparseUnion([
-#     ('orig', Pipeline([
-#         ('select', ItemSelector('before')),
-#         ('features', SparseUnion([
-#             ('char', StringToChar(10, to_coo=True)),
-#             ('ctx', morph_extractor),
-#         ])),
-#     ])),
-#     ('prev', Pipeline([
-#         ('select', ItemSelector('prev')),
-#         ('features', SparseUnion([
-#             ('char', StringToChar(5, to_coo=True)),
-#             ('ctx', morph_extractor),
-#         ])),
-#     ])),
-#     ('next', Pipeline([
-#         ('select', ItemSelector('next')),
-#         ('features', SparseUnion([
-#             ('char', StringToChar(5, to_coo=True)),
-#             ('ctx', morph_extractor),
-#         ])),
-#     ])),
-# ])
-#
-#
-# x_data = pipeline.fit_transform(df.drop(['class'], axis=1))
-# print(f'data type={x_data.dtype}, '
-#       f'size={x_data.shape}, '
-#       f'density={x_data.nnz / x_data.shape[0] / x_data.shape[1]},'
-#       f'{sparse_memory_usage(x_data):9.3} Mb')
-# y_data = df['class']
-# labels = class_type.categories
-# del morph_extractor
-# del df
-# gc.collect()
-#
-# x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.1, random_state=2017)
-# print(f'train type={x_train.dtype}, '
-#       f'size={x_train.shape}, '
-#       f'density={x_train.nnz / x_train.shape[0] / x_train.shape[1]},'
-#       f'{sparse_memory_usage(x_train):9.3} Mb')
-# print(f'test type={x_test.dtype}, '
-#       f'size={x_test.shape}, '
-#       f'density={x_test.nnz / x_test.shape[0] / x_test.shape[1]},'
-#       f'{sparse_memory_usage(x_test):9.3} Mb')
-# del x_data
-# del y_data
-# gc.collect()
-#
-#
-# dtrain = xgb.DMatrix(x_train, label=y_train)
-# dtest = xgb.DMatrix(x_test, label=y_test)
-# del x_train, x_test, y_train, y_test
-# gc.collect()
-#
-#
-# dtrain.save_binary('class.matrix.train.train')
-# dtest.save_binary('class.matrix.train.test')
-# del dtrain
-# del dtest
-# gc.collect()
+df = load_train(['before', 'after', 'class'], INPUT_PATH).fillna('')
+df['prev'] = df['before'].shift(1).fillna('')
+df['next'] = df['before'].shift(-1).fillna('')
+df = df[~(df['before'] == df['after'])]
+df.loc[df['after'].str.contains('_trans'), 'class'] = 'TRANS'
+df.loc[df['after'] == 'до', 'class'] = 'DASH'
+del df['after']
+class_type = CategoricalDtype(categories=['PLAIN', 'DATE', 'PUNCT', 'ORDINAL', 'VERBATIM', 'LETTERS', 'CARDINAL',
+                                          'MEASURE', 'TELEPHONE', 'ELECTRONIC', 'DECIMAL', 'DIGIT', 'FRACTION',
+                                          'MONEY', 'TIME',
+                                          'TRANS', 'DASH'])
+df['class'] = df['class'].astype(class_type).cat.codes
+# pd.Series(pd.Categorical.from_codes(df['class'], categories=class_type.categories))
+print(df.sample(10))
+print(df.info())
+
+
+morph_extractor = MorphologyExtractor(sparse=True, multi_words=True)
+pipeline = SparseUnion([
+    ('orig', Pipeline([
+        ('select', ItemSelector('before')),
+        ('features', SparseUnion([
+            ('char', StringToChar(10, to_coo=True)),
+            ('ctx', morph_extractor),
+        ])),
+    ])),
+    ('prev', Pipeline([
+        ('select', ItemSelector('prev')),
+        ('features', SparseUnion([
+            ('char', StringToChar(5, to_coo=True)),
+            ('ctx', morph_extractor),
+        ])),
+    ])),
+    ('next', Pipeline([
+        ('select', ItemSelector('next')),
+        ('features', SparseUnion([
+            ('char', StringToChar(5, to_coo=True)),
+            ('ctx', morph_extractor),
+        ])),
+    ])),
+])
+
+
+x_data = pipeline.fit_transform(df.drop(['class'], axis=1))
+print(f'data type={x_data.dtype}, '
+      f'size={x_data.shape}, '
+      f'density={x_data.nnz / x_data.shape[0] / x_data.shape[1]},'
+      f'{sparse_memory_usage(x_data):9.3} Mb')
+y_data = df['class']
+labels = class_type.categories
+del morph_extractor
+del df
+gc.collect()
+
+x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.1, random_state=2017)
+print(f'train type={x_train.dtype}, '
+      f'size={x_train.shape}, '
+      f'density={x_train.nnz / x_train.shape[0] / x_train.shape[1]},'
+      f'{sparse_memory_usage(x_train):9.3} Mb')
+print(f'test type={x_test.dtype}, '
+      f'size={x_test.shape}, '
+      f'density={x_test.nnz / x_test.shape[0] / x_test.shape[1]},'
+      f'{sparse_memory_usage(x_test):9.3} Mb')
+del x_data
+del y_data
+gc.collect()
+
+
+dtrain = xgb.DMatrix(x_train, label=y_train)
+dtest = xgb.DMatrix(x_test, label=y_test)
+del x_train, x_test, y_train, y_test
+gc.collect()
+
+
+dtrain.save_binary('class.matrix.train.train')
+dtest.save_binary('class.matrix.train.test')
+del dtrain
+del dtest
+gc.collect()
 
 
 dtrain = xgb.DMatrix('class.matrix.train.train#class.dtrain.cache')
