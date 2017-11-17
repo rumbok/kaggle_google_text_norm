@@ -10,13 +10,13 @@ from seq2seq.models import AttentionSeq2Seq, Seq2Seq, SimpleSeq2Seq
 import math
 
 
-LAYER_NUM = 3
-HIDDEN_DIM = 64
+LAYER_NUM = 1
+HIDDEN_DIM = 128
 BATCH_SIZE = 32
-LEARNING_RATE = 0.001
+LEARNING_RATE = 0.00001
 MEM_SIZE = 500000
 NB_EPOCH = 100
-DROPOUT = 0.01
+DROPOUT = 0.1
 
 
 def calc_lr(epoch, learning_rate, decay=0.1, per_epochs=5):
