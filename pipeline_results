@@ -947,7 +947,6 @@ Chain:
   translit:	tp=0.03968	fp=0.00910673
 
 
-
 2017-11-17 08:02:15
 test data 105746
 class: {'modelpath': 'models/class.model.train_1190428_0.00101_0.3_500_6'}
