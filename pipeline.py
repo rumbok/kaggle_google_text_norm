@@ -2,6 +2,7 @@ import numpy as np
 
 from transformers.add_case_transformer import AddCaseTransformer
 from transformers.add_number_transformer import AddNumberTransformer
+from transformers.cardinal_lstm_transformer import CardinalLSTMTransformer
 from transformers.cardinal_transformer import CardinalTransformer
 from transformers.dash_transformer import DashTransformer
 from transformers.dict_nbhd_transformer import DictNBHDTransformer
@@ -21,24 +22,26 @@ from transformers.add_class_transformer import AddClassTransformer
 
 transform_chain = ScoredChain([
         ('class', AddClassTransformer('models/class.model.train_1190428_0.00101_0.3_500_6')),
-        ('case', AddCaseTransformer('case.model.train_502554_0.02781_0.3_500_7')),
-        ('number', AddNumberTransformer('number.model.train_502554_0.00849_0.3_500_6')),
-        ('digit', DigitTransformer()),
-        ('trans', DictClassTransformer(u'TRANS', 0.5)),
-        ('dash', DashTransformer()),
-        ('punсt', DictClassTransformer(u'PUNCT', 1.0)),
-        ('verbatim', DictClassTransformer(u'VERBATIM', 1.0)),
-        ('latin', LatinTransliterator()),
-        ('self', SelfTransformer(threshold=0.5, modelpath='models/self.model.train_9517064_0.00117_0.3_500_6')),
-        ('rome', RomeTransformer()),
-        ('dict_nbhd', DictNBHDTransformer(0.5)),
-        ('date', DictClassTransformer(u'DATE', 1.0)),
-        ('cardinal_dict', DictClassTransformer(u'CARDINAL', 1.0)),
-        ('cardinal', CardinalTransformer(use_case=False, use_number=False)),
-        ('letters', LettersTransformer()),
-        ('dict', DictTransformer(0.5)),
-        ('translit', LSTMTransliterator('check point_epoch_36_0.8127_64_2_0.0.hdf5')),
-        ('flat', FlatTransformer())
+        # # ('case', AddCaseTransformer('case.model.train_502554_0.02781_0.3_500_7')),
+        # # ('number', AddNumberTransformer('number.model.train_502554_0.00849_0.3_500_6')),
+        # ('digit', DigitTransformer()),
+        # ('trans', DictClassTransformer(u'TRANS', 0.5)),
+        # ('dash', DashTransformer()),
+        # ('punсt', DictClassTransformer(u'PUNCT', 1.0)),
+        # ('verbatim', DictClassTransformer(u'VERBATIM', 1.0)),
+        # ('latin', LatinTransliterator()),
+        # ('self', SelfTransformer(threshold=0.5, modelpath='models/self.model.train_9517064_0.00117_0.3_500_6')),
+        # ('rome', RomeTransformer()),
+        # ('dict_nbhd', DictNBHDTransformer(0.5)),
+        # ('date', DictClassTransformer(u'DATE', 1.0)),
+        # ('cardinal_dict', DictClassTransformer(u'CARDINAL', 1.0)),
+        ('cardinal', CardinalLSTMTransformer('cardinal_epoch_8_0.8895194854332198_0_64_2_0.0_0.0001.hdf5')),
+        # ('cardinal', CardinalTransformer(use_case=False, use_number=False)),
+        # ('letters', LettersTransformer(by_class=False)),
+        # ('dict', DictTransformer(0.5)),
+        # ('translit', LSTMTransliterator('check point_epoch_36_0.8127_64_2_0.0.hdf5')),
+        # ('letters', LettersTransformer(by_class=True)),
+        # ('flat', FlatTransformer())
     ])
 
 

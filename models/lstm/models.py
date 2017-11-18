@@ -1,8 +1,7 @@
-from keras.models import Sequential, load_model
-from keras.layers import TimeDistributed, Dense, RepeatVector, Embedding, ConvLSTM2D, Activation
-from keras.optimizers import RMSprop, SGD
-from keras.layers.recurrent import LSTM
-from scipy.sparse import csr_matrix, coo_matrix
+from keras.models import Sequential
+from keras.layers import TimeDistributed, Dense, Embedding
+from keras.optimizers import RMSprop
+from scipy.sparse import csr_matrix
 import os
 import numpy as np
 import sys
@@ -17,42 +16,16 @@ def find_checkpoint_file(folder, name):
     return checkpoint_file[np.argmax(modified_time)]
 
 
-def index(words: csr_matrix, word_to_ix):
-    sequences = np.zeros((words.shape[0], words.shape[1]))
-    for i, word in enumerate(words.toarray()):
-        for j, ix in enumerate(word):
-            sequences[i, j] = word_to_ix[ix]
-    return sequences
-
-
-def sparse_indexes(words_list: list, word_to_ix: dict, max_len):
-    rows = []
-    cols = []
-    data = []
-    for row, sentence in enumerate(words_list):
-        for col, word in enumerate(sentence):
-            rows.append(row)
-            cols.append(col)
-            if word in word_to_ix:
-                data.append(word_to_ix[word])
-            else:
-                data.append(word_to_ix['UNK'])
-    return coo_matrix((data, (rows, cols)), shape=(len(words_list), max_len), dtype=np.uint32)
-
-
-def words_list(indexes: np.ndarray, ix_to_word):
-    preds = []
-    for sent in indexes:
-        preds.append(' '.join([ix_to_word[ix] for ix in sent if ix > 0]))
-    return preds
-
-
 class AttentionModel:
     def __init__(self,
+                 model_name,
                  x_max_len, x_vocab_len,
                  y_max_len, y_vocab_len,
                  hidden_dim, layer_num, learning_rate, dropout,
                  embedding_dim=0):
+
+        self.model_name = model_name
+
         self.X_max_len = x_max_len
         self.X_vocab_len = x_vocab_len
 
@@ -64,8 +37,6 @@ class AttentionModel:
         self.layer_num = layer_num
         self.learning_rate = learning_rate
         self.dropout = dropout
-
-        self.model_name = 'cardinal'
 
         print('[INFO] Compiling model...')
         self.model = Sequential()
@@ -89,7 +60,7 @@ class AttentionModel:
                                             output_length=self.y_max_len,
                                             output_dim=self.y_vocab_len,
                                             hidden_dim=hidden_dim,
-                                            bidirectional=False,
+                                            bidirectional=True,
                                             depth=layer_num,
                                             dropout=dropout))
 
@@ -139,7 +110,7 @@ class AttentionModel:
                 print(f'[INFO] Training model: epoch {epoch}th {i}/{x_train.shape[0]} samples')
                 self.model.fit(x_mem, y_mem,
                                validation_data=test_data,
-                               batch_size=batch_size, epochs=1, verbose=1)
+                               batch_size=batch_size, epochs=1, verbose=2)
 
             y_pred_array = np.argmax(self.model.predict(test_data[0]), axis=2)
             acc = np.mean(np.all(y_pred_array == y_test_array, axis=1))
@@ -147,8 +118,8 @@ class AttentionModel:
             self.model.save_weights(f'{self.model_name}_epoch_{epoch}_{acc}_{self.embedding_dim}_{self.hidden_dim}_{self.layer_num}_{self.dropout}_{self.learning_rate}.hdf5')
             # model.save(f'model_epoch_{epoch}_{acc}.hdf5')
 
-    def test(self, X_test, model=None):
-        if model is None:
+    def test(self, X_test):
+        if self.model is None:
             saved_weights = find_checkpoint_file('.', self.model_name)
 
             if len(saved_weights) == 0:
@@ -157,3 +128,6 @@ class AttentionModel:
             self.model.load_weights(saved_weights)
 
         return np.argmax(self.model.predict(self._vectorize(X_test, self.X_vocab_len)), axis=2)
+
+    def load_weights(self, modelpath):
+        self.model.load_weights(modelpath)
