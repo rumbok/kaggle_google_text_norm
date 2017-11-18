@@ -9,7 +9,7 @@ from seq2seq.models import AttentionSeq2Seq
 
 
 def find_checkpoint_file(folder, name):
-    checkpoint_file = [f for f in os.listdir(folder) if name in f]
+    checkpoint_file = [f for f in os.listdir(folder) if f'{name}_epoch' in f]
     if len(checkpoint_file) == 0:
         return []
     modified_time = [os.path.getmtime(f) for f in checkpoint_file]
