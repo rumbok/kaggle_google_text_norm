@@ -9,13 +9,13 @@ INPUT_VOCAB_SIZE = 5000
 OUTPUT_VOCAB_SIZE = 158
 
 LAYER_NUM = 2
-HIDDEN_DIM = 64
+HIDDEN_DIM = 128
 EMBEDDING_DIM = 0
-BATCH_SIZE = 32
-LEARNING_RATE = 0.001
+BATCH_SIZE = 128
+LEARNING_RATE = 0.0001
 MEM_SIZE = 1000
 NB_EPOCH = 1
-DROPOUT = 0.0
+DROPOUT = 0.01
 
 df = load_train(['before', 'after', 'class'], input_path=r'../input/norm_challenge_ru').fillna('')
 # df = load_external(['before', 'after'],

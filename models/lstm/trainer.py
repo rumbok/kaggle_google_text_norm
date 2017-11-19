@@ -87,7 +87,7 @@ def train(model_name,
                                                    output_vocab_len,
                                                    f'{model_name}_output_index.csv')
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.01)
     print(f'x train type={X_train.dtype}, '
           f'size={X_train.shape}, '
           f'density={X_train.nnz / X_train.shape[0] / X_train.shape[1]},'

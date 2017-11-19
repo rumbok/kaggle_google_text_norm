@@ -95,28 +95,41 @@ class AttentionModel:
         test_data = (self._vectorize(x_test, self.X_vocab_len), self._vectorize(y_test, self.y_vocab_len))
         y_test_array = y_test.toarray()
 
-        for epoch in range(k_start, epochs + 1):
-            # Shuffling the training data every epoch to avoid local minima
-            indices = np.arange(x_train.shape[0])
-            np.random.shuffle(indices)
-            x_train = x_train[indices, :]
-            y_train = y_train[indices, :]
-
-            for i in range(0, x_train.shape[0], mem_size):
-                i_end = min(i + mem_size, x_train.shape[0])
-                x_mem = self._vectorize(x_train[i:i_end, :], self.X_vocab_len)
-                y_mem = self._vectorize(y_train[i:i_end, :], self.y_vocab_len)
-
-                print(f'[INFO] Training model: epoch {epoch}th {i}/{x_train.shape[0]} samples')
-                self.model.fit(x_mem, y_mem,
-                               validation_data=test_data,
-                               batch_size=batch_size, epochs=1, verbose=2)
-
-            y_pred_array = np.argmax(self.model.predict(test_data[0]), axis=2)
-            acc = np.mean(np.all(y_pred_array == y_test_array, axis=1))
+        prev_acc = 0.0
+        epoch = k_start
+        while epoch <= epochs and self.model.optimizer.lr.read_value() > 0.0000001:
+        # for epoch in range(k_start, epochs + 1):
+            acc = self._train_epoch(batch_size, mem_size, test_data, x_train, y_test_array, y_train)
             print('Accuracy', acc)
-            self.model.save_weights(f'{self.model_name}_epoch_{epoch}_{acc}_{self.embedding_dim}_{self.hidden_dim}_{self.layer_num}_{self.dropout}_{self.learning_rate}.hdf5')
-            # model.save(f'model_epoch_{epoch}_{acc}.hdf5')
+            if acc >= prev_acc:
+                self.model.save_weights(f'{self.model_name}_epoch_{epoch}_{acc}_{self.embedding_dim}_{self.hidden_dim}_{self.layer_num}_{self.dropout}_{self.learning_rate}.hdf5')
+                epoch += 1
+                prev_acc = acc
+            else:
+                saved_weights = find_checkpoint_file('.', self.model_name)
+                self.model.load_weights(saved_weights)
+                self.model.optimizer.lr.assign(self.model.optimizer.lr.read_value() * 0.1)
+
+                # model.save(f'model_epoch_{epoch}_{acc}.hdf5')
+
+    def _train_epoch(self, batch_size, mem_size, test_data, x_train, y_test_array, y_train):
+        # Shuffling the training data every epoch to avoid local minima
+        indices = np.arange(x_train.shape[0])
+        np.random.shuffle(indices)
+        x_train = x_train[indices, :]
+        y_train = y_train[indices, :]
+        for i in range(0, x_train.shape[0], mem_size):
+            i_end = min(i + mem_size, x_train.shape[0])
+            x_mem = self._vectorize(x_train[i:i_end, :], self.X_vocab_len)
+            y_mem = self._vectorize(y_train[i:i_end, :], self.y_vocab_len)
+
+            print(f'[INFO] Training model: epoch {epoch}th {i}/{x_train.shape[0]} samples')
+            self.model.fit(x_mem, y_mem,
+                           validation_data=test_data,
+                           batch_size=batch_size, epochs=1, verbose=2)
+        y_pred_array = np.argmax(self.model.predict(test_data[0]), axis=2)
+        acc = np.mean(np.all(y_pred_array == y_test_array, axis=1))
+        return acc
 
     def test(self, X_test):
         if self.model is None:

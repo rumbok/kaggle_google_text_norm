@@ -1109,3 +1109,55 @@ Chain:
   self:	tp=0.856836	fp=0.00149415
   cardinal:	tp=0.866917	fp=0.0182797
 
+2017-11-19 09:52:45
+test data 105746
+class: {'modelpath': 'models/class.model.train_1190428_0.00101_0.3_500_6'}
+self: {'modelpath': 'models/self.model.train_9517064_0.00117_0.3_500_6', 'threshold': 0.5}
+cardinal: {'input_max_len': None, 'modelpath': 'cardinal_epoch_3_0.7205633595646098_0_128_2_0.01_0.001.hdf5', 'output_max_len': None}
+Chain:
+  class:	tp=0.0	fp=0.0
+  self:	tp=0.858217	fp=0.00146578
+  cardinal:	tp=0.876582	fp=0.0100146
+
+2017-11-19 10:39:31
+test data 105746
+class: {'modelpath': 'models/class.model.train_1190428_0.00101_0.3_500_6'}
+self: {'modelpath': 'models/self.model.train_9517064_0.00117_0.3_500_6', 'threshold': 0.5}
+cardinal_dict: {'classname': 'CARDINAL', 'threshold': 1.0, 'mean_confidence': 0.9348439642324324}
+cardinal: {'input_max_len': None, 'modelpath': 'cardinal_epoch_3_0.7205633595646098_0_128_2_0.01_0.001.hdf5', 'output_max_len': None}
+Chain:
+  class:	tp=0.0	fp=0.0
+  self:	tp=0.858179	fp=0.0021372
+  cardinal_dict:	tp=0.858482	fp=0.00223176
+  cardinal:	tp=0.876799	fp=0.0105441
+
+2017-11-19 11:06:17
+test data 105746
+class: {'modelpath': 'models/class.model.train_1190428_0.00101_0.3_500_6'}
+digit: {}
+trans: {'classname': 'TRANS', 'threshold': 0.5, 'mean_confidence': 0.9999969090248747}
+dash: {}
+punсt: {'classname': 'PUNCT', 'threshold': 1.0, 'mean_confidence': 1.0}
+verbatim: {'classname': 'VERBATIM', 'threshold': 1.0, 'mean_confidence': 1.0}
+latin: {}
+self: {'modelpath': 'models/self.model.train_9517064_0.00117_0.3_500_6', 'threshold': 0.5}
+rome: {'use_case': False}
+dict_nbhd: {'threshold': 0.5, 'mean_confidence': 0.9998977427235881}
+date: {'classname': 'DATE', 'threshold': 1.0, 'mean_confidence': 0.9722265372267368}
+cardinal_dict: {'classname': 'CARDINAL', 'threshold': 1.0, 'mean_confidence': 0.9348439642324324}
+cardinal: {'input_max_len': None, 'modelpath': 'cardinal_epoch_3_0.7205633595646098_0_128_2_0.01_0.001.hdf5', 'output_max_len': None}
+Chain:
+  class:	tp=0.0	fp=0.0
+  digit:	tp=0.000226959	fp=0.0
+  trans:	tp=0.0407959	fp=0.0
+  dash:	tp=0.0417699	fp=0.00115371
+  punсt:	tp=0.258468	fp=0.00115371
+  verbatim:	tp=0.273523	fp=0.00115371
+  latin:	tp=0.275122	fp=0.00125773
+  self:	tp=0.910077	fp=0.00445407
+  rome:	tp=0.910512	fp=0.00557941
+  dict_nbhd:	tp=0.947062	fp=0.0061468
+  date:	tp=0.949539	fp=0.00646833
+  cardinal_dict:	tp=0.94971	fp=0.00651561
+  cardinal:	tp=0.954674	fp=0.0107049
+
