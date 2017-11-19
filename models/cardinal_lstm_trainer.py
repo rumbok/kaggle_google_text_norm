@@ -44,4 +44,4 @@ result_df = train('cardinal', df,
                   HIDDEN_DIM, LAYER_NUM, LEARNING_RATE, DROPOUT, EMBEDDING_DIM,
                   NB_EPOCH, MEM_SIZE, BATCH_SIZE)
 
-print(result_df[~(result_df['actual'] == result_df['predict'])])
+print(result_df[~(result_df['actual'] == result_df['predict'])][['actual', 'predict']].sample(20))

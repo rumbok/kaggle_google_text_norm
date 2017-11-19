@@ -1091,3 +1091,21 @@ Chain:
   class:	tp=0.0	fp=0.0
   cardinal:	tp=0.0100902	fp=0.0568248
 
+2017-11-18 21:34:44
+test data 105746
+class: {'modelpath': 'models/class.model.train_1190428_0.00101_0.3_500_6'}
+cardinal: {'input_max_len': None, 'modelpath': 'cardinal_epoch_8_0.8895194854332198_0_64_2_0.0_0.0001.hdf5', 'output_max_len': None}
+Chain:
+  class:	tp=0.0	fp=0.0
+  cardinal:	tp=0.0100997	fp=0.0672177
+
+2017-11-18 21:51:40
+test data 105746
+class: {'modelpath': 'models/class.model.train_1190428_0.00101_0.3_500_6'}
+self: {'modelpath': 'models/self.model.train_9517064_0.00117_0.3_500_6', 'threshold': 0.5}
+cardinal: {'input_max_len': None, 'modelpath': 'cardinal_epoch_8_0.8895194854332198_0_64_2_0.0_0.0001.hdf5', 'output_max_len': None}
+Chain:
+  class:	tp=0.0	fp=0.0
+  self:	tp=0.856836	fp=0.00149415
+  cardinal:	tp=0.866917	fp=0.0182797
+

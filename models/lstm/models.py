@@ -127,7 +127,7 @@ class AttentionModel:
                 sys.exit()
             self.model.load_weights(saved_weights)
 
-        return np.argmax(self.model.predict(self._vectorize(X_test, self.X_vocab_len)), axis=2)
+        return np.argmax(self.model.predict(self._vectorize(X_test, self.X_vocab_len), batch_size=1), axis=2)
 
     def load_weights(self, modelpath):
         self.model.load_weights(modelpath)

@@ -112,10 +112,14 @@ def train(model_name,
 
     model.train(X_train, y_train, X_test, y_test, epochs, mem_size, batch_size)
 
-    y_predict = words_list(model.test(X_test), y_ix_to_word)
+    y_predict = model.test(X_test)
+    print('array acc', np.mean(np.all(y_predict == y_test, axis=1)))
 
+    y_predict_str = words_list(y_predict, y_ix_to_word)
     X_str = words_list(X_test.toarray(), X_ix_to_word)
     y_str = words_list(y_test.toarray(), y_ix_to_word)
-    result_df = pd.DataFrame(data={'before': X_str, 'actual': y_str, 'predict': y_predict})
+    result_df = pd.DataFrame(data={'before': X_str, 'actual': y_str, 'predict': y_predict_str})
+
+    print('str acc', len(result_df[result_df['actual'] == result_df['predict']])/len(result_df))
 
     return result_df

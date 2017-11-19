@@ -30,7 +30,7 @@ transform_chain = ScoredChain([
         # ('punсt', DictClassTransformer(u'PUNCT', 1.0)),
         # ('verbatim', DictClassTransformer(u'VERBATIM', 1.0)),
         # ('latin', LatinTransliterator()),
-        # ('self', SelfTransformer(threshold=0.5, modelpath='models/self.model.train_9517064_0.00117_0.3_500_6')),
+        ('self', SelfTransformer(threshold=0.5, modelpath='models/self.model.train_9517064_0.00117_0.3_500_6')),
         # ('rome', RomeTransformer()),
         # ('dict_nbhd', DictNBHDTransformer(0.5)),
         # ('date', DictClassTransformer(u'DATE', 1.0)),
