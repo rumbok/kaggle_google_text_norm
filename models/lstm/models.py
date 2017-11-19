@@ -97,22 +97,24 @@ class AttentionModel:
 
         prev_acc = 0.0
         epoch = k_start
-        while epoch <= epochs and self.model.optimizer.lr.read_value() > 0.0000001:
+        lr = self.learning_rate
+        while epoch <= epochs and lr > 0.0000001:
         # for epoch in range(k_start, epochs + 1):
-            acc = self._train_epoch(batch_size, mem_size, test_data, x_train, y_test_array, y_train)
+            acc = self._train_epoch(epoch, batch_size, mem_size, test_data, x_train, y_test_array, y_train)
             print('Accuracy', acc)
             if acc >= prev_acc:
-                self.model.save_weights(f'{self.model_name}_epoch_{epoch}_{acc}_{self.embedding_dim}_{self.hidden_dim}_{self.layer_num}_{self.dropout}_{self.learning_rate}.hdf5')
+                self.model.save_weights(f'{self.model_name}_epoch_{epoch}_{acc}_{self.embedding_dim}_{self.hidden_dim}_{self.layer_num}_{self.dropout}_{lr}.hdf5')
                 epoch += 1
                 prev_acc = acc
             else:
                 saved_weights = find_checkpoint_file('.', self.model_name)
                 self.model.load_weights(saved_weights)
-                self.model.optimizer.lr.assign(self.model.optimizer.lr.read_value() * 0.1)
+                lr *= 0.1
+                self.model.optimizer.lr.assign(lr)
 
                 # model.save(f'model_epoch_{epoch}_{acc}.hdf5')
 
-    def _train_epoch(self, batch_size, mem_size, test_data, x_train, y_test_array, y_train):
+    def _train_epoch(self, epoch, batch_size, mem_size, test_data, x_train, y_test_array, y_train):
         # Shuffling the training data every epoch to avoid local minima
         indices = np.arange(x_train.shape[0])
         np.random.shuffle(indices)

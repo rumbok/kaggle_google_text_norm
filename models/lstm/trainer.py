@@ -52,6 +52,11 @@ def sparse_indexes(words_list: list, word_to_ix: dict, max_len):
 
 def prepare_matrix(series, max_len, vocab_len, index_file):
     data = [text_to_word_sequence(w) for w in series]
+    max_data_len = 0
+    for w in data:
+        max_data_len = max(max_data_len, len(w))
+    print('Max len', max_data_len)
+
     if os.path.exists(index_file):
         ix_to_word = load_index(index_file)
     else:
@@ -87,7 +92,7 @@ def train(model_name,
                                                    output_vocab_len,
                                                    f'{model_name}_output_index.csv')
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.01)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.04)
     print(f'x train type={X_train.dtype}, '
           f'size={X_train.shape}, '
           f'density={X_train.nnz / X_train.shape[0] / X_train.shape[1]},'
