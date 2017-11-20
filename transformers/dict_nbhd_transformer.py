@@ -3,17 +3,27 @@ import numpy as np
 import pandas as pd
 from sklearn.base import TransformerMixin, BaseEstimator
 from tqdm import tqdm
+from loaders.loading import load_train
+
+INPUT_PATH = r'../input/norm_challenge_ru'
 
 
 class DictNBHDTransformer(TransformerMixin, BaseEstimator):
-    def __init__(self, threshold=0.0):
+    def __init__(self, threshold=0.0, to_lower=True):
         self.threshold = threshold
         self.word_dict = {}
         self.mean_confidence = 0.0
+        self.to_lower = to_lower
 
     def fit(self, X, y=None, *args, **kwargs):
-        threegramms = X['prev'].map(str) + X['before'].map(str) + X['next'].map(str)
-        for (tgr, after) in tqdm(zip(threegramms, y),
+        if self.to_lower:
+            threegramms = (X['prev'].map(str) + X['before'].map(str) + X['next'].map(str)).str.lower()
+            afters = y.map(str).str.lower()
+        else:
+            threegramms = X['prev'].map(str) + X['before'].map(str) + X['next'].map(str)
+            afters = y
+
+        for (tgr, after) in tqdm(zip(threegramms, afters),
                                  f'{self.__class__.__name__} fit',
                                  total=len(X)):
             hsh = str.__hash__(tgr)
@@ -24,8 +34,9 @@ class DictNBHDTransformer(TransformerMixin, BaseEstimator):
                     self.word_dict[hsh] = Counter([self.word_dict[hsh], after])
             else:
                 self.word_dict[hsh] = after
-        del threegramms
-        #print(len(self.word_dict.keys()))
+        del threegramms, afters
+
+
         return self
 
     def _most_common(self):
@@ -45,13 +56,15 @@ class DictNBHDTransformer(TransformerMixin, BaseEstimator):
         self.mean_confidence /= len(kv.keys()) if len(kv.keys()) > 0 else 1.0
         del self.word_dict
         self.word_dict = {}
-
         return kv
 
     def transform(self, X: pd.DataFrame, y=None, *args, **kwargs):
         data = []
         kv = self._most_common()
-        threegramms = X['prev'].map(str) + X['before'].map(str) + X['next'].map(str)
+        if self.to_lower:
+            threegramms = (X['prev'].map(str) + X['before'].map(str) + X['next'].map(str)).str.lower()
+        else:
+            threegramms = X['prev'].map(str) + X['before'].map(str) + X['next'].map(str)
         for tgr in tqdm(threegramms,
                         f'{self.__class__.__name__} transform',
                         total=len(X)):
@@ -75,7 +88,24 @@ class DictNBHDTransformer(TransformerMixin, BaseEstimator):
 
 
 if __name__ == '__main__':
-    df = pd.DataFrame(np.random.randn(10, 4), columns=['prev', 'before', 'next', 'after'])
-    dt = DictNBHDTransformer()
+    df = load_train(columns=['before', 'after'], input_path=INPUT_PATH)
+    df['prev'] = df['before'].shift(1).str.lower()
+    df['next'] = df['before'].shift(-1).str.lower()
+    df['before'] = df['before'].str.lower()
+    df['after'] = df['after'].str.lower()
+    df = df.fillna('')
+    print(df.info())
 
-    print(dt.fit_transform(df.drop(['after'], axis=1), df['after']).head())
+    dt = DictNBHDTransformer(0.5, to_lower=False)
+
+    dt.fit(df.drop(['after'], axis=1), df['after'])
+    print('All threegramms', len(df))
+    print('Unique threegramms', len(dt.word_dict)) #7711445 7614565
+
+    res_df = dt.transform(df.rename(columns={'after': 'actual'}))
+    print('Acc', len(res_df[res_df['after'] == res_df['actual']])/ len(res_df))
+    print(res_df)
+
+    #to_lower Acc 0.9995168573199946
+
+
