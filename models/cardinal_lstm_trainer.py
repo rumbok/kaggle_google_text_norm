@@ -12,9 +12,9 @@ HIDDEN_DIM = 64
 EMBEDDING_DIM = 0
 BATCH_SIZE = 128
 LEARNING_RATE = 0.001
-MEM_SIZE = 1000
-NB_EPOCH = 1
-DROPOUT = 0.0
+MEM_SIZE = 10000
+NB_EPOCH = 100
+DROPOUT = 0.01
 
 df = load_train(['before', 'after', 'class'], input_path=r'../input/norm_challenge_ru').fillna('')
 # df = load_external(['before', 'after'],
