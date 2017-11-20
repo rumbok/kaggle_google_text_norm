@@ -49,8 +49,10 @@ class MeasureLSTMTransformer(TransformerMixin, BaseEstimator):
                                  self.x_max_len,
                                  len(self.x_ix_to_word),
                                  f'{self.model_name}_input_index.csv')
+        del x_series
 
         y_predict = words_list(self.model.test(x), self.y_ix_to_word)
+        del x
 
         if 'after' in df.columns:
             return df.assign(after=df['after'].combine_first(pd.Series(y_predict, index=cardinal_ixs)))

@@ -56,11 +56,15 @@ class LSTMTransliterator(TransformerMixin, BaseEstimator):
         X_data = StringToChar(X_MAX_LEN, to_coo=True).fit_transform(X.loc[trans_ixs, 'before'].str.lower()).tocsr()
 
         predictions = np.argmax(self.model.predict(vectorize_data(X_data, ENG_INDEXES)), axis=2)
+        del X_data
         sequences = []
         for prediction in tqdm(predictions, f'{self.__class__.__name__} transform stage 1'):
             sequences.append([RUS_CHARS[ix] for ix in prediction])
+        del predictions
         strs_predict = int_to_str(np.array(sequences))
+        del sequences
         translit = [' '.join([c + '_trans' for c in str]) for str in tqdm(strs_predict, f'{self.__class__.__name__} transform stage 2')]
+        del strs_predict
 
         if 'after' in X.columns:
             return X.assign(after=X['after'].combine_first(pd.Series(translit, index=trans_ixs)))

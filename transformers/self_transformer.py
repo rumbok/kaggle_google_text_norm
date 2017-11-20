@@ -67,6 +67,7 @@ class SelfTransformer(TransformerMixin, BaseEstimator):
         del x_predict
         predicted = pd.Series(self.model.predict(dpredict), index=X.index)
         del dpredict
+
         if 'after' in X.columns:
             return X.assign(after=X['after'].combine_first(X[predicted >= self.threshold]['before']))
         else:

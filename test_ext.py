@@ -43,8 +43,10 @@ for x_train in load_batch(columns=['class', 'before', 'after'],
     del x_train, y_train
     gc.collect()
 
+del test_values
+
 predicts = []
-for x_i in tqdm(chunker(x_test, 10000), 'test', len(x_test)//10000):
+for x_i in tqdm(chunker(x_test, 100000), 'test', len(x_test)//100000):
     predicts.append(transform_chain.transform(x_i))
 
 predict = pd.concat(predicts)

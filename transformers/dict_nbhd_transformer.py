@@ -63,7 +63,7 @@ class DictNBHDTransformer(TransformerMixin, BaseEstimator):
                 data.append(self.kv[hsh][0])
             else:
                 data.append(None)
-        del self.kv, threegramms
+        del threegramms
 
         if 'after' in X.columns:
             return X.assign(after=X['after'].combine_first(pd.Series(data, index=X.index)))
