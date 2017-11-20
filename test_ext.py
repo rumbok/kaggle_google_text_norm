@@ -25,23 +25,37 @@ x_test['next_next'] = x_test['before'].shift(-2)
 x_test = x_test.fillna('')
 test_values = set(x_test['before'].str.lower())
 
-for x_train in load_batch(columns=['class', 'before', 'after'],
-                          batch_size=10,
-                          input_path=DATA_INPUT_PATH):
-    # x_train['prev_prev'] = x_train['before'].shift(2)
-    x_train['prev'] = x_train['before'].shift(1)
-    x_train['next'] = x_train['before'].shift(-1)
-    # x_train['next_next'] = x_train['before'].shift(1)
-    x_train = x_train.fillna('')
-    x_train = x_train[x_train['before'].str.lower().isin(test_values)]
+# for x_train in load_batch(columns=['class', 'before', 'after'],
+#                           batch_size=10,
+#                           input_path=DATA_INPUT_PATH):
+#     # x_train['prev_prev'] = x_train['before'].shift(2)
+#     x_train['prev'] = x_train['before'].shift(1)
+#     x_train['next'] = x_train['before'].shift(-1)
+#     # x_train['next_next'] = x_train['before'].shift(1)
+#     x_train = x_train.fillna('')
+#     x_train = x_train[x_train['before'].str.lower().isin(test_values)]
+#
+#     y_train = x_train['after']
+#     del x_train['after']
 
-    y_train = x_train['after']
-    del x_train['after']
+df = load_train(columns=['class', 'before', 'after'], input_path=INPUT_PATH)
+#df = load_external(columns=['class', 'before', 'after'], only_diff=False, input_path=DATA_INPUT_PATH)
+x_train = df
+del df
 
-    transform_chain.fit(x_train, y_train)
+x_train['prev_prev'] = x_train['before'].shift(2)
+x_train['prev'] = x_train['before'].shift(1)
+x_train['next'] = x_train['before'].shift(-1)
+x_train['next_next'] = x_train['before'].shift(-2)
+x_train = x_train.fillna('')
+print(x_train.info())
+y_train = x_train['after']
+del x_train['after']
 
-    del x_train, y_train
-    gc.collect()
+transform_chain.fit(x_train, y_train)
+
+del x_train, y_train
+gc.collect()
 
 del test_values
 

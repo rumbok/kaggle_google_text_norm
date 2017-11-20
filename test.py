@@ -40,7 +40,7 @@ for x_i in tqdm(chunker(x_test, 30000), 'test', len(x_test)//100000):
     predicts.append(transform_chain.transform(x_i))
 predict = pd.concat(predicts)
 
-# predict = transform(x_train, x_test, y_train)
+predict = transform(x_train, x_test, y_train)
 
 predict['id'] = predict['sentence_id'].map(str) + '_' + predict['token_id'].map(str)
 del predict['before']
