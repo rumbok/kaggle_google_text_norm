@@ -39,13 +39,13 @@ transform_chain = ScoredChain([
         ('date', DateLSTMTransformer('date_epoch_17_0.9237390719569604_0_64_2_0.0_1.0000000000000002e-07.hdf5')),
         ('cardinal_dict', DictClassTransformer(u'CARDINAL', 1.0)),
         ('cardinal', CardinalLSTMTransformer('cardinal_epoch_10_0.880216951645523_0_64_2_0.01_1e-05.hdf5')),
-        # ('measure_dict', DictClassTransformer(u'CARDINAL', 1.0)),
-        # ('measure', MeasureLSTMTransformer('cardinal_epoch_10_0.880216951645523_0_64_2_0.01_1e-05.hdf5')),
+        ('measure_dict', DictClassTransformer(u'MEASURE', 1.0)),
+        ('measure', MeasureLSTMTransformer('measure_epoch_18_0.6424546023794615_0_64_2_0.01_1.0000000000000002e-07.hdf5')),
         ('letters', LettersTransformer(by_class=False)),
         ('dict', DictTransformer(0.5)),
         ('trans', LSTMTransliterator('check point_epoch_36_0.8127_64_2_0.0.hdf5')),
         ('letters', LettersTransformer(by_class=True)),
-        # ('flat', FlatTransformer())
+        ('flat', FlatTransformer())
     ])
 
 

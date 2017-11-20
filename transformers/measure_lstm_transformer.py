@@ -67,6 +67,6 @@ if __name__ == '__main__':
     df = df.fillna('')
     print(df)
 
-    ct = MeasureLSTMTransformer('date_epoch_17_0.9237390719569604_0_64_2_0.0_1.0000000000000002e-07.hdf5')
+    ct = MeasureLSTMTransformer('measure_epoch_18_0.6424546023794615_0_64_2_0.01_1.0000000000000002e-07.hdf5')
 
     print(ct.fit_transform(df))
