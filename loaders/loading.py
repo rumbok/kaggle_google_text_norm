@@ -50,9 +50,11 @@ def load_external(columns: list, only_diff=True, input_path=DATA_INPUT_PATH) -> 
 
 def load_batch(columns: list, batch_size=100, input_path=DATA_INPUT_PATH) -> pd.DataFrame:
     files = glob(os.path.join(input_path, "*"))
+    i = 0
     for bth in batch(files, batch_size):
+        i += 1
         res = []
-        for file in tqdm(bth, 'load files'):
+        for file in tqdm(bth, f'load files [{(i-1)*batch_size}:{i*batch_size}]'):
             chunk = open(file, encoding='UTF8')
             while 1:
                 line = chunk.readline().strip()
