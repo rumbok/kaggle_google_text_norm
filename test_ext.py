@@ -26,12 +26,12 @@ x_test = x_test.fillna('')
 test_values = set(x_test['before'].str.lower())
 
 for x_train in load_batch(columns=['class', 'before', 'after'],
-                          batch_size=1,
+                          batch_size=10,
                           input_path=DATA_INPUT_PATH):
-    x_train['prev_prev'] = x_train['before'].shift(2)
+    # x_train['prev_prev'] = x_train['before'].shift(2)
     x_train['prev'] = x_train['before'].shift(1)
     x_train['next'] = x_train['before'].shift(-1)
-    x_train['next_next'] = x_train['before'].shift(1)
+    # x_train['next_next'] = x_train['before'].shift(1)
     x_train = x_train.fillna('')
     x_train = x_train[x_train['before'].str.lower().isin(test_values)]
 
@@ -42,7 +42,6 @@ for x_train in load_batch(columns=['class', 'before', 'after'],
 
     del x_train, y_train
     gc.collect()
-    break
 
 predicts = []
 for x_i in tqdm(chunker(x_test, 10000), 'test', len(x_test)//10000):
