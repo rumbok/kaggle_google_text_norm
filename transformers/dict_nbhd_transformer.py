@@ -50,16 +50,10 @@ class DictNBHDTransformer(TransformerMixin, BaseEstimator):
             else:
                 if hsh in self.kv:
                     (prev_val, prev_conf) = self.kv[hsh]
-                    if prev_conf == 1.0:
-                        prev_count = 1
-                    else:
-                        count = sum(word_dict[hsh].values())
-                        prev_count = int(max(1.0, count*prev_conf))
-
                     if prev_val == word_dict[hsh]:
                         self.kv[hsh] = (word_dict[hsh], 1.0)
                     else:
-                        self.kv[hsh] = (prev_val, prev_count/(prev_count+1))
+                        self.kv[hsh] = (prev_val, 0.5)
                 else:
                     self.kv[hsh] = (word_dict[hsh], 1.0)
 
@@ -108,7 +102,7 @@ if __name__ == '__main__':
     df = df.fillna('')
     print(df.info())
 
-    dt = DictNBHDTransformer(5.1)
+    dt = DictNBHDTransformer(0.5)
 
     dt.fit(df.drop(['after'], axis=1), df['after'])
     # dt.fit(df.drop(['after'], axis=1), df['after'])
