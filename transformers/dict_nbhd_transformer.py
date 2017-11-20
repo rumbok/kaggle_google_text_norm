@@ -15,30 +15,53 @@ class DictNBHDTransformer(TransformerMixin, BaseEstimator):
         self.kv = {}
 
     def fit(self, X, y=None, *args, **kwargs):
-        word_dict = defaultdict(Counter)
+        word_dict = {}
         threegramms = (X['prev'].map(str) + X['before'].map(str) + X['next'].map(str)).str.lower()
-
         for (tgr, after) in tqdm(zip(threegramms, y),
                                  f'{self.__class__.__name__} fit stage 1',
                                  total=len(X)):
             hsh = str.__hash__(tgr)
-            word_dict[hsh][after] += 1
+            if hsh in word_dict:
+                if isinstance(word_dict[hsh], Counter):
+                    word_dict[hsh][after] += 1
+                else:
+                    word_dict[hsh] = Counter([word_dict[hsh], after])
+            else:
+                word_dict[hsh] = after
         del threegramms
 
-        for key in tqdm(word_dict,
+        for hsh in tqdm(word_dict,
                         f'{self.__class__.__name__} fit stage 2',
                         total=len(word_dict.keys())):
-            if key in self.kv:
-                (prev_val, prev_conf) = self.kv[key]
-                if prev_conf == 1.0:
-                    word_dict[key][prev_val] += 1
-                else:
-                    count = sum(word_dict[key].values())
-                    word_dict[key][prev_val] += int(max(1.0, count*prev_conf))
+            if isinstance(word_dict[hsh], Counter):
+                if hsh in self.kv:
+                    (prev_val, prev_conf) = self.kv[hsh]
+                    if prev_conf == 1.0:
+                        prev_count = 1
+                    else:
+                        count = sum(word_dict[hsh].values())
+                        prev_count = int(max(1.0, count*prev_conf))
+                    word_dict[hsh][prev_val] += prev_count
 
-            most = word_dict[key].most_common(1)
-            confidence = most[0][1] / sum(word_dict[key].values())
-            self.kv[key] = (most[0][0], confidence)
+                most = word_dict[hsh].most_common(1)
+                confidence = most[0][1] / sum(word_dict[hsh].values())
+                self.kv[hsh] = (most[0][0], confidence)
+
+            else:
+                if hsh in self.kv:
+                    (prev_val, prev_conf) = self.kv[hsh]
+                    if prev_conf == 1.0:
+                        prev_count = 1
+                    else:
+                        count = sum(word_dict[hsh].values())
+                        prev_count = int(max(1.0, count*prev_conf))
+
+                    if prev_val == word_dict[hsh]:
+                        self.kv[hsh] = (word_dict[hsh], 1.0)
+                    else:
+                        self.kv[hsh] = (prev_val, prev_count/(prev_count+1))
+                else:
+                    self.kv[hsh] = (word_dict[hsh], 1.0)
 
         del word_dict
 
@@ -85,12 +108,13 @@ if __name__ == '__main__':
     df = df.fillna('')
     print(df.info())
 
-    dt = DictNBHDTransformer(0.5)
+    dt = DictNBHDTransformer(5.1)
 
     dt.fit(df.drop(['after'], axis=1), df['after'])
-    dt.fit(df.drop(['after'], axis=1), df['after'])
+    # dt.fit(df.drop(['after'], axis=1), df['after'])
 
     res_df = dt.transform(df.rename(columns={'after': 'actual'}))
     print('Acc', len(res_df[res_df['after'] == res_df['actual']])/ len(res_df))
 
-
+#1x Acc 0.9970029833989565
+#2x Acc 0.9970147097039713
