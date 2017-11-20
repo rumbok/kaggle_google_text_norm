@@ -4,11 +4,12 @@ from models.lstm.models import AttentionModel
 from models.lstm.trainer import prepare_matrix, words_list, load_index
 import os.path
 
-INPUT_MAX_LEN = 47
-OUTPUT_MAX_LEN = 12
+INPUT_MAX_LEN = 32
+OUTPUT_MAX_LEN = 32
+ENG_REGEXP = '^[a-zA-Z]+$'
 
 
-class DateLSTMTransformer(TransformerMixin, BaseEstimator):
+class TransLSTMTransformer(TransformerMixin, BaseEstimator):
     def __init__(self,
                  modelpath,
                  input_max_len=INPUT_MAX_LEN, output_max_len=OUTPUT_MAX_LEN):
@@ -37,13 +38,9 @@ class DateLSTMTransformer(TransformerMixin, BaseEstimator):
         return self
 
     def transform(self, df: pd.DataFrame, y=None, *args, **kwargs):
-        cardinal_ixs = df[df['class'] == 'DATE'].index
+        trans_ixs = df[(df['before'].str.match(ENG_REGEXP)) & (df['class'] == 'TRANS')].index
 
-        x_series = (df.loc[cardinal_ixs, 'prev_prev'].map(str) + ' ' \
-                    + df.loc[cardinal_ixs, 'prev'].map(str) + ' ' \
-                    + df.loc[cardinal_ixs, 'before'].map(lambda s: ' '.join(list(s))) + ' ' \
-                    + df.loc[cardinal_ixs, 'next'].map(str) + ' ' \
-                    + df.loc[cardinal_ixs, 'next_next'].map(str)).str.lower()
+        x_series = df['before'].str.lower().map(lambda s: ' '.join(list(s)))
 
         x, _, _ = prepare_matrix(x_series,
                                  self.x_max_len,
@@ -51,11 +48,13 @@ class DateLSTMTransformer(TransformerMixin, BaseEstimator):
                                  f'{self.model_name}_input_index.csv')
 
         y_predict = words_list(self.model.test(x), self.y_ix_to_word)
+        translit = [' '.join([c + '_trans' for c in str]) for str in
+                    tqdm(strs_predict, f'{self.__class__.__name__} transform stage 2')]
 
         if 'after' in df.columns:
-            return df.assign(after=df['after'].combine_first(pd.Series(y_predict, index=cardinal_ixs)))
+            return df.assign(after=df['after'].combine_first(pd.Series(y_predict, index=trans_ixs)))
         else:
-            return df.assign(after=pd.Series(y_predict, index=cardinal_ixs, name='after'))
+            return df.assign(after=pd.Series(y_predict, index=trans_ixs, name='after'))
 
 
 if __name__ == '__main__':
@@ -68,6 +67,6 @@ if __name__ == '__main__':
     df = df.fillna('')
     print(df)
 
-    ct = DateLSTMTransformer(modelpath='date_epoch_17_0.9237390719569604_0_64_2_0.0_1.0000000000000002e-07.hdf5')
+    ct = TransLSTMTransformer('measure_epoch_18_0.6424546023794615_0_64_2_0.01_1.0000000000000002e-07.hdf5')
 
     print(ct.fit_transform(df))

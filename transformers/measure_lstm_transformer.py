@@ -27,12 +27,13 @@ class MeasureLSTMTransformer(TransformerMixin, BaseEstimator):
         self.learning_rate = float(meta[8][0:-5])
         self.dropout = float(meta[7])
 
-    def fit(self, X: pd.DataFrame, y=None, *args, **kwargs):
         self.model = AttentionModel(self.model_name,
                                     self.x_max_len, len(self.x_ix_to_word), self.y_max_len, len(self.y_ix_to_word),
                                     self.hidden_dim, self.layer_num, self.learning_rate, self.dropout,
                                     self.embedding_dim)
         self.model.load_weights(self.modelpath)
+
+    def fit(self, X: pd.DataFrame, y=None, *args, **kwargs):
         return self
 
     def transform(self, df: pd.DataFrame, y=None, *args, **kwargs):
