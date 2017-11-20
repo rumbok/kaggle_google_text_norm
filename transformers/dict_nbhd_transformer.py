@@ -53,7 +53,7 @@ class DictNBHDTransformer(TransformerMixin, BaseEstimator):
                     if prev_val == word_dict[hsh]:
                         self.kv[hsh] = (word_dict[hsh], 1.0)
                     else:
-                        self.kv[hsh] = (prev_val, 0.5)
+                        self.kv[hsh] = (prev_val, 1.0/(2.0-prev_conf))
                 else:
                     self.kv[hsh] = (word_dict[hsh], 1.0)
 
