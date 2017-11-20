@@ -105,7 +105,7 @@ if __name__ == '__main__':
     dt = DictNBHDTransformer(0.5)
 
     dt.fit(df.drop(['after'], axis=1), df['after'])
-    # dt.fit(df.drop(['after'], axis=1), df['after'])
+    dt.fit(df.drop(['after'], axis=1), df['after'])
 
     res_df = dt.transform(df.rename(columns={'after': 'actual'}))
     print('Acc', len(res_df[res_df['after'] == res_df['actual']])/ len(res_df))

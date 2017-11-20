@@ -3,6 +3,12 @@ from pipeline import transform
 import os
 from datetime import datetime
 import csv
+import pandas as pd
+from tqdm import tqdm
+
+def chunker(seq, size):
+    return (seq[pos:pos + size] for pos in range(0, len(seq), size))
+
 
 SUBM_PATH = r'../input/norm_challenge_ru'
 INPUT_PATH = r'../input/norm_challenge_ru'
@@ -29,7 +35,12 @@ x_test['next'] = x_test['before'].shift(-1)
 x_test['next_next'] = x_test['before'].shift(-2)
 x_test = x_test.fillna('')
 
-predict = transform(x_train, x_test, y_train)
+predicts = []
+for x_i in tqdm(chunker(x_test, 30000), 'test', len(x_test)//100000):
+    predicts.append(transform_chain.transform(x_i))
+predict = pd.concat(predicts)
+
+# predict = transform(x_train, x_test, y_train)
 
 predict['id'] = predict['sentence_id'].map(str) + '_' + predict['token_id'].map(str)
 del predict['before']
