@@ -2,7 +2,6 @@ from loaders.loading import load_train, load_external
 from models.lstm.trainer import train
 
 
-CARDINAL_REGEXP = '\d'
 INPUT_MAX_LEN = 33
 OUTPUT_MAX_LEN = 23
 INPUT_VOCAB_SIZE = 5000
@@ -12,7 +11,7 @@ LAYER_NUM = 2
 HIDDEN_DIM = 64
 EMBEDDING_DIM = 0
 BATCH_SIZE = 128
-LEARNING_RATE = 0.0001
+LEARNING_RATE = 0.001
 MEM_SIZE = 1000
 NB_EPOCH = 1
 DROPOUT = 0.0

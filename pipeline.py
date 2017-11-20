@@ -5,6 +5,7 @@ from transformers.add_number_transformer import AddNumberTransformer
 from transformers.cardinal_lstm_transformer import CardinalLSTMTransformer
 from transformers.cardinal_transformer import CardinalTransformer
 from transformers.dash_transformer import DashTransformer
+from transformers.date_lstm_transformer import DateLSTMTransformer
 from transformers.dict_nbhd_transformer import DictNBHDTransformer
 from transformers.dict_transformer import DictTransformer
 from transformers.digit_transformer import DigitTransformer
@@ -13,6 +14,7 @@ from transformers.dict_class_transformer import DictClassTransformer
 from transformers.latin_transliterator import LatinTransliterator
 from transformers.letters_transformer import LettersTransformer
 from transformers.lstm_transliterator import LSTMTransliterator
+from transformers.measure_lstm_transformer import MeasureLSTMTransformer
 from transformers.rome_transformer import RomeTransformer
 from transformers.scored_chain import ScoredChain
 from transformers.self_transformer import SelfTransformer
@@ -25,21 +27,23 @@ transform_chain = ScoredChain([
         # # ('case', AddCaseTransformer('case.model.train_502554_0.02781_0.3_500_7')),
         # # ('number', AddNumberTransformer('number.model.train_502554_0.00849_0.3_500_6')),
         ('digit', DigitTransformer()),
-        ('trans', DictClassTransformer(u'TRANS', 0.5)),
+        ('trans_dict', DictClassTransformer(u'TRANS', 0.5)),
         ('dash', DashTransformer()),
         ('punсt', DictClassTransformer(u'PUNCT', 1.0)),
         ('verbatim', DictClassTransformer(u'VERBATIM', 1.0)),
         ('latin', LatinTransliterator()),
         ('self', SelfTransformer(threshold=0.5, modelpath='models/self.model.train_9517064_0.00117_0.3_500_6')),
-        ('rome', RomeTransformer()),
+        # ('rome', RomeTransformer()),
         ('dict_nbhd', DictNBHDTransformer(0.5)),
-        ('date', DictClassTransformer(u'DATE', 1.0)),
+        ('date_dict', DictClassTransformer(u'DATE', 1.0)),
+        ('date', DateLSTMTransformer('date_epoch_17_0.9237390719569604_0_64_2_0.0_1.0000000000000002e-07.hdf5')),
         ('cardinal_dict', DictClassTransformer(u'CARDINAL', 1.0)),
-        ('cardinal', CardinalLSTMTransformer('cardinal_epoch_3_0.7205633595646098_0_128_2_0.01_0.001.hdf5')),
-        # ('cardinal', CardinalTransformer(use_case=False, use_number=False)),
+        ('cardinal', CardinalLSTMTransformer('cardinal_epoch_10_0.880216951645523_0_64_2_0.01_1e-05.hdf5')),
+        # ('measure_dict', DictClassTransformer(u'CARDINAL', 1.0)),
+        # ('measure', MeasureLSTMTransformer('cardinal_epoch_10_0.880216951645523_0_64_2_0.01_1e-05.hdf5')),
         ('letters', LettersTransformer(by_class=False)),
-        # ('dict', DictTransformer(0.5)),
-        ('translit', LSTMTransliterator('check point_epoch_36_0.8127_64_2_0.0.hdf5')),
+        ('dict', DictTransformer(0.5)),
+        ('trans', LSTMTransliterator('check point_epoch_36_0.8127_64_2_0.0.hdf5')),
         ('letters', LettersTransformer(by_class=True)),
         # ('flat', FlatTransformer())
     ])
