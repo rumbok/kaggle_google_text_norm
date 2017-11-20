@@ -90,10 +90,7 @@ if __name__ == '__main__':
     dt.fit(df.drop(['after'], axis=1), df['after'])
     dt.fit(df.drop(['after'], axis=1), df['after'])
 
-    print(list(dt.kv.items())[:10])
-
     res_df = dt.transform(df.rename(columns={'after': 'actual'}))
     print('Acc', len(res_df[res_df['after'] == res_df['actual']])/ len(res_df))
-    print(res_df)
 
 
