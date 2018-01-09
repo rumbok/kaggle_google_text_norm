@@ -1,5 +1,5 @@
 from loaders.loading import load_train, load_test, load_external
-from pipeline import transform
+from pipeline import transform, transform_chain
 import os
 from datetime import datetime
 import csv
