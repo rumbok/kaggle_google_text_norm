@@ -1,5 +1,4 @@
-# Solution for Text Normalization Challenge - Russian Language
-
+# Solution for Text Normalization Challenge
 https://www.kaggle.com/c/text-normalization-challenge-russian-language
 
 Convert Russian text from written expressions into spoken forms.
